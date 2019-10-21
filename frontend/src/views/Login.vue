@@ -44,7 +44,7 @@
           login(){
               UserDA.doLogin(this.user.username, this.user.password).then((res) =>{
               let response_login = res.data;
-              window.location = window.location.origin + '/about';
+              this.$router.push('/home');
             }).catch(error =>{
               Swal.fire({
                 title: 'Error',
