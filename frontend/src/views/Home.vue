@@ -38,11 +38,11 @@
 
 export default {
     methods:{
-        ...mapActions(['fillPersons']),
+        ...mapActions(['fillPersons','fillLendings]),
     },
     beforeMount(){
         this.fillPersons();
+        this.fillLendings();
     }
-
 }
 </script>

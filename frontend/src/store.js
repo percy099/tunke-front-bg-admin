@@ -10,7 +10,8 @@ export default new Vuex.Store({
       username: "", 
       password: ""
     },
-    persons : []
+    persons : [],
+    lendings: []
   },
   mutations: {
     fillPersons(state,persons_data){
@@ -31,6 +32,17 @@ export default new Vuex.Store({
               nationality : aux[i].nationality,
               vehicle1Plate : aux[i].vehicle1Plate,
               vehicle2Plate : aux[i].vehicle2Plate
+  },
+    fillLendings(state,lendings_data){
+      let aux=lendings_data.lendings;
+        state.lendings=[];
+        for (let i=0; i< aux.length;i++){       
+            state.lendings.push({
+              idLending : aux[i].idLending,
+              feesNumber : aux[i].feesNumber,
+              amount : aux[i].amount,
+              feeType : aux[i].feeType,
+              interestRate : aux[i].interestRate
           });
         }
     }
@@ -40,6 +52,11 @@ export default new Vuex.Store({
         let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
         let people = axios.post(url);
         context.commit('fillPersons',people_data);
-      }
+      },
+    completeLendings(context){
+      //let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
+      let lendings = axios.post(url);
+      context.commit('fillLendings',lendings_data);
+    }
   }
 })
