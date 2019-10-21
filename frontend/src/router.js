@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
 import CRUD from './views/CRUD.vue'
+import CRUDLending from './views/CRUDLending.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/crud',
       name: 'crud',
       component: CRUD
+    },
+    {
+      path: '/crudLending',
+      name: 'crudLending',
+      component: CRUDLending
     }
   ]
 })

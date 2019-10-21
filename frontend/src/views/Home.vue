@@ -30,3 +30,19 @@
 <style src="@/styles/Home.css" scoped>
 
 </style>
+
+<script>
+    import {mapState} from 'vuex'
+    import {mapActions} from 'vuex'
+    import router from '@/router.js'
+
+export default {
+    methods:{
+        ...mapActions(['fillLendings']),
+    },
+    beforeMount(){
+        this.fillLendings();
+    }
+
+}
+</script>
