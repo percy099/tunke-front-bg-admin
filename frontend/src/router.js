@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
-import CRUD from './views/CRUD.vue'
+import Home from './views/Home.vue'
+import CRUDClient from './views/CRUDClient.vue'
 import CRUDLending from './views/CRUDLending.vue'
+import ClientCreate from './views/ClientCreate.vue'
 
 Vue.use(Router)
 
@@ -18,17 +20,22 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: () => import(/* webpackChunkName: "about"  */'./views/Home.vue')
+      component: Home
     },
     {
-      path: '/crud',
-      name: 'crud',
-      component: CRUD
+      path: '/crudClient',
+      name: 'crudClient',
+      component: CRUDClient
     },
     {
       path: '/crudLending',
       name: 'crudLending',
       component: CRUDLending
+    },
+    {
+      path : '/clientCreate',
+      name : 'clientCreate',
+      component : ClientCreate
     }
   ]
 })

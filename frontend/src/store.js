@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -10,29 +11,32 @@ export default new Vuex.Store({
       username: "", 
       password: ""
     },
+    token : '',
     persons : [],
     lendings: []
   },
   mutations: {
-    fillPersons(state,persons_data){
-      let aux=persons_data.persons;
+    fillPersons(state,persons){
         state.persons=[];
-        for (let i=0; i< aux.length;i++){       
+        let persons_data = persons.clients;
+        for (let i=0; i< persons_data.length;i++){       
             state.persons.push({
-              idPerson : aux[i].idPerson,
-              documentType : aux[i].documentType,
-              documentNumber : aux[i].documentNumber,
-              firstName : aux[i].firstName,
-              middleName : aux[i].middleName,
-              fatherLastname : aux[i].fatherLastname,
-              motherLastname : aux[i].motherLastname,
-              email1: aux[i].email1,
-              birthdate : aux[i].birthdate,
-              address : aux[i].address,
-              nationality : aux[i].nationality,
-              vehicle1Plate : aux[i].vehicle1Plate,
-              vehicle2Plate : aux[i].vehicle2Plate
-  },
+              idPerson : persons_data[i].idPerson,
+              documentType : persons_data[i].documentType,
+              documentNumber : persons_data[i].documentNumber,
+              firstName : persons_data[i].firstName,
+              middleName : persons_data[i].middleName,
+              fatherLastname : persons_data[i].fatherLastname,
+              motherLastname : persons_data[i].motherLastname,
+              email1: persons_data[i].email1,
+              birthdate : persons_data[i].birthdate,
+              address : persons_data[i].address,
+              nationality : persons_data[i].nationality,
+              vehicle1Plate : persons_data[i].vehicle1Plate,
+              vehicle2Plate : persons_data[i].vehicle2Plate
+            });
+          }
+    },
     fillLendings(state,lendings_data){
       let aux=lendings_data.lendings;
         state.lendings=[];
@@ -45,18 +49,22 @@ export default new Vuex.Store({
               interestRate : aux[i].interestRate
           });
         }
+    },
+    setTok(state,tok){
+      state.token = tok;
     }
   },
   actions: {
-      completePersons(context){
-        let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
-        let people = axios.post(url);
-        context.commit('fillPersons',people_data);
+      completePersons(context,person_data){
+        context.commit('fillPersons',person_data);
       },
-    completeLendings(context){
-      //let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
-      let lendings = axios.post(url);
-      context.commit('fillLendings',lendings_data);
-    }
+      completeLendings(context){
+        //let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
+        let lendings = axios.post(url);
+        context.commit('fillLendings',lendings_data);
+      },
+      setToken(context,token){
+        context.commit('setTok',token);
+      }
   }
 })

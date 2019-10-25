@@ -4,7 +4,7 @@
             <div class="col-6">
                 <h2>Mantenimientos:</h2>
                 <div class="d-flex flex-column justify-content-center">
-                    <button class="btn">Clientes</button>
+                    <button @click="openWindow('client')" class="btn">Clientes</button>
                     <button class="btn">Préstamos</button>
                     <button class="btn">Campañas</button>
                     <button class="btn">Cuentas de Ahorro</button>
@@ -35,14 +35,34 @@
     import {mapState} from 'vuex'
     import {mapActions} from 'vuex'
     import router from '@/router.js'
+    import * as userDA from '@/dataAccess/userDA.js'
+    import Swal from 'sweetalert2'
 
 export default {
     methods:{
-        ...mapActions(['fillPersons','fillLendings]),
+        ...mapActions(['completePersons','completeLendings']),
+        openWindow(window){
+            switch(window){
+                case 'client':
+                    router.push('/crudClient');
+                break;
+            }
+        }
+    },
+    computed:{
+        ...mapState(['token']),
     },
     beforeMount(){
-        this.fillPersons();
-        this.fillLendings();
+        userDA.getAllClients(this.token).then((res) =>{
+        this.completePersons(res.data);
+        }).catch(error =>{
+          Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Error obteniendo los clientes'
+          })
+        })
+        //this.fillLendings();
     }
 }
 </script>

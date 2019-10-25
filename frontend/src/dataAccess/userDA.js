@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {mapState} from 'vuex';
 
 export function doLogin(email,password){
 
@@ -11,4 +12,14 @@ export function doLogin(email,password){
     }
     
     return axios.post(url,body);
+}
+
+export function getAllClients(token){
+    let url = process.env.VUE_APP_API_URL + 'api/clients/';
+    return axios.get(url, { 
+        auth: {
+            username: token,
+            password: ''
+          }
+    });
 }
