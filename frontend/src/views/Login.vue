@@ -5,14 +5,14 @@
 
     <div class="box">
       <img class="img-fluid tunke mt-5 mr-5" src="@/images/logo-tunke.png" alt="">
-      <form id="form_login" class=" pt-2 mt-3">
+      <form id="form_login" class=" pt-2 mt-3" @submit.prevent='login'>
         <h3 class="text-center mt-3">Accede al sistema</h3>
         <h6 class="text-center mt-3">Ingresa como administrador</h6>
         <input class="mt-4" v-model="user.username" type="text" placeholder="Correo electrónico">
         <br>
         <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña">
         <br>
-        <button @click='login' class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
+        <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
         <a href="#">¿Olvidaste tu contraseña?</a>
       </form>
@@ -25,25 +25,22 @@
 
 <script>
 
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
     import Swal from 'sweetalert2'
     import * as UserDA from '@/dataAccess/userDA.js'
     import axios from 'axios';
     
     export default {
       name: 'Login',
-      data(){
-        return {
-          lista : []
-        };
-      },
       computed:{
-        ...mapState(['user'])
+        ...mapState(['user','token'])
       },
       methods:{
+          ...mapActions(['setToken']),
           login(){
               UserDA.doLogin(this.user.username, this.user.password).then((res) =>{
               let response_login = res.data;
+              this.setToken(response_login.token);
               this.$router.push('/home');
             }).catch(error =>{
               Swal.fire({
