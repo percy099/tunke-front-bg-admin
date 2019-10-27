@@ -14,6 +14,7 @@
         <br>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
+        <div class="g-signin2 ml-5"  data-onsuccess="onSignIn" ></div>
         <a href="#">¿Olvidaste tu contraseña?</a>
       </form>
     </div>
@@ -49,6 +50,15 @@
                 text: 'Usuario y/o contraseña incorrectos'
               })
             })
+          },
+          onSignIn: function(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // 
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // 
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
           }
       }
     }
