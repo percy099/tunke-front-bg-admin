@@ -13,7 +13,8 @@ export default new Vuex.Store({
     },
     token : '',
     persons : [],
-    lendings: []
+    lendings: [],
+    login_entry: false
   },
   mutations: {
     fillPersons(state,persons){
@@ -52,6 +53,9 @@ export default new Vuex.Store({
     },
     setTok(state,tok){
       state.token = tok;
+    },
+    setLogEntry(state, login_entry){
+      state.login_entry = login_entry;
     }
   },
   actions: {
@@ -65,6 +69,9 @@ export default new Vuex.Store({
       },
       setToken(context,token){
         context.commit('setTok',token);
+      },
+      setLoginEntry(context, login_entry){
+        context.commit('setLogEntry', login_entry);
       }
   }
 })
