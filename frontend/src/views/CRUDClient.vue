@@ -12,10 +12,8 @@
 							</div>
                         </div>
                     </div>
-					<div class="col-sm-6">
-                        <a href="#deleteEmployeeModal" class="btn btn-info" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Eliminar</span></a>
-                        <a href="#editEmployeeModal" class="btn btn-info" data-toggle="modal"><i class="material-icons">&#xE3C9;</i> <span>Editar</span></a>                        
-						<a href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click=createClient()><i class="material-icons">&#xE147;</i> <span>Crear</span></a>					
+					<div class="col-sm-6">                     
+						<a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click=createClient()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Cliente</span></a>					
 					</div>
                 </div>
             </div>
@@ -33,12 +31,12 @@
                 <tbody>
                     <tr v-for="(person,index) in persons" v-bind:key="index">
 						<td>{{index + 1}}</td>
-                        <td>{{person.firstName}}</td>
+                        <td>{{person.firstName + ' ' + person.fatherLastname}}</td>
                         <td>{{person.email1}}</td>
 						<td>{{person.address}}</td>
                         <td>{{person.documentNumber}}</td>
                         <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
@@ -50,7 +48,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 
 export default {
     computed:{
@@ -60,9 +58,16 @@ export default {
 		$('#mydatatable').DataTable();
 	},
 	methods:{
+        ...mapActions(['setActionClient','setClientIndex']),
 		createClient(){
-			this.$router.push('/clientCreate');
-		}
+            this.$router.push('/clientCreate');
+            this.setActionClient(false);
+        },
+        editClient(index){
+            this.$router.push('/clientCreate');
+            this.setActionClient(true);
+            this.setClientIndex(index);
+        }
 	}
 }
 </script>

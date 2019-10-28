@@ -1,0 +1,90 @@
+<template>
+    <div class="container">
+        <div v-if="!editClient">
+            <h2>Creación de Cliente</h2>
+            <input v-model="dniPerson" placeholder="DNI" id="dniCreate" type="text" class="form-control d-inline">
+            <button @click="getPersonCreate()" class="btn ml-3">Buscar Persona</button>
+        </div>
+        <div v-else>
+            <h2>Edición de Cliente</h2>
+            <h5>DNI :</h5>
+            <input v-model="clientCreate.documentNumber" id="dniCreate" type="text" class="form-control d-inline" disabled>
+            <button id="btnEditAccounts" @click="editClientAccounts()" class="btn ml-3">Editar Cuentas</button>
+        </div>
+        <!-- Tab links -->
+        <div class="tab mt-4">
+            <button id="btnPersonal" class="tablinks inactive" @click="openData('Personal')">Datos Personales</button>
+            <button id="btnContact" class="tablinks inactive" @click="openData('Contact')">Datos de Contacto</button>
+            <button id="btnValidation" class="tablinks inactive" @click="openData('Validation')">Datos de Validación</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="Personal" class="tabcontent">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <h6>Primer Nombre</h6>
+                    <input v-model="clientCreate.firstName" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Apellido Paterno</h6>
+                    <input v-model="clientCreate.fatherLastname" type="text" class="form-control" disabled>
+                    <div class="mt-3">
+                        <span>Fecha de Nacimiento</span><input v-model="clientCreate.birthdate" class="ml-5" type="date" disabled>
+                    </div>
+                    <h6 class="mt-3">Dirección</h6>
+                    <input v-model="clientCreate.address" id="inputDir" type="text" class="form-control mb-3" disabled>
+                </div>
+                <div class="col-6">
+                    <h6>Segundo Nombre</h6>
+                    <input v-model="clientCreate.middleName" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Apellido Materno</h6>
+                    <input v-model="clientCreate.motherLastname" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Nacionalidad</h6>
+                    <div>
+                        <input v-model="clientCreate.nationality" type="text" class="form-control d-inline" disabled>
+                        <img class="ml-3" v-bind:src="clientCreate.flag" height="30" width="auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="Contact" class="tabcontent">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <h6>E-mail primario</h6>
+                    <input v-model="clientCreate.email1" type="text" class="form-control">
+                    <h6 class="mt-3">E-mail secundario</h6>
+                    <input v-model="clientCreate.email2" type="text" class="form-control">
+                    <h6 class="mt-3">Teléfono primario</h6>
+                    <input v-model="clientCreate.cellphone1" type="text" class="form-control">
+                    <h6 class="mt-3">Teléfono secundario</h6>
+                    <input v-model="clientCreate.cellphone2" type="text" class="form-control mb-5">
+                </div>
+            </div>
+        </div>
+
+        <div id="Validation" class="tabcontent">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <h6>Placa Vehículo 1</h6>
+                    <input v-model="clientCreate.vehicle1Plate" type="text" class="form-control" disabled>
+                    <h6 class="mt-5">Placa Vehículo 2</h6>
+                    <input v-model="clientCreate.vehicle2Plate" type="text" class="form-control mb-5" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <button class="btn mr-3">Cancelar</button>
+            <button v-if="!editClient" @click="saveClient()" class="btn ml-5">Guardar</button>
+            <button v-if="editClient" @click="editClientAct()" class="btn ml-5">Editar</button>
+        </div>
+    </div>
+</template>
+
+<style src="@/styles/ClientCreate.css" scoped>
+
+</style>
+
+<script>
+export default {
+    
+}
+</script>

@@ -1,9 +1,76 @@
-.inputForm1{
+h6{
     font-size: 1rem;
-    border-radius: 5%;
-    border : 1px solid #E0E0E0;
+    font-weight: 500;
 }
 
-.form-control{
-    width : 5%;
+.btn{
+    background-color: #090d4d;
+    font-weight: 600;  
+    width: 20vh;
+    color : white;
+}
+
+input[type="text"]{
+    width : 50%;
+}
+
+select{
+    width: 60%;
+}
+
+span{
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+#inputDir{
+    width : 80%;
+}
+
+.container{
+    font-family: 'Montserrat';
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+}
+  
+  /* Style the buttons that are used to open the tab content */
+  .tab button {
+    border : 1px solid #8492A6;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    background-color: inherit;
+    float: left;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+  }
+  
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #ddd;
+  }
+  
+  /* Create an active/current tablink class */
+  .tab button.active {
+    background-color: rgba(19, 206, 102,0.2);
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+  }
+
+#dniCreate{
+  width: 20%;
+}
+
+#btnEditAccounts{
+  width : 20%;
 }

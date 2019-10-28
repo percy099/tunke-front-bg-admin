@@ -36,6 +36,7 @@
     import {mapActions} from 'vuex'
     import router from '@/router.js'
     import * as userDA from '@/dataAccess/userDA.js'
+    import * as utilsDA from '@/dataAccess/utilsDA.js'
     import Swal from 'sweetalert2'
 
 export default {
@@ -55,7 +56,7 @@ export default {
     beforeMount(){
         this.setLoginEntry(true)
         userDA.getAllClients(this.token).then((res) =>{
-        this.completePersons(res.data);
+            this.completePersons(res.data);
         }).catch(error =>{
           Swal.fire({
             title: 'Error',
