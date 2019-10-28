@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <div v-if="!editClient">
+        <div class="mt-5" v-if="!editClient">
             <h2>Creación de Cliente</h2>
             <input v-model="dniPerson" placeholder="DNI" id="dniCreate" type="text" class="form-control d-inline">
             <button @click="getPersonCreate()" class="btn ml-3">Buscar Persona</button>
         </div>
-        <div v-else>
+        <div v-else class="mt-5">
             <h2>Edición de Cliente</h2>
             <h5>DNI :</h5>
             <input v-model="clientCreate.documentNumber" id="dniCreate" type="text" class="form-control d-inline" disabled>
@@ -21,25 +21,25 @@
         <!-- Tab content -->
         <div id="Personal" class="tabcontent">
             <div class="row mt-4">
-                <div class="col-6">
+                <div class="col-6 groupLeftPersonal">
                     <h6>Primer Nombre</h6>
                     <input v-model="clientCreate.firstName" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Apellido Paterno</h6>
                     <input v-model="clientCreate.fatherLastname" type="text" class="form-control" disabled>
                     <div class="mt-3">
-                        <span>Fecha de Nacimiento</span><input v-model="clientCreate.birthdate" class="ml-5" type="date" disabled>
+                        <span>Fecha de Nacimiento</span><input v-model="clientCreate.birthdate" class="ml-3" type="date" disabled>
                     </div>
                     <h6 class="mt-3">Dirección</h6>
-                    <input v-model="clientCreate.address" id="inputDir" type="text" class="form-control mb-3" disabled>
+                    <input v-model="clientCreate.address" type="text" class="form-control mb-3" disabled>
                 </div>
-                <div class="col-6">
+                <div class="col-6 groupRightPersonal">
                     <h6>Segundo Nombre</h6>
-                    <input v-model="clientCreate.middleName" type="text" class="form-control" disabled>
+                    <input v-model="clientCreate.middleName" id="right1" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Apellido Materno</h6>
-                    <input v-model="clientCreate.motherLastname" type="text" class="form-control" disabled>
+                    <input v-model="clientCreate.motherLastname" id="right2" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Nacionalidad</h6>
                     <div>
-                        <input v-model="clientCreate.nationality" type="text" class="form-control d-inline" disabled>
+                        <input v-model="clientCreate.nationality" id="right3" type="text" class="form-control d-inline" disabled>
                         <img class="ml-3" v-bind:src="clientCreate.flag" height="30" width="auto">
                     </div>
                 </div>
@@ -48,7 +48,7 @@
 
         <div id="Contact" class="tabcontent">
             <div class="row mt-4">
-                <div class="col-6">
+                <div class="col-6 groupLeftPersonal">
                     <h6>E-mail primario</h6>
                     <input v-model="clientCreate.email1" type="text" class="form-control">
                     <h6 class="mt-3">E-mail secundario</h6>
@@ -63,7 +63,7 @@
 
         <div id="Validation" class="tabcontent">
             <div class="row mt-4">
-                <div class="col-6">
+                <div class="col-6 groupLeftPersonal">
                     <h6>Placa Vehículo 1</h6>
                     <input v-model="clientCreate.vehicle1Plate" type="text" class="form-control" disabled>
                     <h6 class="mt-5">Placa Vehículo 2</h6>

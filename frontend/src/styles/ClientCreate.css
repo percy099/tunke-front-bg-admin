@@ -11,7 +11,11 @@ h6{
 }
 
 input[type="text"]{
-    width : 50%;
+    width : 90%;
+}
+
+input[type="date"]{
+    width : 40%;
 }
 
 select{
@@ -21,10 +25,6 @@ select{
 span{
     font-size: 1rem;
     font-weight: 500;
-}
-
-#inputDir{
-    width : 80%;
 }
 
 .container{
@@ -73,4 +73,24 @@ span{
 
 #btnEditAccounts{
   width : 20%;
+}
+
+.groupLeftPersonal{
+  padding-left: 15%;
+}
+
+.groupRightPersonal{
+  padding-left: 5%;
+}
+
+#right1{
+  width : 70%;
+}
+
+#right2{
+  width: 70%;
+}
+
+#right3{
+  width: 70%;
 }

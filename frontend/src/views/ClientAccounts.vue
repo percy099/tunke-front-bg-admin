@@ -2,16 +2,11 @@
     <div class="body">
         <div class="container">
             <div class="table-wrapper">
-                <h1>Cuentas de {{clientCreate.firstName + ' ' + clientCreate.fatherLastname}}</h1>
+                <h1>Cuentas registradas</h1>
+                <h3>Cliente : {{clientCreate.firstName + ' ' + clientCreate.fatherLastname}}</h3>
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="search-box">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
-                                    <input type="text" class="form-control" placeholder="Ingrese un campo a buscar">
-                                </div>
-                            </div>
                         </div>
                         <div class="col-sm-6">                     
                             <a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click=createClient()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Cuenta</span></a>					
@@ -37,8 +32,7 @@
                             <td>{{account.cardNumber}}</td>
                             <td>{{account.currency}}</td>
                             <td>
-                                <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#deleteEmployeeModal" class="delete ml-3" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                     </tbody>

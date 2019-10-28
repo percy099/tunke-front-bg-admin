@@ -2,8 +2,8 @@
     <div class="container">
         <div class="row">
             <div class="col-6">
-                <h2>Mantenimientos:</h2>
-                <div class="d-flex flex-column justify-content-center">
+                <h2 class="mt-5">Mantenimientos:</h2>
+                <div class="d-flex flex-column justify-content-center mt-2">
                     <button @click="openWindow('client')" class="btn">Clientes</button>
                     <button class="btn">Préstamos</button>
                     <button class="btn">Campañas</button>
@@ -13,8 +13,8 @@
                 </div>
             </div>
             <div class="col-6">
-                <h2>Reportes:</h2>
-                <div class="d-flex flex-column justify-content-center mb-5">
+                <h2 class="mt-5">Reportes:</h2>
+                <div class="d-flex flex-column justify-content-center mb-3 mt-2">
                     <button class="btn">Reporte de Cuentas</button>
                     <button class="btn">Reporte de Préstamos</button>
                 </div>
