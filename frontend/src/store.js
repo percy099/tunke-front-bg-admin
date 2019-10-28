@@ -14,6 +14,7 @@ export default new Vuex.Store({
     token : '',
     persons : [],
     lendings: [],
+    login_entry: false,
     countries : [],
     clientCreate :{
       idPerson : -1,
@@ -77,6 +78,9 @@ export default new Vuex.Store({
     setTok(state,tok){
       state.token = tok;
     },
+    setLogEntry(state, login_entry){
+      state.login_entry = login_entry;
+    },
     fillPersonCreate(state,person_data){
       state.clientCreate.idPerson = person_data.idPerson;
       state.clientCreate.firstName = person_data.firstName;
@@ -124,6 +128,9 @@ export default new Vuex.Store({
       },
       setToken(context,token){
         context.commit('setTok',token);
+      },
+      setLoginEntry(context, login_entry){
+        context.commit('setLogEntry', login_entry);
       },
       setActionClient(context,edit){
         context.commit('setActCli',edit);
