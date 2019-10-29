@@ -4,14 +4,12 @@
     <div class="green_bar"></div>
 
     <div class="box">
-      <img class="img-fluid tunke mt-5 mr-5" src="@/images/logo-tunke.png" alt="">
-      <form id="form_login" class=" pt-2 mt-3" @submit.prevent='login'>
+      <img class="img-fluid tunke mt-5 ml-5" src="@/images/logo-tunke.png" alt="">
+      <form id="form_login" class=" pt-2 mt-3 text-center" @submit.prevent='login'>
         <h3 class="text-center mt-3">Accede al sistema</h3>
         <h6 class="text-center mt-3">Ingresa como administrador</h6>
-        <input class="mt-4" v-model="user.username" type="text" placeholder="Correo electrónico">
-        <br>
-        <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña">
-        <br>
+        <input class="mt-4" v-model="user.username" type="text" placeholder="Correo electrónico"><br>
+        <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña"><br>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
         <a href="#">¿Olvidaste tu contraseña?</a>
@@ -56,6 +54,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 input{
   border-radius: 6px;
   text-indent: 4%;
@@ -107,7 +106,7 @@ button:hover{
 }
 
 .tunke{
-  max-width: 35%;
+  width: 40%;
   height: auto;
 }
 

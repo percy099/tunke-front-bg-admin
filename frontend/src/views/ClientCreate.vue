@@ -72,8 +72,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <button class="btn mr-3">Cancelar</button>
-            <button v-if="!editClient" @click="saveClient()" class="btn ml-5">Guardar</button>
+            <button class="btn mr-3" @click=$router.go(-1)>Cancelar</button>
+            <button :disabled='isDisabled' v-if="!editClient" @click="saveClient()" class="btn ml-5">Guardar</button>
             <button v-if="editClient" @click="editClientAct()" class="btn ml-5">Editar</button>
         </div>
     </div>
@@ -95,10 +95,14 @@ export default {
         ClientAccounts
     },
     data(){
-        return {dniPerson : ''};
+        return {dniPerson : '',
+                enableButton : false};
     },
     computed :{
-        ...mapState (['clientCreate','token','editClient','selectedClientIndex'])
+        ...mapState (['clientCreate','token','editClient','selectedClientIndex']),
+        isDisabled: function(){
+    	    return !this.enableButton;
+        }
     },
     methods:{
         ...mapActions (['completePersonCreate','cleanClientCreate']),
@@ -138,13 +142,22 @@ export default {
             userDA.getPersonData(this.dniPerson).then((res) =>{
                 switch(res.data.type){
                     case 1:
-                        alert('Esta persona ya es cliente');
+                        Swal.fire({
+                            title : 'Error',
+                            type : 'error',
+                            text : 'Esta persona ya se encuentra registrada como Cliente'
+                        })
                     break;
                     case 2:
                         this.completePersonCreate(res.data);
+                        this.enableButton = true;
                     break;
                     case 3:
-                        alert('Esta persona se encuentra en la BlackList');
+                        Swal.fire({
+                            title : 'Error',
+                            type : 'error',
+                            text : 'Esta persona se encuentra en la BlackList'
+                        })
                     break;
                 }
             }).catch(error =>{
@@ -158,7 +171,11 @@ export default {
         saveClient(){
             //TODO
             adminDA.createClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
-                alert('Cliente creado satisfactoriamente');
+                Swal.fire({
+                    type: 'success',
+                    title: 'Enhorabuena',
+                    text: 'Cliente creado satisfactoriamente'
+                })
             }).catch(error =>{
                 Swal.error({
                     title : 'Error',
@@ -168,8 +185,12 @@ export default {
             })
         },
         editClientAct(){
-            adminDA.editClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
-                alert('Cliente editado satisfactoriamente');
+            adminDA.editClient(this.clientCreate.idClient,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
+                Swal.fire({
+                    type: 'success',
+                    title: 'Enhorabuena',
+                    text: 'Cliente editado satisfactoriamente'
+                })
             }).catch(error =>{
                 Swal.error({
                     title : 'Error',

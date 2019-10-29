@@ -19,11 +19,10 @@ export function createClient(idPerson,email1,email2,cellphone1,cellphone2,token)
         });
 }
 
-export function editClient(idPerson,email1,email2,cellphone1,cellphone2,token){
-    let url = process.env.VUE_APP_API_URL + 'api/clients/'
+export function editClient(idClient,email1,email2,cellphone1,cellphone2,token){
+    let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient
     
     var body ={
-        "idPerson" : idPerson,
         "email1" : email1,
         "email2" : email2,
         "cellphone1" : cellphone1,
@@ -50,4 +49,15 @@ export function getAccountsByClient(idClient,token){
             password: ''
         }
     });
+}
+
+export function doCreateAccount(idPer,cur){
+    let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
+    console.log(url);
+    var body ={
+        "idPerson" : idPer,
+        "currency" : cur
+    }
+    
+    return axios.post(url,body);
 }

@@ -9,7 +9,7 @@
                         <div class="col-sm-6">
                         </div>
                         <div class="col-sm-6">                     
-                            <a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click=createClient()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Cuenta</span></a>					
+                            <a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click="createAccount()"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Cuenta</span></a>					
                         </div>
                     </div>
                 </div>
@@ -49,6 +49,38 @@ import Swal from 'sweetalert2'
 
 export default {
     name : 'ClientAccounts',
+    methods:{
+        createAccount(){
+            const { value: currency } = Swal.fire({
+                title: 'Seleccionar moneda',
+                input: 'radio',
+                inputOptions: {
+                    1 : 'Soles',
+                    2 : 'Dólares'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Crear Cuenta',
+                inputValidator: (value) => {
+                    if (!value) {
+                    return 'Debes seleccionar una moneda'
+                    }
+                    adminDA.doCreateAccount(this.clientCreate.idPerson,value).then((res)=>{
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Enhorabuena',
+                            text: 'Cuenta creada satisfactoriamente'
+                        })
+                    }).catch(error=>{
+                        Swal.fire({
+                            title: 'Error',
+                            type: 'error',
+                            text: 'Error al intentar crear la cuenta'
+                        })
+                    })
+                }
+            })
+        }
+    },
     computed:{
         ...mapState(['token','clientCreate'])
     },
