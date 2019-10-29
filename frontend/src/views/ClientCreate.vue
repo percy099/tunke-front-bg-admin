@@ -168,7 +168,7 @@ export default {
             })
         },
         editClientAct(){
-            adminDA.editClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
+            adminDA.editClient(this.clientCreate.idClient,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
                 alert('Cliente editado satisfactoriamente');
             }).catch(error =>{
                 Swal.error({
