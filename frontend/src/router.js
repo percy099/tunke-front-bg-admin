@@ -47,7 +47,7 @@ export default new Router({
       component : CRUDAccounts
     },
     {
-      path: '/clientAccounts/:idPerson',
+      path: '/clientAccounts/:idClient',
       name : 'clientAccounts',
       component : ClientAccounts
     },

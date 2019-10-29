@@ -38,13 +38,13 @@ export function editClient(idPerson,email1,email2,cellphone1,cellphone2,token){
         });
 }
 
-export function getAccountsByClient(idPerson,token){
-    let url = process.env.VUE_APP_API_URL + 'api/clients/'
+export function getAccountsByClient(idClient,token){
+    let url = process.env.VUE_APP_API_URL + 'api/accounts/getByClient/'
     var body ={
-        "idPerson" : idPerson,
+        "idClient" : idClient,
     }
 
-    return axios.put(url,body,{
+    return axios.post(url,body,{
         auth:{
             username: token,
             password: ''

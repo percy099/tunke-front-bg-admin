@@ -2,16 +2,11 @@
     <div class="body">
         <div class="container">
             <div class="table-wrapper">
-                <h1>Cuentas de {{clientCreate.firstName + ' ' + clientCreate.fatherLastname}}</h1>
+                <h1>Cuentas registradas</h1>
+                <h3>Cliente : {{clientCreate.firstName + ' ' + clientCreate.fatherLastname}}</h3>
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="search-box">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
-                                    <input type="text" class="form-control" placeholder="Ingrese un campo a buscar">
-                                </div>
-                            </div>
                         </div>
                         <div class="col-sm-6">                     
                             <a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click=createClient()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Cuenta</span></a>					
@@ -24,7 +19,7 @@
                             <th>#</th>
                             <th>Número de Cuenta</th>
                             <th>Balance</th>
-                            <th>Número de Tarjeta</th>
+                            <th>Día de Apertura</th>
                             <th>Moneda</th>
                             <th>Acción</th>
                         </tr>
@@ -34,11 +29,10 @@
                             <td>{{index + 1}}</td>
                             <td>{{account.accountNumber}}</td>
                             <td>{{account.balance}}</td>
-                            <td>{{account.cardNumber}}</td>
-                            <td>{{account.currency}}</td>
+                            <td>{{account.openingDate}}</td>
+                            <td>{{account.currencyName}}</td>
                             <td>
-                                <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#deleteEmployeeModal" class="delete ml-3" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -60,19 +54,29 @@ export default {
     },
     data(){
         return {
-            accounts : [
-                {accountNumber : '1234' , balance : 200 , cardNumber : '1410', currency : 'Soles'},
-                {accountNumber : '5234' , balance : 50 , cardNumber : '1491', currency : 'Soles'},
-                {accountNumber : '1134' , balance : 600 , cardNumber : '1215', currency : 'Dólares'},
-                {accountNumber : '1274' , balance : 900 , cardNumber : '1465', currency : 'Soles'}
-            ]
+            accounts : []
         }
     },
     beforeMount(){
-        /*adminDA.getAccountsByClient($route.params.idPerson,this.token).then((res)=>{
-            accountsData = res.data;
+        adminDA.getAccountsByClient(this.clientCreate.idClient,this.token).then((res)=>{
+            let accountsData = res.data;
+            accountsData = accountsData.accounts;
+            this.accounts = [];
             for(let i=0;i<accountsData.length;i++){
                 //TODO PUSH ACCOUNTS
+                this.accounts.push({
+                    idAccount: accountsData[i].idAccount,
+                    accountNumber : accountsData[i].accountNumber,
+                    balance: accountsData[i].balance,
+                    openingDate: accountsData[i].openingDate,
+                    closingDate: accountsData[i].closingDate,
+                    cardNumber: accountsData[i].cardNumber,
+                    idAccountType: accountsData[i].idAccountType,
+                    idProduct: accountsData[i].idProduct,
+                    idCurrency : accountsData[i].idCurrency,
+                    idClient: accountsData[i].idClient,
+                    currencyName : accountsData[i].currencyName
+                });
             }
         }).catch(error =>{
             Swal.fire({
@@ -80,7 +84,7 @@ export default {
             type: 'error',
             text: 'Error obteniendo las cuentas del cliente'
             })
-        })*/
+        })
     },
     mounted(){
         $('#mydatatable').DataTable();
