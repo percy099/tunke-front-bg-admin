@@ -5,6 +5,7 @@ import Home from './views/Home.vue'
 import CRUDClient from './views/CRUDClient.vue'
 import CRUDLending from './views/CRUDLending.vue'
 import ClientCreate from './views/ClientCreate.vue'
+import ClientAccounts from './views/ClientAccounts.vue'
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
       path : '/clientCreate',
       name : 'clientCreate',
       component : ClientCreate
+    },
+    {
+      path: '/clientAccounts/:idClient',
+      name : 'clientAccounts',
+      component : ClientAccounts
     }
   ]
 })

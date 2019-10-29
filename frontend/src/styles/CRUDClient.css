@@ -257,5 +257,18 @@ body {
     
     .btn{
       background-color: #090d4d;
-      
-    }
+	}
+	
+#createBtn{
+	width : 35%;
+}
+
+#createSpan{
+	font-weight: 600;
+	font-size : 1rem;
+	padding-left : 7%;
+}
+
+#createI{
+	padding-top : 1.7%;
+}
