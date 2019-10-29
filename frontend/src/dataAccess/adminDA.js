@@ -50,3 +50,14 @@ export function getAccountsByClient(idClient,token){
         }
     });
 }
+
+export function doCreateAccount(idPer,cur){
+    let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
+    console.log(url);
+    var body ={
+        "idPerson" : idPer,
+        "currency" : cur
+    }
+    
+    return axios.post(url,body);
+}

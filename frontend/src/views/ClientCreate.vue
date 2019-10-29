@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <button class="btn mr-3">Cancelar</button>
+            <button class="btn mr-3" @click=$router.go(-1)>Cancelar</button>
             <button v-if="!editClient" @click="saveClient()" class="btn ml-5">Guardar</button>
             <button v-if="editClient" @click="editClientAct()" class="btn ml-5">Editar</button>
         </div>
