@@ -39,7 +39,7 @@ export default new Router({
       component : ClientCreate
     },
     {
-      path: '/clientAccounts/:idPerson',
+      path: '/clientAccounts/:idClient',
       name : 'clientAccounts',
       component : ClientAccounts
     }

@@ -101,7 +101,7 @@ export default {
         ...mapState (['clientCreate','token','editClient','selectedClientIndex'])
     },
     methods:{
-        ...mapActions (['completePersonCreate']),
+        ...mapActions (['completePersonCreate','cleanClientCreate']),
          openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -179,12 +179,13 @@ export default {
             })
         },
         editClientAccounts(){
-            this.$router.push({ name: 'clientAccounts', params: { idPerson: this.clientCreate.idPerson }})
+            this.$router.push({ name: 'clientAccounts', params: { idClient: this.clientCreate.idClient }})
         }
     },
     mounted(){
         document.getElementById('Personal').style.display = "block";
         document.getElementById('btnPersonal').classList.add('active');
+        if(!this.editClient) this.cleanClientCreate();
     }
 }
 </script>

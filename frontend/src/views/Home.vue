@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completePersons','completeLendings','setLoginEntry']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -54,9 +54,9 @@ export default {
         ...mapState(['token']),
     },
     beforeMount(){
-        this.setLoginEntry(true)
+        this.setLoginEntry(true);
         userDA.getAllClients(this.token).then((res) =>{
-            this.completePersons(res.data);
+            this.completeClients(res.data);
         }).catch(error =>{
           Swal.fire({
             title: 'Error',

@@ -23,12 +23,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(person,index) in persons" v-bind:key="index">
+                    <tr v-for="(client,index) in clients" v-bind:key="index">
 						<td>{{index + 1}}</td>
-                        <td>{{person.firstName + ' ' + person.fatherLastname}}</td>
-                        <td>{{person.email1}}</td>
-						<td>{{person.address}}</td>
-                        <td>{{person.documentNumber}}</td>
+                        <td>{{client.firstName + ' ' + client.fatherLastname}}</td>
+                        <td>{{client.email1}}</td>
+						<td>{{client.address}}</td>
+                        <td>{{client.documentNumber}}</td>
                         <td>
                             <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -46,7 +46,7 @@ import {mapState, mapActions} from 'vuex'
 
 export default {
     computed:{
-        ...mapState(['persons'])
+        ...mapState(['clients'])
 	},
 	mounted(){
 		$('#mydatatable').DataTable();
