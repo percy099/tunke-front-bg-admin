@@ -10,16 +10,19 @@
             <h6 id="img-down">Banca de Negocios</h6>
         </div>
         <div class="item3">
-            <h3 id="name">Jaime Checa</h3>
-            <h5>20151047</h5>
+            <h3 id="name">{{user.name}}</h3>
+            <h5>{{user.code}}</h5>
             <button class="button" @click="logOff()">Salir</button>
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default {
+    computed :{
+        ...mapState(['user']),
+    },
     methods :{
         ...mapActions(['setLoginEntry']),
         logOff(){

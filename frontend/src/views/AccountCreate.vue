@@ -16,24 +16,24 @@
             <div class="row mt-4">
                 <div class="col-6">
                     <h6>Primer Nombre</h6>
-                    <input v-model="clientCreate.firstName" type="text" class="form-control" disabled>
+                    <input v-model="accountCreate.firstName" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Apellido Paterno</h6>
-                    <input v-model="clientCreate.fatherLastname" type="text" class="form-control" disabled>
+                    <input v-model="accountCreate.fatherLastname" type="text" class="form-control" disabled>
                     <div class="mt-3">
-                        <span>Fecha de Nacimiento</span><input v-model="clientCreate.birthdate" class="ml-5" type="date" disabled>
+                        <span>Fecha de Nacimiento</span><input v-model="accountCreate.birthdate" class="ml-5" type="date" disabled>
                     </div>
                     <h6 class="mt-3">Dirección</h6>
-                    <input v-model="clientCreate.address" id="inputDir" type="text" class="form-control mb-3" disabled>
+                    <input v-model="accountCreate.address" id="inputDir" type="text" class="form-control mb-3" disabled>
                 </div>
                 <div class="col-6">
                     <h6>Segundo Nombre</h6>
-                    <input v-model="clientCreate.middleName" type="text" class="form-control" disabled>
+                    <input v-model="accountCreate.middleName" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Apellido Materno</h6>
-                    <input v-model="clientCreate.motherLastname" type="text" class="form-control" disabled>
+                    <input v-model="accountCreate.motherLastname" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Nacionalidad</h6>
                     <div>
-                        <input v-model="clientCreate.nationality" type="text" class="form-control d-inline" disabled>
-                        <img class="ml-3" v-bind:src="clientCreate.flag" height="30" width="auto">
+                        <input v-model="accountCreate.nationality" type="text" class="form-control d-inline" disabled>
+                        <img class="ml-3" v-bind:src="accountCreate.flag" height="30" width="auto">
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
             <div class="row mt-4">
                 <div class="col-6">
                     <span class="mr-sm-6">
-                        <input type="radio" @click="dolar = true;" name="option1" value="option2"> Dólares
+                        <input type="radio" @click="dolar = true" name="option1" value="option2"> Dólares
                     </span>
                 </div>
                 <div class="col-6">
@@ -55,14 +55,17 @@
         </div>
 
         <div class="d-flex justify-content-center mt-3">
-            <button class="btn mr-3">Cancelar</button>
+            <button class="btn mr-3" @click=$router.go(-1)>Cancelar</button>
             <button @click="saveAccount()" class="btn ml-5">Guardar</button>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import * as userDA from '@/dataAccess/userDA.js'
+import * as adminDA from '@/dataAccess/adminDA.js'
+
 export default {
     data(){
         return {
@@ -71,9 +74,10 @@ export default {
         };
     },
     computed :{
-        ...mapState (['clientCreate'])
+        ...mapState (['accountCreate'])
     },
     methods:{
+        ...mapActions (['completeAccountCreate','cleanAccountCreate']),
         openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -106,10 +110,10 @@ export default {
             userDA.getPersonData(this.dniPerson).then((res) =>{
                 switch(res.data.type){
                     case 1:
-                        alert('Esta persona ya es cliente');
+                        this.completeAccountCreate(res.data);
                     break;
                     case 2:
-                        this.completePersonCreate(res.data);
+                        alert('Esta persona es no cliente');
                     break;
                     case 3:
                         alert('Esta persona se encuentra en la BlackList');
@@ -122,7 +126,29 @@ export default {
                     text: 'Error al obtener el cliente'
                 })
             })
-        }
+        },
+        saveAccount(){
+            let currency = 1;
+            if(this.dolar == true) currency = 2;
+            adminDA.doCreateAccount(this.accountCreate.idPerson, currency).then((res) =>{
+                alert('Cliente creado satisfactoriamente');
+            }).catch(error =>{
+                Swal.error({
+                    title : 'Error',
+                    type : 'error',
+                    text : 'Error al crear la cuenta del cliente'
+                })
+            })
+        },
+
+    },
+    mounted(){
+        document.getElementById('Personal').style.display = "block";
+        document.getElementById('btnPersonal').classList.add('active');
+        this.cleanAccountCreate();
+    },
+    beforeMount(){
+        this.cleanAccountCreate();
     }
 }
 </script>

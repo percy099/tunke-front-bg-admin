@@ -34,11 +34,16 @@
         ...mapState(['user','token'])
       },
       methods:{
-          ...mapActions(['setToken']),
+          ...mapActions(['setToken','setAdmin']),
           login(){
               UserDA.doLogin(this.user.username, this.user.password).then((res) =>{
               let response_login = res.data;
               this.setToken(response_login.token);
+              let admin ={
+                name : response_login.name,
+                code : response_login.code
+              }
+              this.setAdmin(admin);
               this.$router.push('/home');
             }).catch(error =>{
               Swal.fire({
