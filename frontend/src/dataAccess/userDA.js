@@ -23,6 +23,16 @@ export function getAllClients(token){
     });
 }
 
+export function getAllAccounts(token){
+    let url = process.env.VUE_APP_API_URL + 'api/accounts/';
+    return axios.get(url, {
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
 export function getPersonData(dni){
     let url = process.env.VUE_APP_API_URL + 'api/dniValidation/';
     
