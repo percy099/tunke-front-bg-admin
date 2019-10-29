@@ -9,7 +9,9 @@ export default new Vuex.Store({
   state: {
     user: {
       username: "gallardo.a@pucp.pe", 
-      password: "Casa12345."
+      password: "Casa12345.",
+      code : "",
+      name : ""
     },
     token : '',
     clients : [],
@@ -35,6 +37,19 @@ export default new Vuex.Store({
       cellphone2 : '',
       vehicle1Plate : '',
       vehicle2Plate : ''
+    },
+    accountCreate :{
+      idPerson : -1,
+      documentNumber : '',
+      firstName : '',
+      middleName : '',
+      fatherLastname : '',
+      motherLastname : '',
+      birthdate : '',
+      nationality : '',
+      flag : '',
+      address : '',
+      currencyType : -1
     },
     editClient : false,
     selectedClientIndex : -1
@@ -79,23 +94,39 @@ export default new Vuex.Store({
           });
         }
     },
-    fillAccounts(state, accounts){
-      let aux=accounts.account;
+    fillAccounts(state, account_data){
+      let aux=account_data.accounts;
       state.accounts=[];
       for(let i = 0; i < aux.length; i++){
         state.accounts.push({
+          firstName : aux[i].firstName,
+          middleName : aux[i].middleName,
+          fatherLastname : aux[i].fatherLastname,
+          motherLastname : aux[i].motherLastname,
+          active : aux[i].active,
           idAccount : aux[i].idAccount,
           accountNumber : aux[i].accountNumber,
           balance : aux[i].balance,
           openingDate : aux[i].openingDate,
           closingDate : aux[i].closingDate,
           cardNumber : aux[i].cardNumber,
+          idAccountType : aux[i].idAccountType,
+          idProduct : aux[i].idProduct,
+          idCurrency : aux[i].idCurrency,
           idClient : aux[i].idClient,
+          currencyName : aux[i].currencyName,
+          currencySymbol : aux[i].currencySymbol,
+          currencyCode : aux[i].currencyCode,
+          typeName : aux[i].typeName
         })
       }
     },
     setTok(state,tok){
       state.token = tok;
+    },
+    setAdm(state, admin){
+      state.user.name = admin.name;
+      state.user.code = admin.code;
     },
     setLogEntry(state, login_entry){
       state.login_entry = login_entry;
@@ -112,6 +143,17 @@ export default new Vuex.Store({
       state.clientCreate.address = person_data.address;
       state.clientCreate.vehicle1Plate = person_data.vehicle1Plate;
       state.clientCreate.vehicle2Plate = person_data.vehicle2Plate;
+    },
+    fillAccountCreate(state, person_data){
+      state.accountCreate.idPerson = person_data.idPerson;
+      state.accountCreate.firstName = person_data.firstName;
+      state.accountCreate.middleName = person_data.middleName;
+      state.accountCreate.fatherLastname = person_data.fatherLastname;
+      state.accountCreate.motherLastname = person_data.motherLastname;
+      state.accountCreate.birthdate = person_data.birthdate;
+      state.accountCreate.nationality = person_data.nationality;
+      state.accountCreate.flag = person_data.flag;
+      state.accountCreate.address = person_data.address;
     },
     setActCli(state,edit){
       state.editClient = edit;
@@ -154,6 +196,19 @@ export default new Vuex.Store({
       state.clientCreate.cellphone2 = '';
       state.clientCreate.vehicle1Plate = '';
       state.clientCreate.vehicle2Plate = '';
+    },
+    cleanAccCre(state){
+      state.accountCreate.idPerson = -1;
+      state.accountCreate.idClient = -1;
+      state.accountCreate.documentNumber = '';
+      state.accountCreate.firstName = '';
+      state.accountCreate.middleName = '';
+      state.accountCreate.fatherLastname = '';
+      state.accountCreate.motherLastname = '';
+      state.accountCreate.birthdate = '';
+      state.accountCreate.nationality = '';
+      state.accountCreate.flag = '';
+      state.accountCreate.address = '';
     }
   },
   actions: {
@@ -167,6 +222,9 @@ export default new Vuex.Store({
       },
       setToken(context,token){
         context.commit('setTok',token);
+      },
+      setAdmin(context, admin){
+        context.commit('setAdm', admin);
       },
       setLoginEntry(context, login_entry){
         context.commit('setLogEntry', login_entry);
@@ -183,8 +241,14 @@ export default new Vuex.Store({
       completeAccounts(context, account_data){
         context.commit('fillAccounts', account_data);
       },
+      completeAccountCreate(context, account_data){
+        context.commit('fillAccountCreate', account_data);
+      },
       cleanClientCreate(context){
         context.commit('cleanCliCre');
+      },
+      cleanAccountCreate(context){
+        context.commit('cleanAccCre');
       }
   }
 })

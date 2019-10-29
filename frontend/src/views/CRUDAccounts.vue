@@ -26,13 +26,12 @@
                 <tbody>
                     <tr v-for="(account,index) in accounts" v-bind:key="index"><!--TODO-->
 						<td>{{index + 1}}</td>
-                        <td>{{account.name}}</td>
-                        <td>{{account.number}}</td>
-						<td>{{account.balance}}</td>
+                        <td>{{account.firstName + ' ' + account.fatherLastname}}</td>
+                        <td>{{account.accountNumber}}</td>
+						<td>{{account.currencySymbol + ' ' + account.balance}}</td>
                         <td>{{account.openingDate}}</td>
-                        <td>{{account.type}}</td>
+                        <td>{{account.currencyName}}</td>
                         <td>
-                            <a href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
@@ -45,26 +44,16 @@
 
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 
 export default {
     computed:{
-        ...mapState([''])
-    },
-    data(){
-        return {
-            accounts : [
-                {name : 'Jaime Checa' , number : 'DFGC-1234-DF45-DF09' , balance : '1410', openingDate : '19/08/2018', type : 'Soles'},
-                {name : 'Leonella Huayta' , number : 'DFGC-1234-DF45-DF09' , balance : '2000', openingDate : '18/12/2017', type : 'Soles'},
-                {name : 'Percy Quezada' , number : 'DFGC-1234-DF45-DF09' , balance : '3000', openingDate : '19/03/2016', type : 'Dólares'},
-                {name : 'Solange Palomino' , number : 'DFGC-1234-DF45-DF09' , balance : '1223', openingDate : '19/01/1989', type : 'Soles'},
-                {name : 'Ronaldo Tunque' , number : 'DFGC-1234-DF45-DF09' , balance : '9237', openingDate : '19/10/2012', type : 'Dolares'},
-            ]
-
-        }
+        ...mapState(['accounts'])
     },
     methods :{
+        ...mapActions(['cleanAccountCreate']),
         createAccount(){
+            this.cleanAccountCreate();
             this.$router.push('/accountCreate');
         }
     },

@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -69,7 +69,17 @@ export default {
             type: 'error',
             text: 'Error obteniendo los clientes'
           })
-        })
+        });
+        userDA.getAllAccounts(this.token).then((res) =>{
+            this.completeAccounts(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las cuentas'
+            })
+        });
+
         /*
         userDA.getAllAccounts(this.token).then((res) =>{
             this.completeAccounts(res.data);
