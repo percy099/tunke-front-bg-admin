@@ -12,9 +12,22 @@
         <div class="item3">
             <h3 id="name">Jaime Checa</h3>
             <h5>20151047</h5>
-            <button class="button">Salir</button>
+            <button class="button" @click="logOff()">Salir</button>
         </div>
     </div>
 </template>
+
+<script>
+import { mapActions } from 'vuex';
+export default {
+    methods :{
+        ...mapActions(['setLoginEntry']),
+        logOff(){
+            this.setLoginEntry(false);
+            this.$router.push('/');
+        }
+    }
+}
+</script>
 
 <style src="@/styles/TopBar.css" scoped>

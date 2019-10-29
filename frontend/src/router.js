@@ -4,8 +4,11 @@ import Login from './views/Login.vue'
 import Home from './views/Home.vue'
 import CRUDClient from './views/CRUDClient.vue'
 import CRUDLending from './views/CRUDLending.vue'
+import CRUDAccounts from './views/CRUDAccounts.vue'
 import ClientCreate from './views/ClientCreate.vue'
 import ClientAccounts from './views/ClientAccounts.vue'
+import AccountCreate from './views/AccountCreate.vue'
+
 
 Vue.use(Router)
 
@@ -39,9 +42,19 @@ export default new Router({
       component : ClientCreate
     },
     {
+      path : '/crudAccounts',
+      name : 'crudAccounts',
+      component : CRUDAccounts
+    },
+    {
       path: '/clientAccounts/:idClient',
       name : 'clientAccounts',
       component : ClientAccounts
+    },
+    {
+      path : '/accountCreate',
+      name : 'accountCreate',
+      component : AccountCreate
     }
   ]
 })

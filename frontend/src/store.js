@@ -14,6 +14,7 @@ export default new Vuex.Store({
     token : '',
     clients : [],
     lendings: [],
+    accounts: [],
     login_entry: false,
     countries : [],
     clientCreate :{
@@ -77,6 +78,21 @@ export default new Vuex.Store({
               interestRate : aux[i].interestRate
           });
         }
+    },
+    fillAccounts(state, accounts){
+      let aux=accounts.account;
+      state.accounts=[];
+      for(let i = 0; i < aux.length; i++){
+        state.accounts.push({
+          idAccount : aux[i].idAccount,
+          accountNumber : aux[i].accountNumber,
+          balance : aux[i].balance,
+          openingDate : aux[i].openingDate,
+          closingDate : aux[i].closingDate,
+          cardNumber : aux[i].cardNumber,
+          idClient : aux[i].idClient,
+        })
+      }
     },
     setTok(state,tok){
       state.token = tok;
@@ -163,6 +179,9 @@ export default new Vuex.Store({
       },
       completePersonCreate(context,person_data){
         context.commit('fillPersonCreate',person_data);
+      },
+      completeAccounts(context, account_data){
+        context.commit('fillAccounts', account_data);
       },
       cleanClientCreate(context){
         context.commit('cleanCliCre');
