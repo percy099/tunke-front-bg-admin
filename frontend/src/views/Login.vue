@@ -12,8 +12,11 @@
         <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña"><br>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
-        <a href="#">¿Olvidaste tu contraseña?</a>
+        <div id="google-signin-btn"></div>
+        <a href="#">¿Olvidaste tu contraseña?</a>       
       </form>
+      
+     
     </div>
 
     <footer id="footer"></footer>
@@ -52,9 +55,36 @@
                 text: 'Usuario y/o contraseña incorrectos'
               })
             })
-          }
-      }
+          },
+          
+          onSignIn (user) {
+              //show data 
+              const profile = user.getBasicProfile()
+              console.log(profile)
+              console.log('ID: ' + profile.getId()); 
+              console.log('Full name: ' + profile.getName());
+              console.log('Image URL: ' + profile.getImageUrl());
+              console.log('Email: ' + profile.getEmail()); //send to back
+
+              UserDA.doLoginGoogle(profile.getEmail()).then((res) =>{
+                let response_login = res.data;
+                this.setToken(response_login.token);
+                this.$router.push('/home');
+              }).catch(error =>{
+                Swal.fire({
+                  title: 'Error',
+                  type: 'error',
+                  text: 'Cuenta Gmail no registrada'
+                })
+              })
+            }      
+    },
+    mounted() {
+          gapi.signin2.render('google-signin-btn', { // this is the button "id"
+            onsuccess: this.onSignIn 
+          })
     }
+} 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
