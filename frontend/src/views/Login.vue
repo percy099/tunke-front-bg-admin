@@ -14,7 +14,7 @@
         <br>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
-        <div class="g-signin2 ml-5"  data-onsuccess="onSignIn"></div>
+        <div id="google-signin-btn"></div>
         <a href="#">¿Olvidaste tu contraseña?</a>       
       </form>
       
@@ -53,29 +53,35 @@
               })
             })
           },
-          onSignIn: function(googleUser) {
-            //var googleUser = gapi.auth2.getAuthInstance().currentUser.get(); //Obtiene un json completo del usuario
-            var profile = googleUser.getBasicProfile();
-            console.log(profile);
-            console.log("ID: " + profile.getId());
-            console.log('Full name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); 
-            //Verificar el email en la base de datos
-            UserDA.doLoginGoogle(profile.getEmail()).then((res) =>{
-              let response_login = res.data;
-              this.setToken(response_login.token);
-              this.$router.push('/home');
-            }).catch(error =>{
-              Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Cuenta Gmail no registrada'
+          
+          onSignIn (user) {
+              //show data 
+              const profile = user.getBasicProfile()
+              console.log(profile)
+              console.log('ID: ' + profile.getId()); 
+              console.log('Full name: ' + profile.getName());
+              console.log('Image URL: ' + profile.getImageUrl());
+              console.log('Email: ' + profile.getEmail()); //send to back
+
+              UserDA.doLoginGoogle(profile.getEmail()).then((res) =>{
+                let response_login = res.data;
+                this.setToken(response_login.token);
+                this.$router.push('/home');
+              }).catch(error =>{
+                Swal.fire({
+                  title: 'Error',
+                  type: 'error',
+                  text: 'Cuenta Gmail no registrada'
+                })
               })
-            })
-          }
-      }
+            }      
+    },
+    mounted() {
+          gapi.signin2.render('google-signin-btn', { // this is the button "id"
+            onsuccess: this.onSignIn 
+          })
     }
+} 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
