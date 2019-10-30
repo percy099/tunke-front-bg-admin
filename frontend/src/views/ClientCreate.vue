@@ -50,13 +50,13 @@
             <div class="row mt-4">
                 <div class="col-6 groupLeftPersonal">
                     <h6>E-mail primario</h6>
-                    <input v-model="clientCreate.email1" type="text" class="form-control">
+                    <input v-model="clientCreate.email1" type="text" class="form-control" :disabled='isDisabled'>
                     <h6 class="mt-3">E-mail secundario</h6>
-                    <input v-model="clientCreate.email2" type="text" class="form-control">
+                    <input v-model="clientCreate.email2" type="text" class="form-control" :disabled='isDisabled'>
                     <h6 class="mt-3">Teléfono primario</h6>
-                    <input v-model="clientCreate.cellphone1" type="text" class="form-control">
+                    <input v-model="clientCreate.cellphone1" type="text" class="form-control" :disabled='isDisabled'>
                     <h6 class="mt-3">Teléfono secundario</h6>
-                    <input v-model="clientCreate.cellphone2" type="text" class="form-control mb-5">
+                    <input v-model="clientCreate.cellphone2" type="text" class="form-control mb-5" :disabled='isDisabled'>
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions (['completePersonCreate','cleanClientCreate']),
+        ...mapActions (['completePersonCreate','cleanClientCreate','fillAccountsByClient']),
          openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -147,6 +147,7 @@ export default {
                             type : 'error',
                             text : 'Esta persona ya se encuentra registrada como Cliente'
                         })
+                        this.enableButton = false;
                     break;
                     case 2:
                         this.completePersonCreate(res.data);
@@ -158,13 +159,16 @@ export default {
                             type : 'error',
                             text : 'Esta persona se encuentra en la BlackList'
                         })
+                        this.enableButton = false;
                     break;
                 }
             }).catch(error =>{
-                Swal.error({
+                this.enableButton = false;
+                this.cleanClientCreate();
+                Swal.fire({
                     title: 'Error',
                     type: 'error',
-                    text: 'Error al obtener el cliente'
+                    text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
                 })
             })
         },
@@ -177,7 +181,7 @@ export default {
                     text: 'Cliente creado satisfactoriamente'
                 })
             }).catch(error =>{
-                Swal.error({
+                Swal.fire({
                     title : 'Error',
                     type : 'error',
                     text : 'Error al crear al cliente'
@@ -192,7 +196,7 @@ export default {
                     text: 'Cliente editado satisfactoriamente'
                 })
             }).catch(error =>{
-                Swal.error({
+                Swal.fire({
                     title : 'Error',
                     type : 'error',
                     text : 'Error al editar al cliente'
@@ -200,13 +204,29 @@ export default {
             })
         },
         editClientAccounts(){
-            this.$router.push({ name: 'clientAccounts', params: { idClient: this.clientCreate.idClient }})
+            adminDA.getAccountsByClient(this.clientCreate.idClient,this.token).then((res)=>{
+                let accountsData = res.data;
+                accountsData = accountsData.accounts;
+                this.fillAccountsByClient(accountsData);
+                this.$router.push({ name: 'clientAccounts', params: { idClient: this.clientCreate.idClient }})
+            }).catch(error=>{
+                Swal.fire({
+                    title :'Error',
+                    type : 'error',
+                    text : 'Error obteniendo las cuentas del cliente'
+                })
+            });
         }
     },
     mounted(){
         document.getElementById('Personal').style.display = "block";
         document.getElementById('btnPersonal').classList.add('active');
-        if(!this.editClient) this.cleanClientCreate();
+        if(!this.editClient) {
+            this.cleanClientCreate();
+        }
+        else{
+            this.enableButton = true;
+        }
     }
 }
 </script>

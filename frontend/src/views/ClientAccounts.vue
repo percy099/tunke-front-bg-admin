@@ -25,14 +25,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(account,index) in accounts" v-bind:key="index">
+                        <tr v-for="(account,index) in this.accountsByClient" v-bind:key="index">
                             <td>{{index + 1}}</td>
                             <td>{{account.accountNumber}}</td>
                             <td>{{account.balance}}</td>
                             <td>{{account.openingDate}}</td>
                             <td>{{account.currencyName}}</td>
                             <td>
-                                <a href="#deleteEmployeeModal" class="delete ml-3" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a @click="deleteAccount(index)" href="#deleteEmployeeModal" class="delete ml-3" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -48,7 +48,7 @@ import { mapState } from 'vuex'
 import Swal from 'sweetalert2'
 
 export default {
-    name : 'ClientAccounts',
+    name : 'clientAccounts',
     methods:{
         createAccount(){
             const { value: currency } = Swal.fire({
@@ -79,44 +79,36 @@ export default {
                     })
                 }
             })
+        },
+        deleteAccount(index){
+            Swal.fire({
+                title: '¿Está seguro que desea eliminar la cuenta?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText : 'Cancelar'
+            }).then((result) =>{
+                if(result.value){
+                    adminDA.deleteAccount(this.accountsByClient[index].idAccount,this.token).then((res)=>{
+                        Swal.fire({
+                            text: 'Cuenta eliminada correctamente',
+                            type: 'success'
+                        })
+                    }).catch(error=>{
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un problema eliminando la cuenta',
+                            type : 'error'
+                        })
+                    });
+                }
+            })
         }
     },
     computed:{
-        ...mapState(['token','clientCreate'])
-    },
-    data(){
-        return {
-            accounts : []
-        }
-    },
-    beforeMount(){
-        adminDA.getAccountsByClient(this.clientCreate.idClient,this.token).then((res)=>{
-            let accountsData = res.data;
-            accountsData = accountsData.accounts;
-            this.accounts = [];
-            for(let i=0;i<accountsData.length;i++){
-                //TODO PUSH ACCOUNTS
-                this.accounts.push({
-                    idAccount: accountsData[i].idAccount,
-                    accountNumber : accountsData[i].accountNumber,
-                    balance: accountsData[i].balance,
-                    openingDate: accountsData[i].openingDate,
-                    closingDate: accountsData[i].closingDate,
-                    cardNumber: accountsData[i].cardNumber,
-                    idAccountType: accountsData[i].idAccountType,
-                    idProduct: accountsData[i].idProduct,
-                    idCurrency : accountsData[i].idCurrency,
-                    idClient: accountsData[i].idClient,
-                    currencyName : accountsData[i].currencyName
-                });
-            }
-        }).catch(error =>{
-            Swal.fire({
-            title: 'Error',
-            type: 'error',
-            text: 'Error obteniendo las cuentas del cliente'
-            })
-        })
+        ...mapState(['token','clientCreate','accountsByClient'])
     },
     mounted(){
         $('#mydatatable').DataTable();

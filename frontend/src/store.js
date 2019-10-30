@@ -17,6 +17,7 @@ export default new Vuex.Store({
     clients : [],
     lendings: [],
     accounts: [],
+    accountsByClient : [],
     login_entry: false,
     countries : [],
     clientCreate :{
@@ -209,6 +210,24 @@ export default new Vuex.Store({
       state.accountCreate.nationality = '';
       state.accountCreate.flag = '';
       state.accountCreate.address = '';
+    },
+    fillAccByCli(state,accountsData){
+      state.accountsByClient = [];
+      for(let i=0;i<accountsData.length;i++){
+        state.accountsByClient.push({
+            idAccount: accountsData[i].idAccount,
+            accountNumber : accountsData[i].accountNumber,
+            balance: accountsData[i].balance,
+            openingDate: accountsData[i].openingDate,
+            closingDate: accountsData[i].closingDate,
+            cardNumber: accountsData[i].cardNumber,
+            idAccountType: accountsData[i].idAccountType,
+            idProduct: accountsData[i].idProduct,
+            idCurrency : accountsData[i].idCurrency,
+            idClient: accountsData[i].idClient,
+            currencyName : accountsData[i].currencyName
+        });
+      }
     }
   },
   actions: {
@@ -249,6 +268,9 @@ export default new Vuex.Store({
       },
       cleanAccountCreate(context){
         context.commit('cleanAccCre');
+      },
+      fillAccountsByClient(context,account_data){
+        context.commit('fillAccByCli',account_data);
       }
   }
 })

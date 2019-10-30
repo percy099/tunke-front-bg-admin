@@ -56,7 +56,7 @@
 
         <div class="d-flex justify-content-center mt-3">
             <button class="btn mr-3" @click=$router.go(-1)>Cancelar</button>
-            <button @click="saveAccount()" class="btn ml-5">Guardar</button>
+            <button :disabled='isDisabled' @click="saveAccount()" class="btn ml-5">Guardar</button>
         </div>
     </div>
 </template>
@@ -65,16 +65,21 @@
 import { mapState, mapActions } from 'vuex';
 import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
+import Swal from 'sweetalert2'
 
 export default {
     data(){
         return {
             dniPerson : '',
-            dolar : true,
+            enableButton : false,
+            dolar : true
         };
     },
     computed :{
-        ...mapState (['accountCreate'])
+        ...mapState (['accountCreate']),
+        isDisabled: function(){
+    	    return !this.enableButton;
+        }
     },
     methods:{
         ...mapActions (['completeAccountCreate','cleanAccountCreate']),
@@ -111,19 +116,32 @@ export default {
                 switch(res.data.type){
                     case 1:
                         this.completeAccountCreate(res.data);
+                        this.enableButton = true;
                     break;
                     case 2:
-                        alert('Esta persona es no cliente');
+                        Swal.fire({
+                            title : 'Error',
+                            type : 'error',
+                            text : 'Esta persona no es Cliente'
+                        });
+                        this.enableButton = false;
                     break;
                     case 3:
-                        alert('Esta persona se encuentra en la BlackList');
+                        Swal.fire({
+                            title : 'Error',
+                            type : 'error',
+                            text : 'Esta persona se encuentra en la BlackList'
+                        })
+                        this.enableButton = false;
                     break;
                 }
             }).catch(error =>{
-                Swal.error({
+                this.enableButton = false;
+                this.cleanAccountCreate();
+                Swal.fire({
                     title: 'Error',
                     type: 'error',
-                    text: 'Error al obtener el cliente'
+                    text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
                 })
             })
         },

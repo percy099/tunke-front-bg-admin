@@ -60,3 +60,31 @@ export function doCreateAccount(idPer,cur){
     
     return axios.post(url,body);
 }
+
+export function deleteClient(idClient,token){
+    let url = process.env.VUE_APP_API_URL + 'urlfaltante';
+    var body = {
+        "idClient" : idClient
+    }
+
+    return axios.delete(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function deleteAccount(idAccount,token){
+    let url = process.env.VUE_APP_API_URL + 'urlfaltante';
+    var body = {
+        "idClient" : idAccount
+    }
+
+    return axios.delete(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
