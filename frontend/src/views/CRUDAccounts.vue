@@ -32,7 +32,7 @@
                         <td>{{account.openingDate}}</td>
                         <td>{{account.currencyName}}</td>
                         <td>
-                            <a href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a @click="deleteAccount(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -45,16 +45,44 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import * as adminDA from '@/dataAccess/adminDA.js'
+import Swal from 'sweetalert2'
 
 export default {
     computed:{
-        ...mapState(['accounts'])
+        ...mapState(['accounts','token'])
     },
     methods :{
         ...mapActions(['cleanAccountCreate']),
         createAccount(){
             this.cleanAccountCreate();
             this.$router.push('/accountCreate');
+        },
+        deleteAccount(index){
+            Swal.fire({
+                title: '¿Está seguro que desea eliminar la cuenta?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText : 'Cancelar'
+            }).then((result) =>{
+                if(result.value){
+                    adminDA.deleteAccount(this.accounts[index].idAccount,this.token).then((res)=>{
+                        Swal.fire({
+                            text: 'Cuenta eliminada correctamente',
+                            type: 'success'
+                        })
+                    }).catch(error=>{
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un problema eliminando la cuenta',
+                            type : 'error'
+                        })
+                    });
+                }
+            })
         }
     },
     mounted(){
