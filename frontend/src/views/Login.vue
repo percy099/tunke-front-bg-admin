@@ -14,9 +14,11 @@
         <br>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
-        <div class="g-signin2 ml-5"  data-onsuccess="onSignIn" ></div>
-        <a href="#">¿Olvidaste tu contraseña?</a>
+        <div class="g-signin2 ml-5"  data-onsuccess="onSignIn"></div>
+        <a href="#">¿Olvidaste tu contraseña?</a>       
       </form>
+      
+     
     </div>
 
     <footer id="footer"></footer>
@@ -52,13 +54,25 @@
             })
           },
           onSignIn: function(googleUser) {
+            //var googleUser = gapi.auth2.getAuthInstance().currentUser.get(); //Obtiene un json completo del usuario
             var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // 
-            console.log('Name: ' + profile.getName());
+            console.log(profile);
+            console.log("ID: " + profile.getId());
+            console.log('Full name: ' + profile.getName());
             console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // 
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log("ID Token: " + id_token);
+            console.log('Email: ' + profile.getEmail()); 
+            //Verificar el email en la base de datos
+            UserDA.doLoginGoogle(profile.getEmail()).then((res) =>{
+              let response_login = res.data;
+              this.setToken(response_login.token);
+              this.$router.push('/home');
+            }).catch(error =>{
+              Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Cuenta Gmail no registrada'
+              })
+            })
           }
       }
     }
