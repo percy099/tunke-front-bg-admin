@@ -1,18 +1,39 @@
 <template>
     <div class="container">
-        <div class="mt-5" v-if="!editClient">
-            <h2>Creación de Cliente</h2>
-            <input v-model="dniPerson" placeholder="DNI" id="dniCreate" type="text" class="form-control d-inline">
-            <button @click="getPersonCreate()" class="btn ml-3">Buscar Persona</button>
+        <h2 class = "mb-4 mt-4" v-if="!editClient">Creación de Cliente</h2>
+        <div class="custom-cont" v-if="!editClient">
+            <div>
+                <input placeholder="DNI" id="dniCreate" 
+                type="text" class="form-control d-inline" maxlength="8"
+                v-model.trim="$v.dniPerson.$model" :class="{
+                'is-invalid' : $v.dniPerson.$error, 'is-valid' : !$v.dniPerson.$invalid }">
+                <div class="valid-feedback">Dni Válido</div>
+                <div class="invalid-feedback">
+                    <span v-if="!$v.dniPerson.required">Dni Requerido. </span>
+                    <span v-if="!$v.dniPerson.minLength">Debe ser de al menos de {{
+                        $v.dniPerson.$params.minLength.min}} dígitos </span>
+                    <span v-if="!$v.dniPerson.maxLength">Debe ser de al menos de {{
+                        $v.dniPerso.$params.maxLength.max}} dígitos </span>
+                    <span v-if="!$v.dniPerson.numeric">Debe contener solo números. </span>
+                </div>
+            </div>
+            <div>
+                <button @click="getPersonCreate()" class="btn ml-3" id="btnEditAccounts">Buscar Persona</button>
+            </div>
         </div>
         <div v-else class="mt-5">
-            <h2>Edición de Cliente</h2>
-            <h5>DNI :</h5>
-            <input v-model="clientCreate.documentNumber" id="dniCreate" type="text" class="form-control d-inline" disabled>
-            <button id="btnEditAccounts" @click="editClientAccounts()" class="btn ml-3">Editar Cuentas</button>
+            <h2 class = "mb-4 mt-4">Edición de Cliente</h2>
+            <div class="custom-cont">
+                <div>
+                <input v-model="clientCreate.documentNumber" id="dniCreate" type="text" class="form-control d-inline" disabled>
+                </div>
+                <div>
+                <button id="btnEditAccounts" @click="editClientAccounts()" class="btn ml-3">Editar Cuentas</button>
+                </div>
+            </div>
         </div>
         <!-- Tab links -->
-        <div class="tab mt-4">
+        <div class="tab">
         <button id="btnPersonal" class="tablinks inactive" @click="openData('Personal')">Datos Personales</button>
         <button id="btnContact" class="tablinks inactive" @click="openData('Contact')">Datos de Contacto</button>
         <button id="btnValidation" class="tablinks inactive" @click="openData('Validation')">Datos de Validación</button>
@@ -89,6 +110,7 @@ import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
+import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 
 export default {
     components:{
@@ -97,6 +119,14 @@ export default {
     data(){
         return {dniPerson : '',
                 enableButton : false};
+    },
+    validations: {
+        dniPerson: {
+            required,
+            minLength: minLength(8),
+            maxLength: maxLength(8),
+            numeric
+        }
     },
     computed :{
         ...mapState (['clientCreate','token','editClient','selectedClientIndex']),
@@ -139,38 +169,42 @@ export default {
             document.getElementById(btn).classList.add('active');
         },
         getPersonCreate(){
-            userDA.getPersonData(this.dniPerson).then((res) =>{
-                switch(res.data.type){
-                    case 1:
-                        Swal.fire({
-                            title : 'Error',
-                            type : 'error',
-                            text : 'Esta persona ya se encuentra registrada como Cliente'
-                        })
-                        this.enableButton = false;
-                    break;
-                    case 2:
-                        this.completePersonCreate(res.data);
-                        this.enableButton = true;
-                    break;
-                    case 3:
-                        Swal.fire({
-                            title : 'Error',
-                            type : 'error',
-                            text : 'Esta persona se encuentra en la BlackList'
-                        })
-                        this.enableButton = false;
-                    break;
-                }
-            }).catch(error =>{
-                this.enableButton = false;
-                this.cleanClientCreate();
-                Swal.fire({
-                    title: 'Error',
-                    type: 'error',
-                    text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
+            this.$v.$touch();
+            if (this.$v.$invalid) {
+            } else {
+                userDA.getPersonData(this.dniPerson).then((res) =>{
+                    switch(res.data.type){
+                        case 1:
+                            Swal.fire({
+                                title : 'Error',
+                                type : 'error',
+                                text : 'Esta persona ya se encuentra registrada como Cliente'
+                            })
+                            this.enableButton = false;
+                        break;
+                        case 2:
+                            this.completePersonCreate(res.data);
+                            this.enableButton = true;
+                        break;
+                        case 3:
+                            Swal.fire({
+                                title : 'Error',
+                                type : 'error',
+                                text : 'Esta persona se encuentra en la BlackList'
+                            })
+                            this.enableButton = false;
+                        break;
+                    }
+                }).catch(error =>{
+                    this.enableButton = false;
+                    this.cleanClientCreate();
+                    Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
+                    })
                 })
-            })
+            }
         },
         saveClient(){
             adminDA.createClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{

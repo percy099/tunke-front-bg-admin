@@ -1,12 +1,30 @@
 <template>
     <div class="container">
         <div>
-            <h2>Creación de Cuenta</h2>
-            <input v-model="dniPerson" placeholder="DNI" id="dniCreate" type="text" class="form-control d-inline">
-            <button @click="getPersonCreate()" class="btn ml-3">Buscar Persona</button>
+            <h2 class="mb-4 mt-4">Creación de Cuenta</h2>
+            <div class="custom-cont">
+                <div>
+                    <input placeholder="DNI" id="dniCreate" 
+                    type="text" class="form-control d-inline" maxlength="8"
+                    v-model.trim="$v.dniPerson.$model" :class="{
+                    'is-invalid' : $v.dniPerson.$error, 'is-valid' : !$v.dniPerson.$invalid }">
+                    <div class="valid-feedback">Dni Válido</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.dniPerson.required">Dni Requerido. </span>
+                        <span v-if="!$v.dniPerson.minLength">Debe ser de al menos de {{
+                            $v.dniPerson.$params.minLength.min}} dígitos </span>
+                        <span v-if="!$v.dniPerson.maxLength">Debe ser de al menos de {{
+                            $v.dniPerso.$params.maxLength.max}} dígitos </span>
+                        <span v-if="!$v.dniPerson.numeric">Debe contener solo números. </span>
+                    </div>
+                </div>
+                <div>
+                    <button @click="getPersonCreate()" class="btn ml-3" id="btnEditAccounts">Buscar Persona</button>
+                </div>
+            </div>
         </div>
         <!-- Tab links -->
-        <div class="tab mt-4">
+        <div class="tab">
             <button id="btnPersonal" class="tablinks inactive" @click="openData('Personal')">Datos del Cliente</button>
             <button id="btnAccount" class="tablinks inactive" @click="openData('Account')">Datos de la Cuenta</button>
         </div>
@@ -66,6 +84,7 @@ import { mapState, mapActions } from 'vuex';
 import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
+import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 
 export default {
     data(){
@@ -74,6 +93,14 @@ export default {
             enableButton : false,
             dolar : true
         };
+    },
+    validations: {
+        dniPerson: {
+            required,
+            minLength: minLength(8),
+            maxLength: maxLength(8),
+            numeric
+        }
     },
     computed :{
         ...mapState (['accountCreate']),
@@ -112,38 +139,42 @@ export default {
             document.getElementById(btn).classList.add('active');
         },
         getPersonCreate(){
-            userDA.getPersonData(this.dniPerson).then((res) =>{
-                switch(res.data.type){
-                    case 1:
-                        this.completeAccountCreate(res.data);
-                        this.enableButton = true;
-                    break;
-                    case 2:
-                        Swal.fire({
-                            title : 'Error',
-                            type : 'error',
-                            text : 'Esta persona no es Cliente'
-                        });
-                        this.enableButton = false;
-                    break;
-                    case 3:
-                        Swal.fire({
-                            title : 'Error',
-                            type : 'error',
-                            text : 'Esta persona se encuentra en la BlackList'
-                        })
-                        this.enableButton = false;
-                    break;
-                }
-            }).catch(error =>{
-                this.enableButton = false;
-                this.cleanAccountCreate();
-                Swal.fire({
-                    title: 'Error',
-                    type: 'error',
-                    text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
+            this.$v.$touch();
+            if (this.$v.$invalid) {
+            } else {
+                userDA.getPersonData(this.dniPerson).then((res) =>{
+                    switch(res.data.type){
+                        case 1:
+                            this.completeAccountCreate(res.data);
+                            this.enableButton = true;
+                        break;
+                        case 2:
+                            Swal.fire({
+                                title : 'Error',
+                                type : 'error',
+                                text : 'Esta persona no es Cliente'
+                            });
+                            this.enableButton = false;
+                        break;
+                        case 3:
+                            Swal.fire({
+                                title : 'Error',
+                                type : 'error',
+                                text : 'Esta persona se encuentra en la BlackList'
+                            })
+                            this.enableButton = false;
+                        break;
+                    }
+                }).catch(error =>{
+                    this.enableButton = false;
+                    this.cleanAccountCreate();
+                    Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
+                    })
                 })
-            })
+            }
         },
         saveAccount(){
             let currency = 1;
