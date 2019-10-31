@@ -62,12 +62,9 @@ export function doCreateAccount(idPer,cur){
 }
 
 export function deleteClient(idClient,token){
-    let url = process.env.VUE_APP_API_URL + 'urlfaltante';
-    var body = {
-        "idClient" : idClient
-    }
+    let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient;
 
-    return axios.delete(url,body,{
+    return axios.delete(url,{
         auth:{
             username: token,
             password: ''
@@ -76,12 +73,9 @@ export function deleteClient(idClient,token){
 }
 
 export function deleteAccount(idAccount,token){
-    let url = process.env.VUE_APP_API_URL + 'urlfaltante';
-    var body = {
-        "idClient" : idAccount
-    }
+    let url = process.env.VUE_APP_API_URL + 'api/accounts/' + idAccount;
 
-    return axios.delete(url,body,{
+    return axios.delete(url,{
         auth:{
             username: token,
             password: ''

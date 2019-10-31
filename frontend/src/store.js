@@ -59,7 +59,8 @@ export default new Vuex.Store({
     fillClients(state,persons){
         state.clients=[];
         let persons_data = persons.clients;
-        for (let i=0; i< persons_data.length;i++){       
+        for (let i=0; i< persons_data.length;i++){
+            if(persons_data[i].active){       
             state.clients.push({
               idPerson : persons_data[i].idPerson,
               idClient : persons_data[i].idClient,
@@ -80,6 +81,7 @@ export default new Vuex.Store({
               vehicle2Plate : persons_data[i].vehicle2Plate,
               flag : persons_data[i].flag
             });
+          }
           }
     },
     fillLendings(state,lendings_data){
