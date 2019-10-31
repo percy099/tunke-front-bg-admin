@@ -207,7 +207,6 @@ export default {
             }
         },
         saveClient(){
-            //TODO
             adminDA.createClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
                 Swal.fire({
                     type: 'success',
