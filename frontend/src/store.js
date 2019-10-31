@@ -99,27 +99,29 @@ export default new Vuex.Store({
       let aux=account_data.accounts;
       state.accounts=[];
       for(let i = 0; i < aux.length; i++){
-        state.accounts.push({
-          firstName : aux[i].firstName,
-          middleName : aux[i].middleName,
-          fatherLastname : aux[i].fatherLastname,
-          motherLastname : aux[i].motherLastname,
-          active : aux[i].active,
-          idAccount : aux[i].idAccount,
-          accountNumber : aux[i].accountNumber,
-          balance : aux[i].balance,
-          openingDate : aux[i].openingDate,
-          closingDate : aux[i].closingDate,
-          cardNumber : aux[i].cardNumber,
-          idAccountType : aux[i].idAccountType,
-          idProduct : aux[i].idProduct,
-          idCurrency : aux[i].idCurrency,
-          idClient : aux[i].idClient,
-          currencyName : aux[i].currencyName,
-          currencySymbol : aux[i].currencySymbol,
-          currencyCode : aux[i].currencyCode,
-          typeName : aux[i].typeName
-        })
+        if(aux[i].active){
+          state.accounts.push({
+            firstName : aux[i].firstName,
+            middleName : aux[i].middleName,
+            fatherLastname : aux[i].fatherLastname,
+            motherLastname : aux[i].motherLastname,
+            active : aux[i].active,
+            idAccount : aux[i].idAccount,
+            accountNumber : aux[i].accountNumber,
+            balance : aux[i].balance,
+            openingDate : aux[i].openingDate,
+            closingDate : aux[i].closingDate,
+            cardNumber : aux[i].cardNumber,
+            idAccountType : aux[i].idAccountType,
+            idProduct : aux[i].idProduct,
+            idCurrency : aux[i].idCurrency,
+            idClient : aux[i].idClient,
+            currencyName : aux[i].currencyName,
+            currencySymbol : aux[i].currencySymbol,
+            currencyCode : aux[i].currencyCode,
+            typeName : aux[i].typeName
+          })
+        }
       }
     },
     setTok(state,tok){
