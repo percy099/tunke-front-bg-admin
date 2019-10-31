@@ -8,10 +8,27 @@
       <form id="form_login" class=" pt-2 mt-3 text-center" @submit.prevent='login'>
         <h3 class="text-center mt-3">Accede al sistema</h3>
         <h6 class="text-center mt-3">Ingresa como administrador</h6>
-        <input class="mt-4" v-model="user.username" type="text" placeholder="Correo electrónico"><br>
-        <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña"><br>
+        <div>
+          <input type="text" class="form-control mb-2 mt-2" placeholder="Usuario"
+          v-model.trim="$v.userr.$model" :class="{
+          'is-invalid' : $v.userr.$error, 'is-valid' : !$v.userr.$invalid }">
+          <div class="valid-feedback">Usuario Válido</div>
+          <div class="invalid-feedback">
+            <span v-if="!$v.userr.required">Usuario Requerido</span>
+            <span v-if="!$v.userr.email">Formato Inadecuado </span>
+          </div>
+        </div>
+        <div>
+          <input type="password" class="form-control" placeholder="Contraseña"
+          v-model.trim="$v.password.$model" :class="{
+          'is-invalid' : $v.password.$error, 'is-valid' : !$v.password.$invalid }">
+          <div class="invalid-feedback">
+            <span v-if="!$v.password.required">Contraseña Requerida</span>
+          </div>
+        </div>
+        <div>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
-        <br>
+        </div>
         <div id="google-signin-btn"></div>
         <a href="#">¿Olvidaste tu contraseña?</a>       
       </form>
@@ -30,15 +47,34 @@
     import Swal from 'sweetalert2'
     import * as UserDA from '@/dataAccess/userDA.js'
     import axios from 'axios';
+    import { required, email } from 'vuelidate/lib/validators';
     
     export default {
       name: 'Login',
+      data(){
+        return {
+          userr : '',
+          password : ''
+        }
+      },
+      validations: {
+        userr: {
+          required,
+          email
+        },
+        password: {
+          required
+        }
+      },
       computed:{
         ...mapState(['user','token'])
       },
       methods:{
           ...mapActions(['setToken','setAdmin']),
           login(){
+              this.$v.$touch();
+              if (this.$v.$invalid) {
+              } else {
               UserDA.doLogin(this.user.username, this.user.password).then((res) =>{
               let response_login = res.data;
               this.setToken(response_login.token);
@@ -55,6 +91,7 @@
                 text: 'Usuario y/o contraseña incorrectos'
               })
             })
+            }
           },
           
           onSignIn (user) {
@@ -83,6 +120,10 @@
           gapi.signin2.render('google-signin-btn', { // this is the button "id"
             onsuccess: this.onSignIn 
           })
+    },
+    updated(){
+      this.user.username = this.userr;
+      this.user.password = this.password;
     }
 } 
 </script>
@@ -98,6 +139,7 @@ input{
   font-weight: 350; 
   width: 30vh;
   height: 5vh;
+  margin: auto;
 }
 
 ul {
