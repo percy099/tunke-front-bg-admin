@@ -5,7 +5,7 @@
                 <h2 class="mt-5">Mantenimientos:</h2>
                 <div class="d-flex flex-column justify-content-center mt-2">
                     <button @click="openWindow('client')" class="btn">Clientes</button>
-                    <button class="btn">Préstamos</button>
+                    <button @click="openWindow('lending')" class="btn">Préstamos</button>
                     <button class="btn">Campañas</button>
                     <button @click="openWindow('account')" class="btn">Cuentas de Ahorro</button>
                     <button class="btn">Clientes especiales</button>
