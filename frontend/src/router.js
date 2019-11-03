@@ -5,6 +5,7 @@ import Home from './views/Home.vue'
 import CRUDClient from './views/CRUDClient.vue'
 import CRUDLending from './views/CRUDLending.vue'
 import CRUDAccounts from './views/CRUDAccounts.vue'
+import CRUDCampaign from './views/CRUDCampaign.vue'
 import ClientCreate from './views/ClientCreate.vue'
 import ClientAccounts from './views/ClientAccounts.vue'
 import AccountCreate from './views/AccountCreate.vue'
@@ -55,6 +56,11 @@ export default new Router({
       path : '/accountCreate',
       name : 'accountCreate',
       component : AccountCreate
+    },
+    {
+      path : '/crudCampaign',
+      name : 'crudCampaign',
+      component : CRUDCampaign
     }
   ]
 })

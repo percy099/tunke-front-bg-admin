@@ -9,7 +9,10 @@
         <h3 class="text-center mt-3">Accede al sistema</h3>
         <h6 class="text-center mt-3">Ingresa como administrador</h6>
         <input class="mt-4" v-model="user.username" type="text" placeholder="Correo electrónico"><br>
-        <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña"><br>
+        <div class="input-group-addon" id="show_hide_password" >
+          <input class="mt-2" v-model="user.password" type="password" placeholder="Contraseña">
+          <b href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></b>
+        </div>
         <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         <br>
         <div id="google-signin-btn"></div>
@@ -31,6 +34,20 @@
     import * as UserDA from '@/dataAccess/userDA.js'
     import axios from 'axios';
     
+    $(document).ready(function() {
+    $("#show_hide_password b").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+            }
+        });
+    });
     export default {
       name: 'Login',
       computed:{
@@ -121,6 +138,7 @@ a {
   margin-right: auto;
   padding-right: 10px;
 }
+
 
 button{
   background-color: #090d4d;
