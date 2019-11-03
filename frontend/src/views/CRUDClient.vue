@@ -48,7 +48,7 @@ import * as adminDA from '@/dataAccess/adminDA.js'
 
 export default {
     computed:{
-        ...mapState(['clients'])
+        ...mapState(['clients','token'])
 	},
 	mounted(){
 		$('#mydatatable').DataTable();

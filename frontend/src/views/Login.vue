@@ -106,6 +106,11 @@
               UserDA.doLoginGoogle(profile.getEmail()).then((res) =>{
                 let response_login = res.data;
                 this.setToken(response_login.token);
+                let admin ={
+                  name : response_login.name,
+                  code : response_login.code
+                }
+                this.setAdmin(admin);
                 this.$router.push('/home');
               }).catch(error =>{
                 Swal.fire({
