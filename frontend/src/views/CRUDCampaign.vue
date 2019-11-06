@@ -24,8 +24,8 @@
                         <th>Nombre</th>
                         <th>Fecha inicio</th>
 						<th>Fecha fin</th>
-                        <th>Plazo mínimo</th>
-                        <th>Plazo máximo</th>
+                        <th>Cuotas mínimas</th>
+                        <th>Cuotas máximas</th>
                         <th>Tasa de interés</th>
                         <th>Acciones</th>
                     </tr>
@@ -34,14 +34,13 @@
                     <tr v-for="(campaign,index) in campaigns" v-bind:key="index"><!--TODO-->
 						<td>{{index + 1}}</td>
                         <td>{{campaign.name}}</td>
-                        <td>{{campaign.month}}</td>
 						<td>{{campaign.startDate}}</td>
                         <td>{{campaign.endDate}}</td>
-                        <td>{{campaign.minTerm}}</td>
-                        <td>{{campaign.maxTerm}}</td>
+                        <td>{{campaign.minimumPeriod}}</td>
+                        <td>{{campaign.maximumPeriod}}</td>
                         <td>{{campaign.interestRate}}</td>
                         <td>
-                            <a href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
@@ -54,7 +53,7 @@
 
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 
 export default {
     computed:{
@@ -62,7 +61,14 @@ export default {
 	},
 	mounted(){
 		$('#mydatatable').DataTable();
-	}
+    },
+    methods :{
+        ...mapActions(['setCampaignIndex']),
+        editCampaign(index){
+            this.setCampaignIndex(index);
+            this.$router.push('/editCampaign')
+        }
+    }
 }
 </script>
 

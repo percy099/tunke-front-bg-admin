@@ -9,6 +9,7 @@ import CRUDCampaign from './views/CRUDCampaign.vue'
 import ClientCreate from './views/ClientCreate.vue'
 import ClientAccounts from './views/ClientAccounts.vue'
 import AccountCreate from './views/AccountCreate.vue'
+import EditCampaign from './views/EditCampaign.vue'
 
 
 Vue.use(Router)
@@ -61,6 +62,11 @@ export default new Router({
       path : '/crudCampaign',
       name : 'crudCampaign',
       component : CRUDCampaign
+    },
+    {
+      path : '/editCampaign',
+      name : 'editCampaign',
+      component : EditCampaign
     }
   ]
 })
