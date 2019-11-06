@@ -53,8 +53,8 @@
       name: 'Login',
       data(){
         return {
-          userr : '',
-          password : ''
+          userr : 'gallardo.a@pucp.pe',
+          password : 'Casa12345.'
         }
       },
       validations: {

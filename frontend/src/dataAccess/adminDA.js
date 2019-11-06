@@ -61,6 +61,19 @@ export function doCreateAccount(idPer,cur){
     return axios.post(url,body);
 }
 
+
+export function doEditSalesRecord(idSales, cur){
+    /*
+    let url = process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
+    var body = {
+        "idSalesRecord" : idSales,
+        "currency" : cur
+    }
+    
+    return axios.post(url, body);
+    */
+}
+
 export function deleteClient(idClient,token){
     let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient;
 
