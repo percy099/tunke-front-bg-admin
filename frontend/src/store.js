@@ -17,6 +17,7 @@ export default new Vuex.Store({
     clients : [],
     lendings: [],
     accounts: [],
+    salesRecords: [],
     accountsByClient : [],
     login_entry: false,
     countries : [],
@@ -52,8 +53,38 @@ export default new Vuex.Store({
       address : '',
       currencyType : -1
     },
+    salesRecordCreate :{
+      activeAccount : false,
+      balance : 0.0,
+      openingDate : '',
+      closingDate : '',
+      activeClient : '',
+      accountNumber : '',
+      nameRecordStatus : '',
+      firstName : '',
+      middleName : '',
+      fatherLastname : '',
+      motherLastname : '',
+      birthdate : '',
+      address : '',
+      nationality : '',
+      documentType : '',
+      documentNumber : -1,
+      idSalesRecord : -1,
+      origin : '',
+      requestDate : '',
+      activeSalesRecord : '',
+      productName : '',
+      completeName : '',
+      /*  info del préstamo */ 
+      activeLoan: false,
+      totalShares: -1,
+      interestRate: -1,
+      shareType: '',
+    },
     editClient : false,
-    selectedClientIndex : -1
+    selectedClientIndex : -1,
+    selectedSalesIndex : -1
   },
   mutations: {
     fillClients(state,persons){
@@ -252,6 +283,123 @@ export default new Vuex.Store({
             currencyName : accountsData[i].currencyName
         });
       }
+    },
+    fillSalesRecord(state, salesRecord_data){
+      let aux=salesRecord_data.salesRecords;
+      state.salesRecords=[];
+      for(let i = 0; i < aux.length; i++){
+        if(aux[i].activeSalesRecord){
+          if(aux[i].productName == "Cuenta"){
+            state.salesRecords.push({
+              activeAccount : aux[i].activeAccount,
+              balance : aux[i].balance,
+              openingDate : aux[i].openingDate,
+              closingDate : aux[i].closingDate,
+              activeClient : aux[i].activeClient,
+              accountNumber : aux[i].accountNumber,
+              nameRecordStatus : aux[i].nameRecordStatus,
+              firstName : aux[i].firstName,
+              middleName : aux[i].middleName,
+              fatherLastname : aux[i].fatherLastname,
+              motherLastname : aux[i].motherLastname,
+              birthdate : aux[i].birthdate,
+              address : aux[i].address,
+              nationality : aux[i].nationality,
+              documentType : aux[i].documentType,
+              documentNumber : aux[i].documentNumber,
+              idSalesRecord : aux[i].idSalesRecord,
+              origin : aux[i].origin,
+              requestDate : aux[i].requestDate,
+              activeSalesRecord : aux[i].activeSalesRecord,
+              productName : aux[i].productName,
+              activeLoan: false,
+              totalShares: -1,
+              interestRate: -1,
+              shareType: '',
+            });
+          } else {
+            state.salesRecords.push({
+              activeLoan: aux[i].activeLoan,
+              totalShares: aux[i].totalShares,
+              interestRate: aux[i].interestRate,
+              shareType: aux[i].shareType,
+              activeClient : aux[i].activeClient,
+              accountNumber : aux[i].accountNumber,
+              nameRecordStatus : aux[i].nameRecordStatus,
+              firstName : aux[i].firstName,
+              middleName : aux[i].middleName,
+              fatherLastname : aux[i].fatherLastname,
+              motherLastname : aux[i].motherLastname,
+              birthdate : aux[i].birthdate,
+              address : aux[i].address,
+              nationality : aux[i].nationality,
+              documentType : aux[i].documentType,
+              documentNumber : aux[i].documentNumber,
+              idSalesRecord : aux[i].idSalesRecord,
+              origin : aux[i].origin,
+              requestDate : aux[i].requestDate,
+              activeSalesRecord : aux[i].activeSalesRecord,
+              productName : aux[i].productName,
+              activeAccount : false,
+              balance : -1,
+              openingDate : '',
+              closingDate : '',
+            });
+          }
+        }
+      }
+    },
+    fillSalesInd(state, index){
+      state.selectedSalesIndex = index;
+      if(state.salesRecords[index].productName == "Cuenta"){
+        if(state.salesRecords[index].activeAccount){
+          state.salesRecordCreate.activeAccount = "Activo"
+        } else {
+          state.salesRecordCreate.activeAccount = "Inactivo"
+        }
+        state.salesRecordCreate.balance = state.salesRecords[index].balance;
+        state.salesRecordCreate.openingDate = state.salesRecords[index].openingDate;
+        if(state.salesRecords[index].closingDate == "UNDEFINED"){
+          state.salesRecordCreate.closingDate = "-";
+        } else {
+          state.salesRecordCreate.closingDate = state.salesRecords[index].closingDate;
+        }
+      } else {
+        if(state.salesRecords[index].activeLoan == 1){
+          state.salesRecordCreate.activeLoan = "Activo"
+        } else {
+          state.salesRecordCreate.activeLoan = "Inactivo"
+        }
+        state.salesRecordCreate.totalShares = state.salesRecords[index].totalShares;
+        state.salesRecordCreate.interestRate = state.salesRecords[index].interestRate;
+        state.salesRecordCreate.shareType = state.salesRecords[index].shareType;
+      }
+      if(state.salesRecords[index].activeClient){
+        state.salesRecordCreate.activeClient = "Activo"
+      } else {
+        state.salesRecordCreate.activeClient = "Desafiliado"
+      }
+      state.salesRecordCreate.accountNumber = state.salesRecords[index].accountNumber;
+      state.salesRecordCreate.nameRecordStatus = state.salesRecords[index].nameRecordStatus;
+      state.salesRecordCreate.firstName = state.salesRecords[index].firstName;
+      state.salesRecordCreate.middleName = state.salesRecords[index].middleName;
+      state.salesRecordCreate.fatherLastname = state.salesRecords[index].fatherLastname;
+      state.salesRecordCreate.motherLastname = state.salesRecords[index].motherLastname;
+      state.salesRecordCreate.birthdate = state.salesRecords[index].birthdate;
+      state.salesRecordCreate.address = state.salesRecords[index].address;
+      state.salesRecordCreate.nationality = state.salesRecords[index].nationality;
+      state.salesRecordCreate.documentType = state.salesRecords[index].documentType;
+      state.salesRecordCreate.documentNumber = state.salesRecords[index].documentNumber;
+      state.salesRecordCreate.idSalesRecord = state.salesRecords[index].idSalesRecord;
+      state.salesRecordCreate.origin = state.salesRecords[index].origin;
+      state.salesRecordCreate.requestDate = state.salesRecords[index].requestDate;
+      if(state.salesRecords[index].activeSalesRecord){
+        state.salesRecordCreate.activeSalesRecord = "Activo"
+      } else {
+        state.salesRecordCreate.activeSalesRecord = "Eliminado"
+      }
+      state.salesRecordCreate.productName = state.salesRecords[index].productName;
+      state.salesRecordCreate.completeName = state.salesRecords[index].firstName + " " + state.salesRecords[index].fatherLastname;
     }
   },
   actions: {
@@ -298,6 +446,12 @@ export default new Vuex.Store({
       },
       fillAccountsByClient(context,account_data){
         context.commit('fillAccByCli',account_data);
+      },
+      completeSalesRecords(context, salesRecord_data){
+        context.commit('fillSalesRecord', salesRecord_data);
+      },
+      setSalesRecordIndex(context, index){
+        context.commit('fillSalesInd', index);
       }
   }
 })

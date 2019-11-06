@@ -9,6 +9,9 @@ import CRUDCampaign from './views/CRUDCampaign.vue'
 import ClientCreate from './views/ClientCreate.vue'
 import ClientAccounts from './views/ClientAccounts.vue'
 import AccountCreate from './views/AccountCreate.vue'
+import CRUDSalesRecords from './views/CRUDSalesRecords.vue'
+import CRUDBlackList from './views/CRUDBlackList.vue'
+import ViewSaleRecord from './views/ViewSaleRecord.vue'
 
 
 Vue.use(Router)
@@ -56,6 +59,21 @@ export default new Router({
       path : '/accountCreate',
       name : 'accountCreate',
       component : AccountCreate
+    },
+    {
+      path : '/crudSalesRecords',
+      name : 'crudSalesRecords',
+      component : CRUDSalesRecords
+    },
+    {
+      path : '/crudBlackList',
+      name : 'crudBlackList',
+      component : CRUDBlackList
+    },
+    {
+      path : '/viewSaleRecord',
+      name : 'viewSaleRecord',
+      component : ViewSaleRecord
     },
     {
       path : '/crudCampaign',
