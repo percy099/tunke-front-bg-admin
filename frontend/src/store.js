@@ -117,16 +117,36 @@ export default new Vuex.Store({
     },
     fillLendings(state,lendings_data){
       let aux=lendings_data.lendings;
-        state.lendings=[];
-        for (let i=0; i< aux.length;i++){       
+      state.lendings=[];
+        for (let i=0; i< aux.length;i++){
+          if(aux[i].active){       
             state.lendings.push({
               idLending : aux[i].idLending,
               feesNumber : aux[i].feesNumber,
               amount : aux[i].amount,
               feeType : aux[i].feeType,
               interestRate : aux[i].interestRate
+            });
+          }
+        }
+    },
+    fillCampaigns(state,campaigns_data){
+      let aux=campaigns_data.campaigns;
+      state.campaigns=[];
+      for(let i=0; i< aux.length; i++){
+        if(aux[i].active){
+          state.campaigns.push({
+            idCampaign : aux[i].idCampaign,
+            name : aux[i].name,
+            month : aux[i].month,
+            startDate : aux[i].startDate,
+            endDate : aux[i].endDate,
+            minTerm : aux[i].minTerm,
+            maxTerm : aux[i].maxTerm,
+            interestRate : aux[i].interestRate
           });
         }
+      }
     },
     fillAccounts(state, account_data){
       let aux=account_data.accounts;
@@ -390,6 +410,9 @@ export default new Vuex.Store({
         //let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
         let lendings = axios.post(url);
         context.commit('fillLendings',lendings_data);
+      },
+      completeCampaigns(context){
+        context.commit('fillCampaigns',campaigns_data);
       },
       setToken(context,token){
         context.commit('setTok',token);
