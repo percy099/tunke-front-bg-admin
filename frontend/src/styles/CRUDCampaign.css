@@ -265,10 +265,18 @@ width : 35%;
 
 #createSpan{
 font-weight: 600;
-font-size : 1rem;
+font-size : 0.9rem;
 padding-left : 7%;
 }
 
 #createI{
 padding-top : 1.7%;
+}
+
+.space{
+    min-width : 5%;
+}
+
+.space_2{
+    width: 15%;
 }

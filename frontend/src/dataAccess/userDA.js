@@ -68,3 +68,14 @@ export function getPersonData(dni){
 
     return axios.post(url,body);
 }
+
+
+export function getAllCampaign(token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaigns/';
+    return axios.get(url, {
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
