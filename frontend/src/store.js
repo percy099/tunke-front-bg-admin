@@ -20,6 +20,7 @@ export default new Vuex.Store({
     accounts: [],
     salesRecords: [],
     accountsByClient : [],
+    campaigns: [],
     login_entry: false,
     countries : [],
     clientCreate :{
@@ -54,6 +55,38 @@ export default new Vuex.Store({
       address : '',
       currencyType : -1
     },
+    campaignCreate :{
+      idCampaign : -1,
+      name : '',
+      month : '',
+      startDate : '',
+      endDate : '',
+      minimumLoan : -1,
+      maximumLoan : -1,
+      minimumPeriod : -1,
+      maximumPeriod : -1,
+      interestRate : -1,
+      idCurrency : -1,
+      active : -1
+    },
+    lendingCreate :{
+      idLending : -1,
+      feesNumber : -1,
+      amount : -1,
+      feeType : '',
+      interestRate : -1,
+      editClient : false,
+      selectedClientIndex : -1,
+      selectedCampaignIndex : -1,
+      selectedLendingIndex : -1,
+      activeLoan: false,
+      totalShares: -1,
+      interestRate: -1,
+      shareType: '',
+      editClient : false,
+      selectedClientIndex : -1,
+      selectedSalesIndex : -1
+    },
     salesRecordCreate :{
       activeAccount : false,
       balance : 0.0,
@@ -67,8 +100,8 @@ export default new Vuex.Store({
       fatherLastname : '',
       motherLastname : '',
       birthdate : '',
-      address : '',
       nationality : '',
+      address : '',
       documentType : '',
       documentNumber : -1,
       idSalesRecord : -1,
@@ -82,11 +115,12 @@ export default new Vuex.Store({
       totalShares: -1,
       interestRate: -1,
       shareType: '',
+      editClient : false,
+      selectedClientIndex : -1,
+      selectedSalesIndex : -1
     },
-    editClient : false,
-    selectedClientIndex : -1,
-    selectedSalesIndex : -1
-  },
+    
+
   mutations: {
     fillClients(state,persons){
         state.clients=[];
@@ -131,7 +165,9 @@ export default new Vuex.Store({
           }
         }
     },
+
     fillCampaigns(state,campaigns_data){
+
       state.campaigns=[]; 
       for(let campaign of campaigns_data){
         if(campaign.active){
@@ -288,6 +324,36 @@ export default new Vuex.Store({
         });
       }
     },
+    setCampaignInd(state, index){
+      state.selectedCampaignIndex = index;
+      state.campaignCreate.idCampaign = state.campaigns[index].idCampaign,
+      state.campaignCreate.name = state.campaigns[index].name,
+      state.campaignCreate.month = state.campaigns[index].month,
+      state.campaignCreate.startDate = state.campaigns[index].startDate,
+      state.campaignCreate.endDate = state.campaigns[index].endDate,
+      state.campaignCreate.minimumLoan = state.campaigns[index].minimumLoan,
+      state.campaignCreate.maximumLoan = state.campaigns[index].maximumLoan,
+      state.campaignCreate.minimumPeriod = state.campaigns[index].minimumPeriod,
+      state.campaignCreate.maximumPeriod = state.campaigns[index].maximumPeriod,
+      state.campaignCreate.interestRate = state.campaigns[index].interestRate,
+      state.campaignCreate.idCurrency = state.campaigns[index].idCurrency,
+      state.campaignCreate.active = state.campaigns[index].active
+    },
+    setLendingInd(state, index){
+      state.selectedLendingIndex = index;
+      state.lendingCreate.idLending = state.lendings[index].idLending,
+      state.lendingCreate.feesNumber = state.lendings[index].feesNumber,
+      state.lendingCreate.amount = state.lendings[index].amount,
+      state.lendingCreate.feeType = state.lendings[index].feeType,
+      state.lendingCreate.interestRate = state.lendings[index].interestRate,
+      state.lendingCreate.firstName = state.lendings[index].firstName,
+      state.lendingCreate.middleName = state.lendings[index].middleName,
+      state.lendingCreate.fatherLastname = state.lendings[index].fatherLastname,
+      state.lendingCreate.motherLastname = state.lendings[index].motherLastname,
+      state.lendingCreate.birthdate = state.lendings[index].birthdate,
+      state.lendingCreate.nationality = state.lendings[index].nationality,
+      state.lendingCreate.address = state.lendings[index].address
+    },
     fillSalesRecord(state, salesRecord_data){
       let aux=salesRecord_data.salesRecords;
       state.salesRecords=[];
@@ -410,12 +476,16 @@ export default new Vuex.Store({
       completeClients(context,clients_data){
         context.commit('fillClients',clients_data);
       },
-      completeLendings(context){
-        //let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
-        let lendings = axios.post(url);
+      completeLendings(context, lendings_data){
         context.commit('fillLendings',lendings_data);
       },
-      completeCampaigns(context,campaigns_data){
+      setLendingIndex(context, index){
+        context.commit('setLendingInd', index);
+      },
+      setCampaignIndex(context, index){
+        context.commit('setCampaignInd', index);
+      },
+      completeCampaigns(context, campaigns_data){
         context.commit('fillCampaigns',campaigns_data);
       },
       setToken(context,token){

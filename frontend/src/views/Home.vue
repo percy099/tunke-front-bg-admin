@@ -51,7 +51,7 @@ export default {
                     router.push('/crudLending');
                 break;
                 case 'campaign':
-                    router.push('crudCampaign');
+                    router.push('/crudCampaign');
                 break;
                 case 'account':
                     router.push('/crudAccounts');
@@ -87,6 +87,24 @@ export default {
                 type: 'error',
                 text: 'Error obteniendo las cuentas'
             })
+        });
+        userDA.getAllCampaigns(this.token).then((res) =>{
+            this.completeCampaigns(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las campañas'
+            })
+        });
+        userDA.getAllLendings(this.token).then((res) =>{
+            this.completeLendings(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo los préstamos'
+              })
         });
         userDA.getAllSalesRecord(this.token).then((res) =>{
             this.completeSalesRecords(res.data);

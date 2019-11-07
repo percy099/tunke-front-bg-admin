@@ -20,6 +20,8 @@
 						<th>Fecha fin</th>
                         <th>Plazo mín</th>
                         <th>Plazo máx</th>
+                        <th>Cuotas mínimas</th>
+                        <th>Cuotas máximas</th>
                         <th>Tasa de interés</th>
                         <th>Acciones</th>
                     </tr>
@@ -28,6 +30,7 @@
                     <tr v-for="(campaign,index) in campaigns" v-bind:key="index"><!--TODO-->
 						<td>{{index + 1}}</td>
                         <td>{{campaign.name}}</td>
+
                         <!--<td>{{campaign.month}}</td>-->
 						<td class="space_2">{{campaign.startDate}}</td>
                         <td class="space_2">{{campaign.endDate}}</td>
@@ -35,7 +38,7 @@
                         <td class="space">{{campaign.maximumPeriod}}</td>
                         <td>{{campaign.interestRate}}%</td>
                         <td>
-                            <a href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
@@ -52,6 +55,7 @@ import {mapState, mapActions} from 'vuex'
 import Swal from 'sweetalert2'
 import * as adminDA from '@/dataAccess/adminDA.js'
 
+
 export default {
     computed:{
         ...mapState(['campaigns','token'])
@@ -59,6 +63,7 @@ export default {
 	mounted(){
 		$('#mydatatable').DataTable();
     },
+
     methods:{
         ...mapActions(['setActionCampaign','setCampaingIndex']),
 		createCampaign(){
@@ -97,6 +102,7 @@ export default {
             })
         }
 	}
+
 }
 </script>
 

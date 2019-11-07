@@ -70,8 +70,20 @@ export function getPersonData(dni){
 }
 
 
-export function getAllCampaign(token){
+
+
+export function getAllCampaigns(token){
     let url = process.env.VUE_APP_API_URL + 'api/campaigns/';
+    return axios.get(url, {
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function getAllLendings(token){
+    let url = process.env.VUE_APP_API_URL + 'api/loans/';
     return axios.get(url, {
         auth: {
             username: token,
