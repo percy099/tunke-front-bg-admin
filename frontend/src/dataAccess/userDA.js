@@ -68,3 +68,23 @@ export function getPersonData(dni){
 
     return axios.post(url,body);
 }
+
+export function getAllCampaigns(token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaigns/';
+    return axios.get(url, {
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function getAllLendings(token){
+    let url = process.env.VUE_APP_API_URL + 'api/loans/';
+    return axios.get(url, {
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
