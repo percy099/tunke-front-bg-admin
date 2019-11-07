@@ -16,6 +16,7 @@ export default new Vuex.Store({
     token : '',
     clients : [],
     lendings: [],
+    campaigns:[],
     accounts: [],
     salesRecords: [],
     accountsByClient : [],
@@ -166,23 +167,23 @@ export default new Vuex.Store({
     },
 
     fillCampaigns(state,campaigns_data){
-      let aux=campaigns_data;
-      state.campaigns=[];
-      for(let i=0; i< aux.length; i++){
-        if(aux[i].active == 1){
+
+      state.campaigns=[]; 
+      for(let campaign of campaigns_data){
+        if(campaign.active){
           state.campaigns.push({
-            idCampaign : aux[i].idCampaign,
-            name : aux[i].name,
-            month : aux[i].month,
-            startDate : aux[i].startDate,
-            endDate : aux[i].endDate,
-            minimumLoan : aux[i].minimumLoan,
-            maximumLoan : aux[i].maximumLoan,
-            minimumPeriod : aux[i].minimumPeriod,
-            maximumPeriod : aux[i].maximumPeriod,
-            interestRate : aux[i].interestRate,
-            idCurrency : aux[i].idCurrency,
-            active : aux[i].active
+            idCampaign : campaign.idCampaign,
+            name : campaign.name,
+            month : campaign.month,
+            startDate : campaign.startDate,
+            endDate : campaign.endDate,
+            minimumLoan : campaign.minimumLoan,
+            maximumLoan : campaign.maximumLoan,
+            minimumPeriod : campaign.minimumPeriod,
+            maximumPeriod : campaign.maximumPeriod,
+            interestRate : campaign.interestRate,
+            idCurrency : campaign.idCurrency,
+            active : campaign.active
           });
         }
       }

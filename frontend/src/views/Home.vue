@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeCampaigns','completeSalesRecords']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -115,7 +115,15 @@ export default {
                 text: 'Error obteniendo los expedientes de Venta'
             })
         });
-
+        userDA.getAllCampaign(this.token).then((res) =>{
+            this.completeCampaigns(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo los expedientes de Venta'
+            })
+        });
         /*
         userDA.getAllAccounts(this.token).then((res) =>{
             this.completeAccounts(res.data);
