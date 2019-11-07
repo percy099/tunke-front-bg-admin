@@ -2,19 +2,19 @@
     <div class="container">
         <div class="row">
             <div class="col-6">
-                <h2>Mantenimientos:</h2>
-                <div class="d-flex flex-column justify-content-center">
+                <h2 class="mt-5">Mantenimientos:</h2>
+                <div class="d-flex flex-column justify-content-center mt-2">
                     <button @click="openWindow('client')" class="btn">Clientes</button>
-                    <button class="btn">Préstamos</button>
-                    <button class="btn">Campañas</button>
-                    <button class="btn">Cuentas de Ahorro</button>
-                    <button class="btn">Clientes especiales</button>
-                    <button class="btn">Expedientes de Venta</button> 
+                    <button @click="openWindow('lending')" class="btn">Préstamos</button>
+                    <button @click="openWindow('campaign')" class="btn">Campañas</button>
+                    <button @click="openWindow('account')" class="btn">Cuentas de Ahorro</button>
+                    <button @click="openWindow('blackList')" class="btn">Clientes especiales</button>
+                    <button @click="openWindow('salesRecord')" class="btn">Expedientes de Venta</button> 
                 </div>
             </div>
             <div class="col-6">
-                <h2>Reportes:</h2>
-                <div class="d-flex flex-column justify-content-center mb-5">
+                <h2 class="mt-5">Reportes:</h2>
+                <div class="d-flex flex-column justify-content-center mb-3 mt-2">
                     <button class="btn">Reporte de Cuentas</button>
                     <button class="btn">Reporte de Préstamos</button>
                 </div>
@@ -36,15 +36,31 @@
     import {mapActions} from 'vuex'
     import router from '@/router.js'
     import * as userDA from '@/dataAccess/userDA.js'
+    import * as utilsDA from '@/dataAccess/utilsDA.js'
     import Swal from 'sweetalert2'
 
 export default {
     methods:{
-        ...mapActions(['completePersons','completeLendings']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns']),
         openWindow(window){
             switch(window){
                 case 'client':
                     router.push('/crudClient');
+                break;
+                case 'lending':
+                    router.push('/crudLending');
+                break;
+                case 'campaign':
+                    router.push('crudCampaign');
+                break;
+                case 'account':
+                    router.push('/crudAccounts');
+                break;
+                case 'salesRecord':
+                    router.push('/crudSalesRecords');
+                break;
+                case 'blackList':
+                    router.push('/crudBlackList');
                 break;
             }
         }
@@ -53,8 +69,46 @@ export default {
         ...mapState(['token']),
     },
     beforeMount(){
+        this.setLoginEntry(true);
         userDA.getAllClients(this.token).then((res) =>{
-        this.completePersons(res.data);
+            this.completeClients(res.data);
+        }).catch(error =>{
+          Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Error obteniendo los clientes'
+          })
+        });
+        userDA.getAllAccounts(this.token).then((res) =>{
+            this.completeAccounts(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las cuentas'
+            })
+        });
+        userDA.getAllSalesRecord(this.token).then((res) =>{
+            this.completeSalesRecords(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Erorr',
+                type: 'error',
+                text: 'Error obteniendo los expedientes de Venta'
+            })
+        });
+        userDA.getAllCampaign(this.token).then((res) =>{
+            this.completeCampaigns(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo los expedientes de Venta'
+            })
+        });
+        /*
+        userDA.getAllAccounts(this.token).then((res) =>{
+            this.completeAccounts(res.data);
         }).catch(error =>{
           Swal.fire({
             title: 'Error',
@@ -62,7 +116,7 @@ export default {
             text: 'Error obteniendo los clientes'
           })
         })
-        //this.fillLendings();
+        */
     }
 }
 </script>

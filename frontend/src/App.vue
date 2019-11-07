@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <TopBar v-if="login_entry"></TopBar>
     <router-view/>
   </div>
 </template>
@@ -24,3 +25,17 @@
   color: #42b983;
 }
 </style>
+
+<script>
+
+import TopBar from '@/views/TopBar.vue'
+import { mapState } from 'vuex';
+export default {
+  components: {
+    TopBar
+  },
+  computed:{
+    ...mapState(['login_entry'])
+  }
+}
+</script>

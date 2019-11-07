@@ -55,45 +55,36 @@ export default {
 	},
 	methods:{
         ...mapActions(['setActionClient','setClientIndex']),
-		createClient(){
-            this.$router.push('/clientCreate');
-            this.setActionClient(false);
-        },
-        editClient(index){
-            this.$router.push('/clientCreate');
-            this.setActionClient(true);
-            this.setClientIndex(index);
-        },
-        deleteClient(index){
-            Swal.fire({
-                title: '¿Está seguro que desea eliminar al cliente ' + this.clients[index].firstName + ' ' + this.clients[index].fatherLastname + '?',
-                type: 'warning',
+        createAccount(){
+            const { value: currency } = Swal.fire({
+                title: 'Seleccionar moneda',
+                input: 'radio',
+                inputOptions: {
+                    1 : 'Soles',
+                    2 : 'Dólares'
+                },
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText : 'Cancelar'
-            }).then((result) =>{
-                if(result.value){
-                    adminDA.deleteClient(this.clients[index].idClient,this.token).then((res)=>{
+                confirmButtonText: 'Crear Cuenta',
+                inputValidator: (value) => {
+                    if (!value) {
+                    return 'Debes seleccionar una moneda'
+                    }
+                    adminDA.doCreateAccount(this.clientCreate.idPerson,value).then((res)=>{
                         Swal.fire({
-                            text: 'Cliente eliminado correctamente',
-                            type: 'success'
+                            type: 'success',
+                            title: 'Enhorabuena',
+                            text: 'Cuenta creada satisfactoriamente'
                         })
                     }).catch(error=>{
                         Swal.fire({
                             title: 'Error',
-                            text: 'Ocurrió un problema eliminando al cliente',
-                            type : 'error'
+                            type: 'error',
+                            text: 'Error al intentar crear la cuenta'
                         })
-                    });
+                    })
                 }
             })
         }
 	}
 }
 </script>
-
-<style src="@/styles/CRUDClient.css" scoped>
-
-</style>

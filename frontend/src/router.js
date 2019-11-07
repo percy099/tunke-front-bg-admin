@@ -4,7 +4,15 @@ import Login from './views/Login.vue'
 import Home from './views/Home.vue'
 import CRUDClient from './views/CRUDClient.vue'
 import CRUDLending from './views/CRUDLending.vue'
+import CRUDAccounts from './views/CRUDAccounts.vue'
+import CRUDCampaign from './views/CRUDCampaign.vue'
 import ClientCreate from './views/ClientCreate.vue'
+import ClientAccounts from './views/ClientAccounts.vue'
+import AccountCreate from './views/AccountCreate.vue'
+import CRUDSalesRecords from './views/CRUDSalesRecords.vue'
+import CRUDBlackList from './views/CRUDBlackList.vue'
+import ViewSaleRecord from './views/ViewSaleRecord.vue'
+
 
 Vue.use(Router)
 
@@ -36,6 +44,41 @@ export default new Router({
       path : '/clientCreate',
       name : 'clientCreate',
       component : ClientCreate
+    },
+    {
+      path : '/crudAccounts',
+      name : 'crudAccounts',
+      component : CRUDAccounts
+    },
+    {
+      path: '/clientAccounts/:idClient',
+      name : 'clientAccounts',
+      component : ClientAccounts
+    },
+    {
+      path : '/accountCreate',
+      name : 'accountCreate',
+      component : AccountCreate
+    },
+    {
+      path : '/crudSalesRecords',
+      name : 'crudSalesRecords',
+      component : CRUDSalesRecords
+    },
+    {
+      path : '/crudBlackList',
+      name : 'crudBlackList',
+      component : CRUDBlackList
+    },
+    {
+      path : '/viewSaleRecord',
+      name : 'viewSaleRecord',
+      component : ViewSaleRecord
+    },
+    {
+      path : '/crudCampaign',
+      name : 'crudCampaign',
+      component : CRUDCampaign
     }
   ]
 })
