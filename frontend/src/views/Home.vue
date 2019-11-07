@@ -8,8 +8,8 @@
                     <button @click="openWindow('lending')" class="btn">Préstamos</button>
                     <button @click="openWindow('campaign')" class="btn">Campañas</button>
                     <button @click="openWindow('account')" class="btn">Cuentas de Ahorro</button>
-                    <button class="btn">Clientes especiales</button>
-                    <button class="btn">Expedientes de Venta</button> 
+                    <button @click="openWindow('blackList')" class="btn">Clientes especiales</button>
+                    <button @click="openWindow('salesRecord')" class="btn">Expedientes de Venta</button> 
                 </div>
             </div>
             <div class="col-6">
@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeCampaigns']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeCampaigns','completeSalesRecords']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -55,6 +55,12 @@ export default {
                 break;
                 case 'account':
                     router.push('/crudAccounts');
+                break;
+                case 'salesRecord':
+                    router.push('/crudSalesRecords');
+                break;
+                case 'blackList':
+                    router.push('/crudBlackList');
                 break;
             }
         }
@@ -98,6 +104,15 @@ export default {
                 title: 'Error',
                 type: 'error',
                 text: 'Error obteniendo los préstamos'
+              })
+        });
+        userDA.getAllSalesRecord(this.token).then((res) =>{
+            this.completeSalesRecords(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Erorr',
+                type: 'error',
+                text: 'Error obteniendo los expedientes de Venta'
             })
         });
 

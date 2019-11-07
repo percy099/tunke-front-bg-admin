@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export function doLogin(email,password){
 
-    let url = process.env.VUE_APP_API_URL + 'api/login';
+    let url = process.env.VUE_APP_API_URL + 'api/login'; 
 
     var body ={
         "email" : email,
@@ -24,6 +24,7 @@ export function doLoginGoogle(email){
     return axios.post(url,body);
 }
 
+
 export function getAllClients(token){
     let url = process.env.VUE_APP_API_URL + 'api/clients/';
     return axios.get(url, { 
@@ -43,6 +44,20 @@ export function getAllAccounts(token){
         }
     });
 }
+
+export function getAllSalesRecord(token){
+
+    let url = process.env.VUE_APP_API_URL + 'api/salesRecords/';
+    console.log(url);
+    return axios.get(url, {
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
+
 
 export function getPersonData(dni){
     let url = process.env.VUE_APP_API_URL + 'api/dniValidation/';
