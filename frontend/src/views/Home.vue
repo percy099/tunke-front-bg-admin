@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -115,7 +115,15 @@ export default {
                 text: 'Error obteniendo los expedientes de Venta'
             })
         });
-       
+        userDA.getAllClientsBlackList(this.token).then((res) =>{
+            this.completeClientsBlackList(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Erorr',
+                type: 'error',
+                text: 'Error obteniendo los clientes especiales'
+            })
+        });
     }
 }
 </script>

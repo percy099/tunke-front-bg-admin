@@ -91,3 +91,13 @@ export function getAllLendings(token){
         }
     });
 }
+
+export function getAllClientsBlackList(token){
+    let url = process.env.VUE_APP_API_URL + 'api/blackLists/';
+    return axios.get(url,{
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
