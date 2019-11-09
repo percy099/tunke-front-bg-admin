@@ -13,7 +13,7 @@
 						<th>Fecha Solicitud</th>
                         <th>Origen</th>
                         <th>Estado</th>
-                        <th>Acción</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,8 +25,8 @@
                         <td>{{salesRecord.origin}}</td>
                         <td>{{salesRecord.nameRecordStatus}}</td>
                         <td>
-                            <a @click="viewSalesRecord(index)" href="#verExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE880;</i></a>
-                            <a v-if="salesRecord.productName == 'Prestamo'" @click="editSalesRecord(index)" href="#editarExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE254;</i></a>
+                            <a @click="viewSalesRecord(index)" href="#verExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalles">&#xE880;</i></a>
+                            <a v-if="salesRecord.productName == 'Prestamo'" @click="editSalesRecord(index)" href="#editarExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar Estado">&#xE254;</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -87,7 +87,28 @@ export default {
         }
     },
     mounted(){
-		$('#mydatatable').DataTable();
+		$('#mydatatable').DataTable({
+            "language" : {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            }
+        });
 	}
 }
 </script>

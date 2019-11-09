@@ -5,12 +5,6 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="search-box">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
-								<input type="text" class="form-control" placeholder="Ingrese un campo a buscar">
-							</div>
-                        </div>
                     </div>
 					<div class="col-sm-6">
                         <a id="createBtn" href="#deletePrestamoModal" class="btn btn-info" data-toggle="modal"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Préstamo</span></a>
@@ -39,8 +33,8 @@
                         <td v-if = "lending.idShareType==2">Extraordinaria</td>
                         <td>{{lending.interestRate}}</td>
                         <td>
-                            <a href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
+                            <a href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -59,7 +53,28 @@ export default {
         ...mapState(['lendings'])
 	},
 	mounted(){
-		$('#mydatatable').DataTable();
+		$('#mydatatable').DataTable({
+            "language" : {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            }
+        });
     },
     methods :{
         ...mapActions
