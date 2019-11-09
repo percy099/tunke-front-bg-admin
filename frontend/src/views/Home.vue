@@ -115,26 +115,7 @@ export default {
                 text: 'Error obteniendo los expedientes de Venta'
             })
         });
-        userDA.getAllCampaign(this.token).then((res) =>{
-            this.completeCampaigns(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo los expedientes de Venta'
-            })
-        });
-        /*
-        userDA.getAllAccounts(this.token).then((res) =>{
-            this.completeAccounts(res.data);
-        }).catch(error =>{
-          Swal.fire({
-            title: 'Error',
-            type: 'error',
-            text: 'Error obteniendo los clientes'
-          })
-        })
-        */
+       
     }
 }
 </script>

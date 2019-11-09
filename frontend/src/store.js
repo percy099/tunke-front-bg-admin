@@ -119,7 +119,7 @@ export default new Vuex.Store({
       selectedClientIndex : -1,
       selectedSalesIndex : -1
     },
-    
+  }, 
 
   mutations: {
     fillClients(state,persons){
@@ -151,16 +151,20 @@ export default new Vuex.Store({
           }
     },
     fillLendings(state,lendings_data){
-      let aux=lendings_data.lendings;
       state.lendings=[];
-        for (let i=0; i< aux.length;i++){
-          if(aux[i].active){       
+        for (let i=0; i< lendings_data.length;i++){
+          if(lendings_data[i].active){       
             state.lendings.push({
-              idLending : aux[i].idLending,
-              feesNumber : aux[i].feesNumber,
-              amount : aux[i].amount,
-              feeType : aux[i].feeType,
-              interestRate : aux[i].interestRate
+              idLoan : lendings_data[i].idLoan,
+              totalShares : lendings_data[i].totalShares,
+              amount : lendings_data[i].amount,
+              interestRate : lendings_data[i].interestRate,
+              idCampaign : lendings_data[i].idCampaign,
+              idClient : lendings_data[i].idClient,
+              idSalesRecord : lendings_data[i].idSalesRecord,
+              idShareType : lendings_data[i].idShareType,
+              idAccount : lendings_data[i].idAccount,
+              active : lendings_data[i].active
             });
           }
         }
