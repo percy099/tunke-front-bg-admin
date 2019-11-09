@@ -16,9 +16,11 @@ export default new Vuex.Store({
     token : '',
     clients : [],
     lendings: [],
+    campaigns:[],
     accounts: [],
     salesRecords: [],
     accountsByClient : [],
+    campaigns: [],
     login_entry: false,
     countries : [],
     clientCreate :{
@@ -53,6 +55,38 @@ export default new Vuex.Store({
       address : '',
       currencyType : -1
     },
+    campaignCreate :{
+      idCampaign : -1,
+      name : '',
+      month : '',
+      startDate : '',
+      endDate : '',
+      minimumLoan : -1,
+      maximumLoan : -1,
+      minimumPeriod : -1,
+      maximumPeriod : -1,
+      interestRate : -1,
+      idCurrency : -1,
+      active : -1
+    },
+    lendingCreate :{
+      idLending : -1,
+      feesNumber : -1,
+      amount : -1,
+      feeType : '',
+      interestRate : -1,
+      editClient : false,
+      selectedClientIndex : -1,
+      selectedCampaignIndex : -1,
+      selectedLendingIndex : -1,
+      activeLoan: false,
+      totalShares: -1,
+      interestRate: -1,
+      shareType: '',
+      editClient : false,
+      selectedClientIndex : -1,
+      selectedSalesIndex : -1
+    },
     salesRecordCreate :{
       activeAccount : false,
       balance : 0.0,
@@ -66,8 +100,8 @@ export default new Vuex.Store({
       fatherLastname : '',
       motherLastname : '',
       birthdate : '',
-      address : '',
       nationality : '',
+      address : '',
       documentType : '',
       documentNumber : -1,
       idSalesRecord : -1,
@@ -81,11 +115,12 @@ export default new Vuex.Store({
       totalShares: -1,
       interestRate: -1,
       shareType: '',
+      editClient : false,
+      selectedClientIndex : -1,
+      selectedSalesIndex : -1
     },
-    editClient : false,
-    selectedClientIndex : -1,
-    selectedSalesIndex : -1
-  },
+  }, 
+
   mutations: {
     fillClients(state,persons){
         state.clients=[];
@@ -116,34 +151,43 @@ export default new Vuex.Store({
           }
     },
     fillLendings(state,lendings_data){
-      let aux=lendings_data.lendings;
       state.lendings=[];
-        for (let i=0; i< aux.length;i++){
-          if(aux[i].active){       
+        for (let i=0; i< lendings_data.length;i++){
+          if(lendings_data[i].active){       
             state.lendings.push({
-              idLending : aux[i].idLending,
-              feesNumber : aux[i].feesNumber,
-              amount : aux[i].amount,
-              feeType : aux[i].feeType,
-              interestRate : aux[i].interestRate
+              idLoan : lendings_data[i].idLoan,
+              totalShares : lendings_data[i].totalShares,
+              amount : lendings_data[i].amount,
+              interestRate : lendings_data[i].interestRate,
+              idCampaign : lendings_data[i].idCampaign,
+              idClient : lendings_data[i].idClient,
+              idSalesRecord : lendings_data[i].idSalesRecord,
+              idShareType : lendings_data[i].idShareType,
+              idAccount : lendings_data[i].idAccount,
+              active : lendings_data[i].active
             });
           }
         }
     },
+
     fillCampaigns(state,campaigns_data){
-      let aux=campaigns_data.campaigns;
-      state.campaigns=[];
-      for(let i=0; i< aux.length; i++){
-        if(aux[i].active){
+
+      state.campaigns=[]; 
+      for(let campaign of campaigns_data){
+        if(campaign.active){
           state.campaigns.push({
-            idCampaign : aux[i].idCampaign,
-            name : aux[i].name,
-            month : aux[i].month,
-            startDate : aux[i].startDate,
-            endDate : aux[i].endDate,
-            minTerm : aux[i].minTerm,
-            maxTerm : aux[i].maxTerm,
-            interestRate : aux[i].interestRate
+            idCampaign : campaign.idCampaign,
+            name : campaign.name,
+            month : campaign.month,
+            startDate : campaign.startDate,
+            endDate : campaign.endDate,
+            minimumLoan : campaign.minimumLoan,
+            maximumLoan : campaign.maximumLoan,
+            minimumPeriod : campaign.minimumPeriod,
+            maximumPeriod : campaign.maximumPeriod,
+            interestRate : campaign.interestRate,
+            idCurrency : campaign.idCurrency,
+            active : campaign.active
           });
         }
       }
@@ -284,6 +328,36 @@ export default new Vuex.Store({
         });
       }
     },
+    setCampaignInd(state, index){
+      state.selectedCampaignIndex = index;
+      state.campaignCreate.idCampaign = state.campaigns[index].idCampaign,
+      state.campaignCreate.name = state.campaigns[index].name,
+      state.campaignCreate.month = state.campaigns[index].month,
+      state.campaignCreate.startDate = state.campaigns[index].startDate,
+      state.campaignCreate.endDate = state.campaigns[index].endDate,
+      state.campaignCreate.minimumLoan = state.campaigns[index].minimumLoan,
+      state.campaignCreate.maximumLoan = state.campaigns[index].maximumLoan,
+      state.campaignCreate.minimumPeriod = state.campaigns[index].minimumPeriod,
+      state.campaignCreate.maximumPeriod = state.campaigns[index].maximumPeriod,
+      state.campaignCreate.interestRate = state.campaigns[index].interestRate,
+      state.campaignCreate.idCurrency = state.campaigns[index].idCurrency,
+      state.campaignCreate.active = state.campaigns[index].active
+    },
+    setLendingInd(state, index){
+      state.selectedLendingIndex = index;
+      state.lendingCreate.idLending = state.lendings[index].idLending,
+      state.lendingCreate.feesNumber = state.lendings[index].feesNumber,
+      state.lendingCreate.amount = state.lendings[index].amount,
+      state.lendingCreate.feeType = state.lendings[index].feeType,
+      state.lendingCreate.interestRate = state.lendings[index].interestRate,
+      state.lendingCreate.firstName = state.lendings[index].firstName,
+      state.lendingCreate.middleName = state.lendings[index].middleName,
+      state.lendingCreate.fatherLastname = state.lendings[index].fatherLastname,
+      state.lendingCreate.motherLastname = state.lendings[index].motherLastname,
+      state.lendingCreate.birthdate = state.lendings[index].birthdate,
+      state.lendingCreate.nationality = state.lendings[index].nationality,
+      state.lendingCreate.address = state.lendings[index].address
+    },
     fillSalesRecord(state, salesRecord_data){
       let aux=salesRecord_data.salesRecords;
       state.salesRecords=[];
@@ -406,12 +480,16 @@ export default new Vuex.Store({
       completeClients(context,clients_data){
         context.commit('fillClients',clients_data);
       },
-      completeLendings(context){
-        //let url = process.env.VUE_APP_API_URL + 'api/prospectiveClients/';
-        let lendings = axios.post(url);
+      completeLendings(context, lendings_data){
         context.commit('fillLendings',lendings_data);
       },
-      completeCampaigns(context){
+      setLendingIndex(context, index){
+        context.commit('setLendingInd', index);
+      },
+      setCampaignIndex(context, index){
+        context.commit('setCampaignInd', index);
+      },
+      completeCampaigns(context, campaigns_data){
         context.commit('fillCampaigns',campaigns_data);
       },
       setToken(context,token){

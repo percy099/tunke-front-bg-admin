@@ -21,6 +21,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Nombre Cliente</th>
                         <th>Número de cuotas</th>
                         <th>Monto</th>
 						<th>Tipo cuota</th>
@@ -31,9 +32,11 @@
                 <tbody>
                     <tr v-for="(lending,index) in lendings" v-bind:key="index"><!--TODO-->
 						<td>{{index + 1}}</td>
-                        <td>{{lending.feesNumber}}</td>
+                        <td>{{lending.firstName + ' ' + lending.fatherLastname}}</td>
+                        <td>{{lending.totalShares}}</td>
                         <td>{{lending.amount}}</td>
-						<td>{{lending.feeType}}</td>
+						<td v-if = "lending.idShareType==1">Ordinaria</td>
+                        <td v-if = "lending.idShareType==2">Extraordinaria</td>
                         <td>{{lending.interestRate}}</td>
                         <td>
                             <a href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -49,7 +52,7 @@
 
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 
 export default {
     computed:{
@@ -57,7 +60,10 @@ export default {
 	},
 	mounted(){
 		$('#mydatatable').DataTable();
-	}
+    },
+    methods :{
+        ...mapActions
+    }
 }
 </script>
 

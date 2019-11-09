@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -51,7 +51,7 @@ export default {
                     router.push('/crudLending');
                 break;
                 case 'campaign':
-                    router.push('crudCampaign');
+                    router.push('/crudCampaign');
                 break;
                 case 'account':
                     router.push('/crudAccounts');
@@ -88,6 +88,24 @@ export default {
                 text: 'Error obteniendo las cuentas'
             })
         });
+        userDA.getAllCampaigns(this.token).then((res) =>{
+            this.completeCampaigns(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las campañas'
+            })
+        });
+        userDA.getAllLendings(this.token).then((res) =>{
+            this.completeLendings(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo los préstamos'
+              })
+        });
         userDA.getAllSalesRecord(this.token).then((res) =>{
             this.completeSalesRecords(res.data);
         }).catch(error =>{
@@ -97,18 +115,7 @@ export default {
                 text: 'Error obteniendo los expedientes de Venta'
             })
         });
-
-        /*
-        userDA.getAllAccounts(this.token).then((res) =>{
-            this.completeAccounts(res.data);
-        }).catch(error =>{
-          Swal.fire({
-            title: 'Error',
-            type: 'error',
-            text: 'Error obteniendo los clientes'
-          })
-        })
-        */
+       
     }
 }
 </script>
