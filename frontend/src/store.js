@@ -23,6 +23,7 @@ export default new Vuex.Store({
     campaigns: [],
     login_entry: false,
     countries : [],
+    clientsBlackList:[],
     clientCreate :{
       idPerson : -1,
       idClient : -1,
@@ -219,6 +220,18 @@ export default new Vuex.Store({
             typeName : aux[i].typeName
           })
         }
+      }
+    },
+    fillClientsBlackList(state, clientsBlackList_data){
+      state.clientsBlackList=[];
+      for(let i=0; i<clientsBlackList_data.length;i++){
+          state.clientsBlackList.push({
+            idPerson : clientsBlackList_data[i].idPerson,
+            documentNumber : clientsBlackList_data[i].documentNumber,
+            firstName : clientsBlackList_data[i].firstName,
+            fatherLastname : clientsBlackList_data[i].fatherLastname,
+            reason : clientsBlackList_data[i].reason
+          });
       }
     },
     setTok(state,tok){
@@ -479,6 +492,9 @@ export default new Vuex.Store({
   actions: {
       completeClients(context,clients_data){
         context.commit('fillClients',clients_data);
+      },
+      completeClientsBlackList(context,clientsBlackList_data){
+        context.commit('fillClientsBlackList',clientsBlackList_data);
       },
       completeLendings(context, lendings_data){
         context.commit('fillLendings',lendings_data);

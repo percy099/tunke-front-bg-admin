@@ -20,8 +20,6 @@
 						<th>Fecha fin</th>
                         <th>Plazo mín</th>
                         <th>Plazo máx</th>
-                        <th>Cuotas mínimas</th>
-                        <th>Cuotas máximas</th>
                         <th>Tasa de interés</th>
                         <th>Acciones</th>
                     </tr>
@@ -38,8 +36,8 @@
                         <td class="space">{{campaign.maximumPeriod}}</td>
                         <td>{{campaign.interestRate}}%</td>
                         <td>
-                            <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
+                            <a href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -61,7 +59,28 @@ export default {
         ...mapState(['campaigns','token'])
 	},
 	mounted(){
-		$('#mydatatable').DataTable();
+		$('#mydatatable').DataTable({
+            "language" : {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            }
+        });
     },
 
     methods:{
