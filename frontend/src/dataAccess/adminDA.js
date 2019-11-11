@@ -61,6 +61,32 @@ export function doCreateAccount(idPer,cur){
     return axios.post(url,body);
 }
 
+export function doCreateCampaign(idCampaign,name,month,startDate,
+    endDate, minimumLoan, maximumLoan, minimumPeriod,maximumPeriod,
+    interestRate,idCurrency,active){
+    let url = process.env.VUE_APP_API_URL + 'api/api/campaigns/';
+    var body ={
+        "idCampaign" : idCampaign,
+        "name" : name,
+        "month" : month,
+        "startDate" : startDate,
+        "endDate": endDate,
+        "minimumLoan": minimumLoan,
+        "maximumLoan": maximumLoan,
+        "minimumPeriod": minimumPeriod,
+        "maximumPeriod": maximumPeriod,
+        "interestRate": interestRate,
+        "idCurrency": idCurrency,
+        "active": active
+    }
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
 
 export function doEditSalesRecord(idSales, cur){
     /*

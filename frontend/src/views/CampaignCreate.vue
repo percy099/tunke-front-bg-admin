@@ -1,34 +1,36 @@
 <template>
     <div class="container">
-        <div>
-            <h2 class="mb-4 mt-4">Editar Campaña</h2>
-        </div>
-        <!-- Tab links -->
-        <div class="tab">
-        <button id="btnCampaign" class="tablinks inactive" @click="openData('Campaign')">Datos de la Campaña</button>
-        </div>
+            <h2 class = "mb-4 mt-4" v-if="!editCampaign">Creación de Campaña</h2>
+            <div v-else class="mt-5">
+                <h2 class = "mb-4 mt-4">Edición de Campaña</h2>
+            </div>
+            <!-- Tab links -->
+            <div class="tab">
+            <button id="btnCampaign" class="tablinks inactive" @click="openData('Campaign')">Datos de la Campaña</button>
+            </div>
 
-        <!-- Tab content -->
-        <div id="Campaign" class="tabcontent">
-            <div class="row mt-4">
-                <div class="col-6 groupLeftPersonal">
-                    <h6>Nombre Producto</h6>
-                    <input v-model="salesRecordCreate.productName" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Estado</h6>
-                    <input v-model="salesRecordCreate.activeSalesRecord" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Origen</h6>
-                    <input v-model="salesRecordCreate.origin" type="text" class="form-control mb-5" disabled>
-                </div>
-                <div class="col-6 groupRightPersonal">
-                    <h6>Nombre Cliente</h6>
-                    <input v-model="salesRecordCreate.completeName" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Nro. Documento</h6>
-                    <input v-model="salesRecordCreate.documentNumber" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Fecha Expediente</h6>
-                    <input v-model="salesRecordCreate.requestDate" type="text" class="form-control mb-5" disabled>
+        
+            <!-- Tab content -->
+            <div id="Campaign" class="tabcontent">
+                <div class="row mt-4">
+                    <div class="col-6 groupLeftPersonal">
+                        <h6>Nombre Campaña</h6>
+                    
+                        <h6 class="mt-3">Fecha Inicio</h6>
+                    
+                        <h6 class="mt-3">Fecha Fin</h6>
+                    
+                    </div>
+                    <div class="col-6 groupRightPersonal">
+                        <h6>Nombre Cliente</h6>
+                    
+                        <h6 class="mt-3">Fecha Inicio</h6>
+                    
+                        <h6 class="mt-3">Fecha Fin</h6>
+                    
+                    </div>
                 </div>
             </div>
-        </div>
 
         <div class="d-flex justify-content-center mt-3">
             <button class="btn mr-3" @click=$router.go(-1)>Volver</button>
@@ -44,7 +46,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import * as userDA from '@/dataAccess/userDA.js'
-import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
 
@@ -58,7 +59,7 @@ export default {
         };
     },
     computed :{
-        ...mapState (['token','campaignCreate']),
+        ...mapState (['token','editCampaign']),
     },
     methods:{
         ...mapActions(['']),
@@ -86,7 +87,7 @@ export default {
             document.getElementById(dataType).style.display = "block";
             document.getElementById(btn).classList.add('active');
         },
-        /*
+        
         saveCampaign(){
             adminDA.editCampaign(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
                 Swal.fire({
@@ -102,7 +103,7 @@ export default {
                 })
             })
         },
-        */
+        
     },
     mounted(){
         document.getElementById('Campaign').style.display = "block";
