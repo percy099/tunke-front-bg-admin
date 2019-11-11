@@ -106,3 +106,46 @@ export function deleteCampaign(idCampaign,token){
         }
     });
 }
+
+export function deleteLending(idLoan,token){
+    let url = process.env.VUE_APP_API_URL + '' + idLoan;
+
+    return axios.delete(url,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function createLending(idClient,totalShares,amount,interestRate,idShareType,idAccount,share,commission,token){
+    let url = process.env.VUE_APP_API_URL + 'api/loans/'
+    
+    var body ={
+        "idClient": idClient,
+        "totalShares" : totalShares,
+        "amount" : amount,
+        "interestRate" : interestRate,
+        "idShareType" : idShareType,
+        "idAccount" : idAccount,
+        "share" : share,
+        "commission" : commission
+    }
+
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+            }
+        });
+}
+
+export function getCampaignByID(token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaign/1'  
+    return axios.get(url,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
