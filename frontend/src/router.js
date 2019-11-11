@@ -13,6 +13,8 @@ import EditCampaign from './views/EditCampaign.vue'
 import CRUDSalesRecords from './views/CRUDSalesRecords.vue'
 import CRUDBlackList from './views/CRUDBlackList.vue'
 import ViewSaleRecord from './views/ViewSaleRecord.vue'
+import ReportsAccount from './views/ReportsAccount.vue'
+import ReportsLending from './views/ReportsLending.vue'
 
 
 
@@ -86,6 +88,16 @@ export default new Router({
       path : '/editCampaign',
       name : 'editCampaign',
       component : EditCampaign
+    },
+    {
+      path : '/reportsAccount',
+      name : 'reportsAccount',
+      component : ReportsAccount
+    },
+    {
+      path : '/reportsLending',
+      name : 'reportsLending',
+      component : ReportsLending
     }
   ]
 })
