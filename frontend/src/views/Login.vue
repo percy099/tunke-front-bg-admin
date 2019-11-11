@@ -18,22 +18,22 @@
             <span v-if="!$v.userr.email">Formato Inadecuado </span>
           </div>
         </div>
-        <div>
-          <input type="password" class="form-control" placeholder="Contraseña"
+        <div class="input-group-addon" id="show_hide_password">
+          <input type="password" class="form-control" v-model="user.password" placeholder="Contraseña"
           v-model.trim="$v.password.$model" :class="{
           'is-invalid' : $v.password.$error, 'is-valid' : !$v.password.$invalid }">
           <div class="invalid-feedback">
             <span v-if="!$v.password.required">Contraseña Requerida</span>
           </div>
+           <b href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></b>
         </div>
         <div>
-        <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
+          <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         </div>
         <div id="google-signin-btn"></div>
         <a href="#">¿Olvidaste tu contraseña?</a>       
       </form>
       
-     
     </div>
 
     <footer id="footer"></footer>
@@ -49,6 +49,20 @@
     import axios from 'axios';
     import { required, email } from 'vuelidate/lib/validators';
     
+    $(document).ready(function() {
+    $("#show_hide_password b").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+            }
+        });
+    });
     export default {
       name: 'Login',
       data(){
@@ -163,6 +177,7 @@ a {
   margin-right: auto;
   padding-right: 10px;
 }
+
 
 button{
   background-color: #090d4d;
