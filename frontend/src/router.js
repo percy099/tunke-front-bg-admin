@@ -15,7 +15,8 @@ import CRUDBlackList from './views/CRUDBlackList.vue'
 import ViewSaleRecord from './views/ViewSaleRecord.vue'
 import ReportsAccount from './views/ReportsAccount.vue'
 import ReportsLending from './views/ReportsLending.vue'
-
+import BlackListCreate from './views/BlackListCreate.vue'
+import MassiveCharge from './views/MassiveCharge.vue'
 
 
 Vue.use(Router)
@@ -98,6 +99,16 @@ export default new Router({
       path : '/reportsLending',
       name : 'reportsLending',
       component : ReportsLending
+    },
+    {
+      path : '/blackListCreate',
+      name : 'blackListCreate',
+      component : BlackListCreate
+    },
+    {
+      path : '/massiveCharge',
+      name : 'massiveCharge',
+      component : MassiveCharge
     }
   ]
 })
