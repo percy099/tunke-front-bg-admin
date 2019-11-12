@@ -106,3 +106,103 @@ export function deleteCampaign(idCampaign,token){
         }
     });
 }
+
+
+export function deleteLending(idLoan,token){
+    let url = process.env.VUE_APP_API_URL + '' + idLoan;
+
+    return axios.delete(url,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function createLending(idClient,totalShares,amount,interestRate,idShareType,idAccount,share,commission,token){
+    let url = process.env.VUE_APP_API_URL + 'api/loans/'
+    
+    var body ={
+        "idClient": idClient,
+        "totalShares" : totalShares,
+        "amount" : amount,
+        "interestRate" : interestRate,
+        "idShareType" : idShareType,
+        "idAccount" : idAccount,
+        "share" : share,
+        "commission" : commission
+    }
+
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+            }
+        });
+}
+
+export function getCampaignByID(token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaign/1'  
+    return axios.get(url,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+
+export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaigns/'
+    
+    var body ={
+        "name" : name,
+        "month" : month,
+        "startDate" : startDate,
+        "endDate" : endDate,
+        "minimumLoan" : minimumLoan,
+        "maximumLoan" : maximumLoan,
+        "minimumPeriod" : minimumPeriod,
+        "maximumPeriod" : maximumPeriod,
+        "interestRate" : interestRate,
+        "idCurrency" : 1,
+    }
+
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+            }
+        });
+}
+
+export function editCampaign(idCampaign,name,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaign/' + idCampaign
+    
+    var body ={
+        "name" : name,
+        "minimumLoan" : minimumLoan,
+        "maximumLoan" : maximumLoan,
+        "minimumPeriod" : minimumPeriod,
+        "maximumPeriod" : maximumPeriod,
+        "interestRate" : interestRate
+    }
+
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+            }
+        });
+}
+
+export function chargeBlackList(token,body){
+    let url = process.env.VUE_APP_API_URL + 'api/blackLists/'
+
+    return axios.post(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
