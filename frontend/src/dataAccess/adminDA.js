@@ -149,3 +149,51 @@ export function getCampaignByID(token){
         }
     });
 }
+
+
+export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaigns/'
+    
+    var body ={
+        "name" : name,
+        "month" : month,
+        "startDate" : startDate,
+        "endDate" : endDate,
+        "minimumLoan" : minimumLoan,
+        "maximumLoan" : maximumLoan,
+        "minimumPeriod" : minimumPeriod,
+        "maximumPeriod" : maximumPeriod,
+        "interestRate" : interestRate,
+        "idCurrency" : 1,
+    }
+
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+            }
+        });
+}
+
+export function editCampaign(idCampaign,name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+    let url = process.env.VUE_APP_API_URL + 'api/campaign/' + idCampaign
+    
+    var body ={
+        "name" : name,
+        "month" : month,
+        "startDate" : startDate,
+        "endDate" : endDate,
+        "minimumLoan" : minimumLoan,
+        "maximumLoan" : maximumLoan,
+        "minimumPeriod" : minimumPeriod,
+        "maximumPeriod" : maximumPeriod,
+        "interestRate" : interestRate
+    }
+
+    return axios.post(url,body,{
+        auth: {
+            username: token,
+            password: ''
+            }
+        });
+}
