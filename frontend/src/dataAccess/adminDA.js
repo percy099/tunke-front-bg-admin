@@ -62,16 +62,22 @@ export function doCreateAccount(idPer,cur){
 }
 
 
-export function doEditSalesRecord(idSales, cur){
-    /*
-    let url = process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
+export function doEditSalesRecord(idSalesRecord, cur, token){
+    
+    let url = process.env.VUE_APP_API_URL + 'api/salesRecord/' + idSalesRecord;
+    console.log(url);
+    console.log(cur);
     var body = {
-        "idSalesRecord" : idSales,
-        "currency" : cur
+        "state" : cur
     }
     
-    return axios.post(url, body);
-    */
+    return axios.put(url, body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+    
 }
 
 export function deleteClient(idClient,token){
