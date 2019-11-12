@@ -15,8 +15,8 @@
             <div class="col-6">
                 <h2 class="mt-5">Reportes:</h2>
                 <div class="d-flex flex-column justify-content-center mb-3 mt-2">
-                    <button class="btn">Reporte de Cuentas</button>
-                    <button class="btn">Reporte de Préstamos</button>
+                    <button @click="openWindow('reportsA')" class="btn">Reporte de Cuentas</button>
+                    <button @click="openWindow('reportsL')" class="btn">Reporte de Préstamos</button>
                 </div>
                 <h2 class="mt-4">Configuración:</h2>
                 <div class="d-flex flex-column justify-content-center">
@@ -41,7 +41,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -51,7 +51,7 @@ export default {
                     router.push('/crudLending');
                 break;
                 case 'campaign':
-                    router.push('crudCampaign');
+                    router.push('/crudCampaign');
                 break;
                 case 'account':
                     router.push('/crudAccounts');
@@ -61,6 +61,12 @@ export default {
                 break;
                 case 'blackList':
                     router.push('/crudBlackList');
+                break;
+                case 'reportsA':
+                    router.push('/reportsAccount');
+                break;
+                case 'reportsL':
+                    router.push('/reportsLending');
                 break;
             }
         }
@@ -88,6 +94,24 @@ export default {
                 text: 'Error obteniendo las cuentas'
             })
         });
+        userDA.getAllCampaigns(this.token).then((res) =>{
+            this.completeCampaigns(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las campañas'
+            })
+        });
+        userDA.getAllLendings(this.token).then((res) =>{
+            this.completeLendings(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo los préstamos'
+              })
+        });
         userDA.getAllSalesRecord(this.token).then((res) =>{
             this.completeSalesRecords(res.data);
         }).catch(error =>{
@@ -97,18 +121,15 @@ export default {
                 text: 'Error obteniendo los expedientes de Venta'
             })
         });
-
-        /*
-        userDA.getAllAccounts(this.token).then((res) =>{
-            this.completeAccounts(res.data);
+        userDA.getAllClientsBlackList(this.token).then((res) =>{
+            this.completeClientsBlackList(res.data);
         }).catch(error =>{
-          Swal.fire({
-            title: 'Error',
-            type: 'error',
-            text: 'Error obteniendo los clientes'
-          })
-        })
-        */
+            Swal.fire({
+                title: 'Erorr',
+                type: 'error',
+                text: 'Error obteniendo los clientes especiales'
+            })
+        });
     }
 }
 </script>
