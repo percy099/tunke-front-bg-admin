@@ -68,13 +68,13 @@
                     <input v-model="campaignCreate.maximumPeriod" type="text" class="form-control mb-5">
                 </div>
             </div>
+        </div>
 
         <div class="d-flex justify-content-center mt-3">
             <button class="btn mr-3" @click=$router.go(-1)>Volver</button>
              <button v-if="this.editCampaign == 1" @click="saveCampaign()" class="btn ml-5">Guardar</button>
              <button v-if="this.editCampaign == 2" @click="editCampaign()" class="btn ml-5">Editar</button>
         </div>
-    |   </div>
     </div>
 </template>
 
@@ -87,6 +87,7 @@ import { mapState, mapActions } from 'vuex';
 import * as userDA from '@/dataAccess/userDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
+import * as adminDA from '@/dataAccess/adminDA.js'
 
 export default {
     components:{
