@@ -11,10 +11,12 @@ import CRUDCampaign from './views/CRUDCampaign.vue'
 import ClientCreate from './views/ClientCreate.vue'
 import ClientAccounts from './views/ClientAccounts.vue'
 import AccountCreate from './views/AccountCreate.vue'
-import EditCampaign from './views/EditCampaign.vue'
+import CampaignCreate from './views/CampaignCreate.vue'
 import CRUDSalesRecords from './views/CRUDSalesRecords.vue'
 import CRUDBlackList from './views/CRUDBlackList.vue'
 import ViewSaleRecord from './views/ViewSaleRecord.vue'
+import ReportsAccount from './views/ReportsAccount.vue'
+import ReportsLending from './views/ReportsLending.vue'
 import BlackListCreate from './views/BlackListCreate.vue'
 import MassiveCharge from './views/MassiveCharge.vue'
 
@@ -96,12 +98,22 @@ export default new Router({
       component : CRUDCampaign
     },
     {
-      path : '/editCampaign',
-      name : 'editCampaign',
-      component : EditCampaign
+      path : '/campaignCreate',
+      name : 'campaignCreate',
+      component : CampaignCreate
     },
     {
-      path: '/blackListCreate',
+      path : '/reportsAccount',
+      name : 'reportsAccount',
+      component : ReportsAccount
+    },
+    {
+      path : '/reportsLending',
+      name : 'reportsLending',
+      component : ReportsLending
+    },
+    {
+      path : '/blackListCreate',
       name : 'blackListCreate',
       component : BlackListCreate
     },
