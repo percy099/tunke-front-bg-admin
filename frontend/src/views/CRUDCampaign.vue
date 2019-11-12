@@ -7,7 +7,7 @@
                     <div class="col-sm-6">
                     </div>
 					<div class="col-sm-6">
-                        <a id="createBtn" href="#deletePrestamoModal" class="btn btn-info" data-toggle="modal"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Campaña</span></a>
+                        <a @click="createCampaign()" id="createBtn" href="#deletePrestamoModal" class="btn btn-info" data-toggle="modal"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Campaña</span></a>
 					</div>
                 </div>
             </div>
@@ -36,6 +36,7 @@
                         <td class="space">{{campaign.maximumPeriod}}</td>
                         <td>{{campaign.interestRate}}%</td>
                         <td>
+                            <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE880;</i></a>
                             <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                             <a href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
                         </td>
@@ -84,15 +85,21 @@ export default {
     },
 
     methods:{
-        ...mapActions(['setActionCampaign','setCampaingIndex']),
+        ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate']),
+        viewCampaign(index){
+            this.$router.push('/editCampaign');
+            this.setActionCampaign(0);
+            this.setCampaignIndex(index);
+        },
 		createCampaign(){
-            this.$router.push('/campaignCreate');
-            this.setActionCampaign(false);
+            this.$router.push('/editCampaign');
+            this.setActionCampaign(1);
+            this.cleanCampaignCreate();
         },
         editCampaign(index){
-            this.$router.push('/campaignCreate');
-            this.setActionCampaign(true);
-            this.setCampaingIndex(index);
+            this.$router.push('/editCampaign');
+            this.setActionCampaign(2);
+            this.setCampaignIndex(index);
         },
         deleteCampaign(index){
             Swal.fire({

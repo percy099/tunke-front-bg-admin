@@ -7,7 +7,7 @@
                     <div class="col-sm-6">
                     </div>
 					<div class="col-sm-6">
-                        <a id="createBtn" href="#deletePrestamoModal" class="btn btn-info" data-toggle="modal"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Préstamo</span></a>
+                        <a id="createBtn" href="#addPrestamoModal" class="btn btn-info" data-toggle="modal"  @click=createLending()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Préstamo</span></a>
 					</div>
                 </div>
             </div>
@@ -16,8 +16,9 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre Cliente</th>
-                        <th>Número de cuotas</th>
                         <th>Monto</th>
+                        <th>Cuota</th>
+                        <th>Núm. cuotas</th>
 						<th>Tipo cuota</th>
                         <th>Tasa interés</th>
                         <th>Acciones</th>
@@ -26,15 +27,16 @@
                 <tbody>
                     <tr v-for="(lending,index) in lendings" v-bind:key="index"><!--TODO-->
 						<td>{{index + 1}}</td>
-                        <td>{{lending.firstName + ' ' + lending.fatherLastname}}</td>
-                        <td>{{lending.totalShares}}</td>
+                        <td>{{lending.fullName}}</td>
                         <td>{{lending.amount}}</td>
+                        <td>{{lending.share}}</td>
+                        <td>{{lending.totalShares}}</td>
 						<td v-if = "lending.idShareType==1">Ordinaria</td>
                         <td v-if = "lending.idShareType==2">Extraordinaria</td>
-                        <td>{{lending.interestRate}}</td>
+                        <td>{{lending.interestRate}}%</td>
                         <td>
-                            <a href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
-                            <a href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                            <a @click="viewLending(index)" href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalle">&#xE254;</i></a>
+                            <a @click="deleteClient(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -50,7 +52,7 @@ import {mapState, mapActions} from 'vuex'
 
 export default {
     computed:{
-        ...mapState(['lendings'])
+        ...mapState(['lendings','token',])
 	},
 	mounted(){
 		$('#mydatatable').DataTable({
@@ -77,7 +79,41 @@ export default {
         });
     },
     methods :{
-        ...mapActions
+        ...mapActions(['setLendingIndex']),
+        createLending(){
+            this.$router.push('/createLending');
+        },
+        viewLending(index){
+            this.$router.push('/viewLending');
+            this.setLendingIndex(index);
+            console.log(this.lendingCreate)
+        },
+         deleteLending(index){
+            Swal.fire({
+                title: '¿Está seguro que desea eliminar el préstamo del cliente ' + this.lendings[index].fullName + '?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText : 'Cancelar'
+            }).then((result) =>{
+                if(result.value){
+                    adminDA.deleteLending(this.lendings[index].idLoan,this.token).then((res)=>{
+                        Swal.fire({
+                            text: 'Préstamo eliminado correctamente',
+                            type: 'success'
+                        })
+                    }).catch(error=>{
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un problema eliminando el préstamo',
+                            type : 'error'
+                        })
+                    });
+                }
+            })
+        }
     }
 }
 </script>
