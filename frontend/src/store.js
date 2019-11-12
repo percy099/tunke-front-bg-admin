@@ -13,6 +13,19 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
+    countAccount: [10,10,10,10,10,10,10,10,15,15,20,20],
+    cntAccJan: 0,
+    cntAccFeb: 0,
+    cntAccMar: 0,
+    cntAccApr: 0,
+    cntAccMay: 0,
+    cntAccJun: 0,
+    cntAccJul: 0,
+    cntAccAug: 0,
+    cntAccSep: 0,
+    cntAccOct: 0,
+    cntAccNov: 0,
+    cntAccDec: 0,
     token : '',
     clients : [],
     lendings: [],
@@ -198,9 +211,80 @@ export default new Vuex.Store({
         }
       }
     },
+    /*Ronaldo*/
+    countAccountPerMonth(state,account_data){
+      let aux=account_data.accounts;
+      state.countAccount=[];
+      for(let i=0;i<aux.length;i++){
+        var str=aux.openingDate; //'12-12-2019'
+        var res=str.substring(3,5);
+        if(res=='12'){
+          console.log(res);
+          let i=11;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='11'){
+          console.log(res);
+          let i=10;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='10'){
+          console.log(res);
+          let i=9;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='09'){
+          console.log(res);
+          let i=8;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='08'){
+          console.log(res);
+          let i=7;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='07'){
+          console.log(res);
+          let i=6;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='06'){
+          console.log(res);
+          let i=5;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='05'){
+          console.log(res);
+          let i=4;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='04'){
+          console.log(res);
+          let i=3;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='03'){
+          console.log(res);
+          let i=2;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='02'){
+          console.log(res);
+          let i=1;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='01'){
+          console.log(res);
+          let i=0;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }
+      }
+    },
+    /*-------*/
     fillAccounts(state, account_data){
       let aux=account_data.accounts;
       state.accounts=[];
+      state.cntAccJan = 0;
+      state.cntAccFeb = 0;
+      state.cntAccMar = 0;
+      state.cntAccApr = 0;
+      state.cntAccMay = 0;
+      state.cntAccJun = 0;
+      state.cntAccJul = 0;
+      state.cntAccAug = 0;
+      state.cntAccSep = 0;
+      state.cntAccOct = 0;
+      state.cntAccNov = 0;
+      state.cntAccDec = 0;
       for(let i = 0; i < aux.length; i++){
         if(aux[i].active){
           state.accounts.push({
@@ -225,6 +309,47 @@ export default new Vuex.Store({
             typeName : aux[i].typeName
           })
         }
+        /*Ronaldo*/
+        let str=aux[i].openingDate; //'12-12-2019'
+        let res=str.substring(3,5);
+        if(res=='12'){
+          console.log(res);          
+          state.cntAccDec = state.cntAccDec + 1;
+        }else if(res=='11'){
+          console.log(res);
+          state.cntAccNov = state.cntAccNov + 1;
+        }else if(res=='10'){
+          console.log(res);
+          state.cntAccOct = state.cntAccOct + 1;
+        }else if(res=='09'){
+          console.log(res);
+          state.cntAccSep = state.cntAccSep + 1;
+        }else if(res=='08'){
+          console.log(res);
+          state.cntAccAug = state.cntAccAug + 1;
+        }else if(res=='07'){
+          console.log(res);
+          state.cntAccJul = state.cntAccJul + 1;
+        }else if(res=='06'){
+          console.log(res);
+          state.cntAccJun = state.cntAccJun + 1;
+        }else if(res=='05'){
+          console.log(res);
+          state.cntAccMay = state.cntAccMay + 1;
+        }else if(res=='04'){
+          console.log(res);
+          state.cntAccApr = state.cntAccApr + 1;
+        }else if(res=='03'){
+          console.log(res);
+          state.cntAccMar = state.cntAccMar + 1;
+        }else if(res=='02'){
+          console.log(res);
+          state.cntAccFeb = state.cntAccFeb + 1;
+        }else if(res=='01'){
+          console.log(res);
+          state.cntAccJan = state.cntAccJan + 1;
+        }
+      /*-------*/
       }
     },
     fillClientsBlackList(state, clientsBlackList_data){

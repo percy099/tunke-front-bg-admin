@@ -1,9 +1,13 @@
 <template>
     <div class="container">
         <div class="Chart">
-            <h1 style="text-align:center;">Barchart</h1>
-            <bar-example/>
+          <h1 style="text-align:center;">Número de Cuentas por mes</h1>
+          <bar-account/>          
         </div>  
+        <div class="Chart">
+          <h1 style="text-align:center;">Número de Cuentas por mes</h1>
+          <line-account/>
+        </div>
     </div>
 </template>
 
@@ -14,10 +18,12 @@ import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 
 /* Ronaldo */
-import BarExample from '@/util/BarExample'
+import BarAccount from '@/util/BarAccount'
+import LineAccount from '@/util/LineAccount'
 export default {
     components: {
-        BarExample
+        BarAccount,
+        LineAccount
     },
     data () {
       return {
