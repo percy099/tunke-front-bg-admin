@@ -107,6 +107,7 @@ export function deleteCampaign(idCampaign,token){
     });
 }
 
+
 export function deleteLending(idLoan,token){
     let url = process.env.VUE_APP_API_URL + '' + idLoan;
 

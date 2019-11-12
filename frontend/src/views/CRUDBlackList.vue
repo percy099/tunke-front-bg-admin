@@ -7,7 +7,7 @@
                     <div class="col-sm-6">
                     </div>
 					<div class="col-sm-6">                     
-						<a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click=createClient()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Cliente Especial</span></a>					
+						<a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal" @click="$router.push('/blackListCreate')"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Añadir Cliente Especial</span></a>					
 					</div>
                 </div>
             </div>

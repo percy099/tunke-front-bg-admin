@@ -15,7 +15,8 @@ import EditCampaign from './views/EditCampaign.vue'
 import CRUDSalesRecords from './views/CRUDSalesRecords.vue'
 import CRUDBlackList from './views/CRUDBlackList.vue'
 import ViewSaleRecord from './views/ViewSaleRecord.vue'
-
+import BlackListCreate from './views/BlackListCreate.vue'
+import MassiveCharge from './views/MassiveCharge.vue'
 
 
 Vue.use(Router)
@@ -98,6 +99,16 @@ export default new Router({
       path : '/editCampaign',
       name : 'editCampaign',
       component : EditCampaign
+    },
+    {
+      path: '/blackListCreate',
+      name : 'blackListCreate',
+      component : BlackListCreate
+    },
+    {
+      path : '/massiveCharge',
+      name : 'massiveCharge',
+      component : MassiveCharge
     }
   ]
 })
