@@ -7,7 +7,7 @@
                     <div class="col-sm-6">
                     </div>
 					<div class="col-sm-6">
-                        <a id="createBtn" href="#deletePrestamoModal" class="btn btn-info" data-toggle="modal" @click=createCampaign()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Campaña</span></a>
+                        <a @click="createCampaign()" id="createBtn" href="#deletePrestamoModal" class="btn btn-info" data-toggle="modal"><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Campaña</span></a>
 					</div>
                 </div>
             </div>
