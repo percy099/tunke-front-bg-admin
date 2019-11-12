@@ -175,14 +175,11 @@ export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumL
         });
 }
 
-export function editCampaign(idCampaign,name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+export function editCampaign(idCampaign,name,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
     let url = process.env.VUE_APP_API_URL + 'api/campaign/' + idCampaign
     
     var body ={
         "name" : name,
-        "month" : month,
-        "startDate" : startDate,
-        "endDate" : endDate,
         "minimumLoan" : minimumLoan,
         "maximumLoan" : maximumLoan,
         "minimumPeriod" : minimumPeriod,

@@ -58,12 +58,10 @@
                     <input v-model="campaignCreate.minimumLoan" type="text" class="form-control">
                     <h6 class="mt-3">Plazo mínimo</h6>
                     <input v-model="campaignCreate.minimumPeriod" type="text" class="form-control">
-                    <h6 class="mt-3">Ratio de interés</h6>
-                    <input v-model="campaignCreate.interestRate" type="text" class="form-control mb-5">
                 </div>
                 <div v-if="editCampaign == 2" class="col-6 groupRightPersonal">
-                    <h6>Campaña activa</h6>
-                    <input v-model="campaignCreate.active" type="text" class="form-control">
+                    <h6>Ratio de interés</h6>
+                    <input v-model="campaignCreate.interestRate" type="text" class="form-control">
                     <h6 class="mt-3">Fecha Inicio</h6>
                     <input v-model="campaignCreate.maximumLoan" type="text" class="form-control">
                     <h6 class="mt-3">Plazo máximo</h6>
@@ -201,11 +199,11 @@ export default {
                 })
             })
         },
-        /*
+        
         editCampaign(){
-            adminDA.editCampaign(this.campaignCreate.idCampaign,this.campaignCreate.name,this.campaignCreate.month,
-            this.campaignCreate.startDate,this.campaignCreate.endDate,this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan,
-            this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate, this.token).then((res) =>{
+            adminDA.editCampaign(this.campaignCreate.idCampaign,this.campaignCreate.name,
+            this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan, this.campaignCreate.minimumPeriod, 
+            this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate, this.token).then((res) =>{
                 Swal.fire({
                     type: 'success',
                     title: 'Enhorabuena',
@@ -219,7 +217,7 @@ export default {
                 })
             })
         }
-        */
+        
         
 
     },
