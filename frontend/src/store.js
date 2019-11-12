@@ -68,7 +68,10 @@ export default new Vuex.Store({
       maximumPeriod : -1,
       interestRate : -1,
       idCurrency : -1,
-      active : -1
+      active : '',
+      loanRange : '',
+      periodRange : '',
+
     },
     lendingCreate :{
       idLoan : -1,
@@ -159,7 +162,16 @@ export default new Vuex.Store({
               idSalesRecord : lendings_data[i].idSalesRecord,
               idShareType : lendings_data[i].idShareType,
               idAccount : lendings_data[i].idAccount,
-              active : lendings_data[i].active
+              share: lendings_data[i].share,
+              active : lendings_data[i].active,
+              campaignName : lendings_data[i].campaignName ,
+              accountNumber : lendings_data[i].accountNumber,
+              currency : lendings_data[i].currency,
+              fullName : lendings_data[i].fullName,
+              documentNumber : lendings_data[i].documentNumber,
+              documentType : lendings_data[i].documentType,
+              requestDate : lendings_data[i].requestDate,
+              commission : lendings_data[i].commission
             });
           }
         }
@@ -250,6 +262,21 @@ export default new Vuex.Store({
       state.clientCreate.vehicle1Plate = person_data.vehicle1Plate;
       state.clientCreate.vehicle2Plate = person_data.vehicle2Plate;
     },
+    fillLendingCreate(state,client_data){
+      state.lendingCreate.idClient = client_data.idClient;
+      state.lendingCreate.documentType = client_data.documentType;
+      state.lendingCreate.documentNumber = client_data.documentNumber;
+      state.lendingCreate.fullName = client_data.firstName + ' ' + client_data.fatherLastname;
+    },
+    fillLendingCreateCampaign(state,campaign_data){
+      state.lendingCreate.idCampaign = campaign_data.idCampaign;
+      state.lendingCreate.campaignName = campaign_data.name;
+      state.lendingCreate.interestRate = campaign_data.interestRate;
+      if(campaign_data.idCurrency==1){
+        state.lendingCreate.currency='Soles'
+      }else 
+      state.lendingCreate.currency='Dólares'
+    },
     fillAccountCreate(state, person_data){
       state.accountCreate.idPerson = person_data.idPerson;
       state.accountCreate.firstName = person_data.firstName;
@@ -330,6 +357,43 @@ export default new Vuex.Store({
       state.accountCreate.flag = '';
       state.accountCreate.address = '';
     },
+    cleanCampCreate(state){
+      state.campaignCreate.idCampaign = -1;
+      state.campaignCreate.name = '';
+      state.campaignCreate.month = '';
+      state.campaignCreate.startDate = '';
+      state.campaignCreate.endDate = '';
+      state.campaignCreate.minimumLoan = '';
+      state.campaignCreate.maximumLoan = '';
+      state.campaignCreate.minimumPeriod = '';
+      state.campaignCreate.maximumPeriod = '';
+      state.campaignCreate.interestRate = '';
+      state.campaignCreate.idCurrency = -1;
+      state.campaignCreate.active = '';
+      state.campaignCreate.loanRange = '';
+      state.campaignCreate.periodRange = '';
+    },
+    cleanLendCre(state) {
+      state.lendingCreate.idLoan = -1;
+      state.lendingCreate.totalShares = '';
+      state.lendingCreate.amount = '';
+      state.lendingCreate.interestRate = '';
+      state.lendingCreate.idCampaign = -1;
+      state.lendingCreate.idClient = -1;
+      state.lendingCreate.idSalesRecord = -1;
+      state.lendingCreate.idShareType= -1;
+      state.lendingCreate.idAccount = -1;
+      state.lendingCreate.share = '';
+      state.lendingCreate.active = '';
+      state.lendingCreate.campaignName = '';
+      state.lendingCreate.accountNumber = '';
+      state.lendingCreate.currency = '';
+      state.lendingCreate.fullName = '';
+      state.lendingCreate.documentNumber = '';
+      state.lendingCreate.documentType = '';
+      state.lendingCreate.requestDate = '';
+      state.lendingCreate.commission = '';
+    },
     fillAccByCli(state,accountsData){
       state.accountsByClient = [];
       for(let i=0;i<accountsData.length;i++){
@@ -350,33 +414,50 @@ export default new Vuex.Store({
     },
     setCampaignInd(state, index){
       state.selectedCampaignIndex = index;
-      state.campaignCreate.idCampaign = state.campaigns[index].idCampaign,
-      state.campaignCreate.name = state.campaigns[index].name,
-      state.campaignCreate.month = state.campaigns[index].month,
-      state.campaignCreate.startDate = state.campaigns[index].startDate,
-      state.campaignCreate.endDate = state.campaigns[index].endDate,
-      state.campaignCreate.minimumLoan = state.campaigns[index].minimumLoan,
-      state.campaignCreate.maximumLoan = state.campaigns[index].maximumLoan,
-      state.campaignCreate.minimumPeriod = state.campaigns[index].minimumPeriod,
-      state.campaignCreate.maximumPeriod = state.campaigns[index].maximumPeriod,
-      state.campaignCreate.interestRate = state.campaigns[index].interestRate,
-      state.campaignCreate.idCurrency = state.campaigns[index].idCurrency,
-      state.campaignCreate.active = state.campaigns[index].active
+      state.campaignCreate.idCampaign = state.campaigns[index].idCampaign;
+      state.campaignCreate.name = state.campaigns[index].name;
+      state.campaignCreate.month = state.campaigns[index].month;
+      state.campaignCreate.startDate = state.campaigns[index].startDate;
+      state.campaignCreate.endDate = state.campaigns[index].endDate;
+      state.campaignCreate.minimumLoan = state.campaigns[index].minimumLoan;
+      state.campaignCreate.maximumLoan = state.campaigns[index].maximumLoan;
+      state.campaignCreate.minimumPeriod = state.campaigns[index].minimumPeriod;
+      state.campaignCreate.maximumPeriod = state.campaigns[index].maximumPeriod;
+      state.campaignCreate.interestRate = state.campaigns[index].interestRate;
+      state.campaignCreate.idCurrency = state.campaigns[index].idCurrency;
+      if(state.campaigns[index].active == 1){
+        state.campaignCreate.active = 'Activo'
+      }
+      /*Que percy me mande la moneda*/
+      if(state.campaigns[index].idCurrency == 1){
+        state.campaignCreate.loanRange = "De " + state.campaignCreate.minimumLoan + " a " + state.campaignCreate.maximumLoan + " soles";
+      } else {
+        state.campaignCreate.loanRange = "De " + state.campaignCreate.minimumLoan + " a " + state.campaignCreate.maximumLoan + " dólares";
+      }
+      state.campaignCreate.periodRange = "De " + state.campaignCreate.minimumPeriod + " a " + state.campaignCreate.maximumPeriod + " meses";
+      console.log(state.campaignCreate.startDate);
     },
     setLendingInd(state, index){
       state.selectedLendingIndex = index;
-      state.lendingCreate.idLending = state.lendings[index].idLending,
-      state.lendingCreate.feesNumber = state.lendings[index].feesNumber,
-      state.lendingCreate.amount = state.lendings[index].amount,
-      state.lendingCreate.feeType = state.lendings[index].feeType,
-      state.lendingCreate.interestRate = state.lendings[index].interestRate,
-      state.lendingCreate.firstName = state.lendings[index].firstName,
-      state.lendingCreate.middleName = state.lendings[index].middleName,
-      state.lendingCreate.fatherLastname = state.lendings[index].fatherLastname,
-      state.lendingCreate.motherLastname = state.lendings[index].motherLastname,
-      state.lendingCreate.birthdate = state.lendings[index].birthdate,
-      state.lendingCreate.nationality = state.lendings[index].nationality,
-      state.lendingCreate.address = state.lendings[index].address
+      state.lendingCreate.idLoan = state.lendings[index].idLoan;
+      state.lendingCreate.totalShares = state.lendings[index].totalShares;
+      state.lendingCreate.amount = state.lendings[index].amount;
+      state.lendingCreate.interestRate = state.lendings[index].interestRate;
+      state.lendingCreate.idCampaign = state.lendings[index].idCampaign;
+      state.lendingCreate.idClient = state.lendings[index].idClient;
+      state.lendingCreate.idSalesRecord = state.lendings[index].idSalesRecord;
+      state.lendingCreate.idShareType = state.lendings[index].idShareType;
+      state.lendingCreate.idAccount = state.lendings[index].idAccount;
+      state.lendingCreate.share = state.lendings[index].share;
+      state.lendingCreate.active = state.lendings[index].active;
+      state.lendingCreate.campaignName = state.lendings[index].campaignName;
+      state.lendingCreate.accountNumber = state.lendings[index].accountNumber;
+      state.lendingCreate.currency = state.lendings[index].currency;
+      state.lendingCreate.fullName = state.lendings[index].fullName;
+      state.lendingCreate.documentNumber = state.lendings[index].documentNumber;
+      state.lendingCreate.documentType = state.lendings[index].documentType;
+      state.lendingCreate.requestDate = state.lendings[index].requestDate;
+      state.lendingCreate.commission = state.lendings[index].commission;
     },
     fillSalesRecord(state, salesRecord_data){
       let aux=salesRecord_data.salesRecords;
@@ -495,8 +576,14 @@ export default new Vuex.Store({
       state.salesRecordCreate.productName = state.salesRecords[index].productName;
       state.salesRecordCreate.completeName = state.salesRecords[index].firstName + " " + state.salesRecords[index].fatherLastname;
     },
-    setActCampaign(state,edit){
-      state.editCampaign = edit;
+
+    setActCampaign(state, flag){
+      /*
+        0: Ver Campaña
+        1: Crear Campaña
+        2: Editar Campaña
+      */
+      state.editCampaign = flag;
     }
   },
   actions: {
@@ -514,6 +601,12 @@ export default new Vuex.Store({
       },
       setLendingIndex(context, index){
         context.commit('setLendingInd', index);
+      },
+      completeLendingCreate(context,client_data){
+        context.commit('fillLendingCreate',client_data);
+      },
+      completeLendingCreateCampaign(context,campaign_data){
+        context.commit('fillLendingCreateCampaign',campaign_data);
       },
       setCampaignIndex(context, index){
         context.commit('setCampaignInd', index);
@@ -554,6 +647,9 @@ export default new Vuex.Store({
       cleanAccountCreate(context){
         context.commit('cleanAccCre');
       },
+      cleanLendingCreate(context){
+        context.commit('cleanLendCre');
+      },
       fillAccountsByClient(context,account_data){
         context.commit('fillAccByCli',account_data);
       },
@@ -562,6 +658,12 @@ export default new Vuex.Store({
       },
       setSalesRecordIndex(context, index){
         context.commit('fillSalesInd', index);
+      },
+      setActionCampaign(context, flag){
+        context.commit('setActCampaign', flag);
+      },
+      cleanCampaignCreate(context){
+        context.commit('cleanCampCreate');
       }
   }
 })

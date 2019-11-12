@@ -89,15 +89,21 @@ export default {
     },
 
     methods:{
-        ...mapActions(['setActionCampaign','setCampaingIndex']),
+        ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate']),
+        viewCampaign(index){
+            this.$router.push('/editCampaign');
+            this.setActionCampaign(0);
+            this.setCampaignIndex(index);
+        },
 		createCampaign(){
-            this.$router.push('/campaignCreate');
-            this.setActionCampaign(false);
+            this.$router.push('/editCampaign');
+            this.setActionCampaign(1);
+            this.cleanCampaignCreate();
         },
         editCampaign(index){
-            this.$router.push('/campaignCreate');
-            this.setActionCampaign(true);
-            this.setCampaingIndex(index);
+            this.$router.push('/editCampaign');
+            this.setActionCampaign(2);
+            this.setCampaignIndex(index);
         },
         deleteCampaign(index){
             Swal.fire({

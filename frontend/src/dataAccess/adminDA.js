@@ -194,6 +194,7 @@ export function editCampaign(idCampaign,name,minimumLoan,maximumLoan,minimumPeri
             password: ''
             }
         });
+
 }
 
 export function chargeBlackList(token,body){
