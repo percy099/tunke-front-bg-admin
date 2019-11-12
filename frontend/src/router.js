@@ -98,8 +98,8 @@ export default new Router({
       component : CRUDCampaign
     },
     {
-      path : '/campaignCreate',
-      name : 'campaignCreate',
+      path : '/editCampaign',
+      name : 'editCampaign',
       component : CampaignCreate
     },
     {

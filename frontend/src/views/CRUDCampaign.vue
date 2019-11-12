@@ -41,6 +41,7 @@
                         <td class="sapce">{{campaign.interestRate}}%</td>
                         <td>{{campaign.idCurrency}}</td>
                         <td>
+                            <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalles">&#xE880;</i></a>
                             <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                             <a @click="deleteCampaign(index)" href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
                         </td>
