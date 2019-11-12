@@ -4,6 +4,8 @@ import Login from './views/Login.vue'
 import Home from './views/Home.vue'
 import CRUDClient from './views/CRUDClient.vue'
 import CRUDLending from './views/CRUDLending.vue'
+import ViewLending from './views/ViewLending.vue'
+import CreateLending from './views/CreateLending.vue'
 import CRUDAccounts from './views/CRUDAccounts.vue'
 import CRUDCampaign from './views/CRUDCampaign.vue'
 import ClientCreate from './views/ClientCreate.vue'
@@ -13,7 +15,8 @@ import EditCampaign from './views/EditCampaign.vue'
 import CRUDSalesRecords from './views/CRUDSalesRecords.vue'
 import CRUDBlackList from './views/CRUDBlackList.vue'
 import ViewSaleRecord from './views/ViewSaleRecord.vue'
-
+import BlackListCreate from './views/BlackListCreate.vue'
+import MassiveCharge from './views/MassiveCharge.vue'
 
 
 Vue.use(Router)
@@ -41,6 +44,16 @@ export default new Router({
       path: '/crudLending',
       name: 'crudLending',
       component: CRUDLending
+    },
+    {
+      path: '/viewLending',
+      name: 'viewLending',
+      component: ViewLending
+    },
+    {
+      path : '/createLending',
+      name : 'createLending',
+      component : CreateLending
     },
     {
       path : '/clientCreate',
@@ -86,6 +99,16 @@ export default new Router({
       path : '/editCampaign',
       name : 'editCampaign',
       component : EditCampaign
+    },
+    {
+      path: '/blackListCreate',
+      name : 'blackListCreate',
+      component : BlackListCreate
+    },
+    {
+      path : '/massiveCharge',
+      name : 'massiveCharge',
+      component : MassiveCharge
     }
   ]
 })
