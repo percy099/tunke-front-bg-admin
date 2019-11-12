@@ -20,7 +20,7 @@
                     <input v-model="campaignCreate.startDate" type="date" class="form-control" disabled>
                     <h6 class="mt-3">Préstamo Rango</h6>
                     <input v-model="campaignCreate.loanRange" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Ratio de interés</h6>
+                    <h6 class="mt-3">Tasa de interés</h6>
                     <input v-model="campaignCreate.interestRate" type="text" class="form-control mb-5" disabled>
                 </div>
                 <div v-if="editCampaign == 0" class="col-6 groupRightPersonal">
@@ -40,7 +40,7 @@
                     <input v-model="campaignCreate.minimumLoan" type="text" class="form-control">
                     <h6 class="mt-3">Periodo mínimo</h6>
                     <input v-model="campaignCreate.minimumPeriod" type="text" class="form-control">
-                    <h6 class="mt-3">Ratio de interés</h6>
+                    <h6 class="mt-3">Tasa de interés</h6>
                     <input v-model="campaignCreate.interestRate" type="text" class="form-control mb-5">
                 </div>
                 <div v-if="editCampaign == 1" class="col-6 groupRightPersonal">
@@ -60,7 +60,7 @@
                     <input v-model="campaignCreate.minimumPeriod" type="text" class="form-control">
                 </div>
                 <div v-if="editCampaign == 2" class="col-6 groupRightPersonal">
-                    <h6>Ratio de interés</h6>
+                    <h6>Tasa de interés</h6>
                     <input v-model="campaignCreate.interestRate" type="text" class="form-control">
                     <h6 class="mt-3">Fecha Inicio</h6>
                     <input v-model="campaignCreate.maximumLoan" type="text" class="form-control">
