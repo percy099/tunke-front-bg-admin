@@ -1,13 +1,17 @@
 <template>
     <div class="container">
-        <div class="Chart">
-          <h1 style="text-align:center;">Número de Cuentas por mes</h1>
-          <bar-account/>          
-        </div>  
-        <div class="Chart">
-          <h1 style="text-align:center;">Número de Cuentas por mes</h1>
-          <line-account/>
-        </div>
+      <label class="mr-1">Seleccione año inicio: </label>
+      <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+      <label class="ml-2 mr-1">Seleccione año fin:</label>
+      <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+      <div class="Chart">
+        <h1 style="text-align:center;">Número de Cuentas por mes</h1>
+        <bar-account/>          
+      </div>  
+      <div class="Chart">
+        <h1 style="text-align:center;">Número de Cuentas por mes</h1>
+        <line-account/>
+      </div>
     </div>
 </template>
 
@@ -20,15 +24,21 @@ import Swal from 'sweetalert2'
 /* Ronaldo */
 import BarAccount from '@/util/BarAccount'
 import LineAccount from '@/util/LineAccount'
+//import Datepicker from 'vuejs-datepicker'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css';
 export default {
     components: {
         BarAccount,
-        LineAccount
+        LineAccount,
+        DatePicker
     },
     data () {
       return {
         dataPoints: null,
-        height: 20
+        height: 20,
+        value1: '',
+        value2: ''
       }
     },
     mounted () {
