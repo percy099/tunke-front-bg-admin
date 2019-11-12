@@ -195,3 +195,13 @@ export function editCampaign(idCampaign,name,minimumLoan,maximumLoan,minimumPeri
             }
         });
 }
+export function chargeBlackList(token,body){
+    let url = process.env.VUE_APP_API_URL + 'api/blackLists/'
+
+    return axios.post(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
