@@ -15,8 +15,8 @@
             <div class="col-6">
                 <h2 class="mt-5">Reportes:</h2>
                 <div class="d-flex flex-column justify-content-center mb-3 mt-2">
-                    <button class="btn">Reporte de Cuentas</button>
-                    <button class="btn">Reporte de Préstamos</button>
+                    <button @click="openWindow('reportsA')" class="btn">Reporte de Cuentas</button>
+                    <button @click="openWindow('reportsL')" class="btn">Reporte de Préstamos</button>
                 </div>
                 <h2 class="mt-4">Configuración:</h2>
                 <div class="d-flex flex-column justify-content-center">
@@ -61,6 +61,12 @@ export default {
                 break;
                 case 'blackList':
                     router.push('/crudBlackList');
+                break;
+                case 'reportsA':
+                    router.push('/reportsAccount');
+                break;
+                case 'reportsL':
+                    router.push('/reportsLending');
                 break;
             }
         }
