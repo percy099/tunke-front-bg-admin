@@ -38,7 +38,7 @@
                         <td>{{lending.requestDate}}</td>
                         <td>
                             <a @click="viewLending(index)" href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalle">&#xE254;</i></a>
-                            <a @click="deleteClient(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                            <!--a @click="deleteClient(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>-->
                         </td>
                     </tr>
                 </tbody>
