@@ -255,10 +255,6 @@ table.table .avatar {
     left: -10px;
 }
 
-.btn{
-  background-color: #090d4d;
-}
-
 #createBtn{
 width : 35%;
 }
@@ -279,4 +275,15 @@ padding-top : 1.7%;
 
 .space_2{
     width: 15%;
+}
+
+.btn{
+    background-color: #090d4d;
+}
+
+#butt{
+    font-weight: 600;  
+    width: 20vh;
+    color : white;
+    background-color: #090d4d;
 }
