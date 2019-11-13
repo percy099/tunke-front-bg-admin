@@ -13,7 +13,6 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
-    countAccount: [10,10,10,10,10,10,10,10,15,15,20,20],
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,
@@ -270,6 +269,67 @@ export default new Vuex.Store({
       }
     },
     /*-------*/
+    /*Ronaldo*/
+    fillAccountDataBarChart(state, year){
+      let aux=state.accounts;
+      console.log(state.cntAccNov);   
+      state.cntAccJan = 0;
+      state.cntAccFeb = 0;
+      state.cntAccMar = 0;
+      state.cntAccApr = 0;
+      state.cntAccMay = 0;
+      state.cntAccJun = 0;
+      state.cntAccJul = 0;
+      state.cntAccAug = 0;
+      state.cntAccSep = 0;
+      state.cntAccOct = 0;
+      state.cntAccNov = 0;
+      console.log(state.cntAccNov); 
+      state.cntAccDec = 0;      
+      for(let i = 0; i < aux.length; i++){
+        let str=aux[i].openingDate; //'12-12-2019'
+        let res=str.substring(3,5);
+        let yy=str.substring(6,10);
+        console.log(yy==year);
+        if(res=='12' && yy==year){
+          console.log(res);          
+          state.cntAccDec = state.cntAccDec + 1;
+        }else if(res=='11' && yy==year){
+          console.log(res);
+          state.cntAccNov = state.cntAccNov + 1;
+        }else if(res=='10' && yy==year){
+          console.log(res);
+          state.cntAccOct = state.cntAccOct + 1;
+        }else if(res=='09' && yy==year){
+          console.log(res);
+          state.cntAccSep = state.cntAccSep + 1;
+        }else if(res=='08' && yy==year){
+          console.log(res);
+          state.cntAccAug = state.cntAccAug + 1;
+        }else if(res=='07' && yy==year){
+          console.log(res);
+          state.cntAccJul = state.cntAccJul + 1;
+        }else if(res=='06' && yy==year){
+          console.log(res);
+          state.cntAccJun = state.cntAccJun + 1;
+        }else if(res=='05' && yy==year){
+          console.log(res);
+          state.cntAccMay = state.cntAccMay + 1;
+        }else if(res=='04' && yy==year){
+          console.log(res);
+          state.cntAccApr = state.cntAccApr + 1;
+        }else if(res=='03' && yy==year){
+          console.log(res);
+          state.cntAccMar = state.cntAccMar + 1;
+        }else if(res=='02' && yy==year){
+          console.log(res);
+          state.cntAccFeb = state.cntAccFeb + 1;
+        }else if(res=='01' && yy==year){
+          console.log(res);
+          state.cntAccJan = state.cntAccJan + 1;
+        }
+      }
+    },    
     fillAccounts(state, account_data){
       let aux=account_data.accounts;
       state.accounts=[];
@@ -711,7 +771,7 @@ export default new Vuex.Store({
       state.editCampaign = flag;
     }
   },
-  actions: {
+  actions: {      
       completeClients(context,clients_data){
         context.commit('fillClients',clients_data);
       },
@@ -757,6 +817,11 @@ export default new Vuex.Store({
       completePersonCreate(context,person_data){
         context.commit('fillPersonCreate',person_data);
       },
+      /*Ronaldo*/
+      prueba(context, year){
+        context.commit('fillAccountDataBarChart', year);
+      },
+      /*-------*/
       completeAccounts(context, account_data){
         context.commit('fillAccounts', account_data);
       },
