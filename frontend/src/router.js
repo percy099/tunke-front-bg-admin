@@ -19,6 +19,7 @@ import ReportsAccount from './views/ReportsAccount.vue'
 import ReportsLending from './views/ReportsLending.vue'
 import BlackListCreate from './views/BlackListCreate.vue'
 import MassiveCharge from './views/MassiveCharge.vue'
+import ParametersConfiguration from './views/ParametersConfiguration.vue'
 
 
 Vue.use(Router)
@@ -121,6 +122,11 @@ export default new Router({
       path : '/massiveCharge',
       name : 'massiveCharge',
       component : MassiveCharge
-    }
+    },
+    {
+      path : '/parametersConfiguration',
+      name : 'parametersConfiguration',
+      component : ParametersConfiguration
+    },
   ]
 })
