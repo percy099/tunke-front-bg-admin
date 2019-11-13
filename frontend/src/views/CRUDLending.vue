@@ -19,8 +19,9 @@
                         <th>Monto</th>
                         <th>Cuota</th>
                         <th>Núm. cuotas</th>
-						<th>Tipo cuota</th>
-                        <th>Tasa interés</th>
+						<th>Tasa interés</th>
+                        <!--<th>Tipo cuota</th>-->
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -31,9 +32,10 @@
                         <td>{{lending.amount}}</td>
                         <td>{{lending.share}}</td>
                         <td>{{lending.totalShares}}</td>
-						<td v-if = "lending.idShareType==1">Ordinaria</td>
-                        <td v-if = "lending.idShareType==2">Extraordinaria</td>
+						<!--<td v-if = "lending.idShareType==1">Ordinaria</td>
+                        <td v-if = "lending.idShareType==2">Extraordinaria</td>-->
                         <td>{{lending.interestRate}}%</td>
+                        <td>{{lending.requestDate}}</td>
                         <td>
                             <a @click="viewLending(index)" href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalle">&#xE254;</i></a>
                             <a @click="deleteClient(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
@@ -52,10 +54,15 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import * as userDA from '@/dataAccess/userDA.js'
+import * as adminDA from '@/dataAccess/adminDA.js'
+import Swal from 'sweetalert2'
+import ClientAccounts from "@/views/ClientAccounts.vue"
+import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 
 export default {
     computed:{
-        ...mapState(['lendings','token',])
+        ...mapState(['lendings','token','clientCreate'])
 	},
 	mounted(){
 		$('#mydatatable').DataTable({
@@ -82,14 +89,15 @@ export default {
         });
     },
     methods :{
-        ...mapActions(['setLendingIndex']),
+        ...mapActions(['setLendingIndex','completePersonCreate']),
         createLending(){
             this.$router.push('/createLending');
+            this.cleanLendingCreate();
         },
         viewLending(index){
             this.$router.push('/viewLending');
             this.setLendingIndex(index);
-            console.log(this.lendingCreate)
+            //console.log(this.lendingCreate)
         },
          deleteLending(index){
             Swal.fire({
