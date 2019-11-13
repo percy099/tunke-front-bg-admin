@@ -18,12 +18,9 @@
                         <th>Nombre</th>
                         <th>Fecha inicio</th>
 						<th>Fecha fin</th>
-                        <th>Monto mín</th>
-                        <th>Monto máx</th>
                         <th>Plazo mín</th>
                         <th>Plazo máx</th>
                         <th>Tasa de interés</th>
-                        <th>Tipo de Moneda</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -34,14 +31,11 @@
                         <!--<td>{{campaign.month}}</td>-->
 						<td class="space_2">{{campaign.startDate}}</td>
                         <td class="space_2">{{campaign.endDate}}</td>
-                        <td class="space">{{campaign.minimumLoan}}</td>
-                        <td class="space">{{campaign.maximumLoan}}</td>
                         <td class="space">{{campaign.minimumPeriod}}</td>
                         <td class="space">{{campaign.maximumPeriod}}</td>
                         <td class="sapce">{{campaign.interestRate}}%</td>
-                        <td>{{campaign.idCurrency}}</td>
                         <td>
-                            <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalles">&#xE880;</i></a>
+                            <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE880;</i></a>
                             <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                             <a @click="deleteCampaign(index)" href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
                         </td>
@@ -92,17 +86,17 @@ export default {
     methods:{
         ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate']),
         viewCampaign(index){
-            this.$router.push('/editCampaign');
+            this.$router.push('/campaignCreate');
             this.setActionCampaign(0);
             this.setCampaignIndex(index);
         },
 		createCampaign(){
-            this.$router.push('/editCampaign');
+            this.$router.push('/campaignCreate');
             this.setActionCampaign(1);
             this.cleanCampaignCreate();
         },
         editCampaign(index){
-            this.$router.push('/editCampaign');
+            this.$router.push('/campaignCreate');
             this.setActionCampaign(2);
             this.setCampaignIndex(index);
         },
