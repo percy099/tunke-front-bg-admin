@@ -20,7 +20,7 @@
                 </div>
                 <h2 class="mt-4">Configuración:</h2>
                 <div class="d-flex flex-column justify-content-center">
-                    <button class="btn">Configuración de Parámetros</button>
+                    <button @click="openWindow('parConfig')" class="btn">Configuración de Parámetros</button>
                 </div>
             </div>
         </div>
@@ -68,6 +68,8 @@ export default {
                 case 'reportsL':
                     router.push('/reportsLending');
                 break;
+                case 'parConfig':
+                    router.push('/parametersConfiguration');
             }
         }
     },
