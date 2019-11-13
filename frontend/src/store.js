@@ -92,6 +92,7 @@ export default new Vuex.Store({
       documentNumber: '',
       documentType: '',
       requestDate: '',
+      commission: -1,
     },
     salesRecordCreate :{
       activeAccount : false,

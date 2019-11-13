@@ -5,16 +5,16 @@
         </div>
         <!-- Tab links -->
         <div class="tab">
-        <button id="btnLending" class="tablinks inactive" @click="openData('Lending')">Datos del Préstamo</button>
         <button id="btnClient" class="tablinks inactive" @click="openData('Client')">Datos del Cliente</button>
+        <button id="btnLending" class="tablinks inactive" @click="openData('Lending')">Datos del Préstamo</button>
         </div>
 
         <!-- Tab content -->
         <div id="Lending" class="tabcontent">
             <div class="row mt-4">
                 <div class="col-6 groupLeftPersonal">
-                    <h6>Nombre Cliente</h6>
-                    <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>
+                    <!--<h6>Nombre Cliente</h6>
+                    <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>-->
                     <h6 class="mt-3">Fecha Préstamo</h6>
                     <input v-model="lendingCreate.requestDate" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Tipo de moneda</h6>
@@ -28,18 +28,18 @@
                     <input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
                 </div>
                 <div class="col-6 groupRightPersonal">
-                    <h6>Nro. Documento</h6>
-                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
+                    <!--<h6>Nro. Documento</h6>
+                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>-->
                     <h6 class="mt-3">Campaña</h6>
-                    <input v-model="lendingCreate.campaignName" type="text" class="form-control" disabled>
+                    <input v-model="lendingCreate.campaignName" id="right2" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Número de cuenta</h6>
-                    <input v-model="lendingCreate.accountNumber" type="text" class="form-control" disabled>
+                    <input v-model="lendingCreate.accountNumber" id="right2" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Número de cuotas</h6>
-                    <input v-model="lendingCreate.totalShares" type="text" class="form-control" disabled>
+                    <input v-model="lendingCreate.totalShares" id="right2" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Cuota</h6>
-                    <input v-model="lendingCreate.share" type="text" class="form-control" disabled>
+                    <input v-model="lendingCreate.share" id="right2" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Comisión</h6>
-                    <input v-model="lendingCreate.commission" type="text" class="form-control mb-5" disabled>
+                    <input v-model="lendingCreate.commission" id="right2" type="text" class="form-control mb-5" disabled>
                 </div>
             </div>
         </div>
@@ -47,16 +47,33 @@
         <div id="Client" class="tabcontent">
             <div class="row mt-4">
                 <div class="col-6 groupLeftPersonal">
-                    <h6>Nombre Cliente</h6>
-                    <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Número de cuenta</h6>
-                    <input v-model="lendingCreate.accountNumber" type="text" class="form-control mb-5" disabled>
+                    <h6>Primer Nombre</h6>
+                    <input v-model="clientCreate.firstName" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Apellido Paterno</h6>
+                    <input v-model="clientCreate.fatherLastname" type="text" class="form-control" disabled>
+                    <div class="mt-3">
+                        <span >Fecha de Nacimiento</span>
+                        <br><input v-model="clientCreate.birthdate"  type="date" style="height:2.3em; width:21em;" disabled>
+                    </div>
+                    <h6 class="mt-2">Nro. Documento</h6>
+                    <input v-model="clientCreate.documentNumber" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Correo electrónico</h6>
+                    <input v-model="clientCreate.email1"  type="text" class="form-control mb-5" disabled>
                 </div>
                 <div class="col-6 groupRightPersonal">
-                    <h6>Nro. Documento</h6>
-                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Tipo de moneda</h6>
-                    <input v-model="lendingCreate.currency" id="right2" type="text" class="form-control mb-5" disabled>
+                    <h6>Segundo Nombre</h6>
+                    <input v-model="clientCreate.middleName" id="right1" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Apellido Materno</h6>
+                    <input v-model="clientCreate.motherLastname" id="right2" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Nacionalidad</h6>
+                    <div>
+                        <input v-model="clientCreate.nationality" id="right3" type="text" class="form-control d-inline" disabled>
+                        <img class="ml-3" v-bind:src="clientCreate.flag" height="30" width="auto">
+                    </div>
+                    <h6 class="mt-3">Dirección</h6>
+                    <input v-model="clientCreate.address" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Teléfono</h6>
+                    <input v-model="clientCreate.cellphone1" id="right2" type="text" class="form-control mb-5" disabled>   
                 </div>
             </div>
         </div>
@@ -77,6 +94,7 @@ import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
 
+
 export default {
     components:{
         ClientAccounts
@@ -88,9 +106,10 @@ export default {
         };
     },
     computed :{
-        ...mapState (['token','lendingCreate'])
+        ...mapState (['token','lendingCreate','clientCreate'])
     },
     methods:{
+        ...mapActions(['completePersonCreate']),
          openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -121,8 +140,21 @@ export default {
         },
     },
     mounted(){
-        document.getElementById('Lending').style.display = "block";
-        document.getElementById('btnLending').classList.add('active');
+        document.getElementById('Client').style.display = "block";
+        document.getElementById('btnClient').classList.add('active');
+        
+        adminDA.getClientByID(this.lendingCreate.idClient,this.token).then((res) =>{
+            this.clientCreate.documentNumber=res.data.documentNumber;
+            this.clientCreate.email1=res.data.email1;
+            this.clientCreate.cellphone1=res.data.cellphone1;
+            this.completePersonCreate(res.data);
+        }).catch(error =>{  
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'No se pudo cargar la información del cliente'
+            })
+        });
     },
     updated(){
         this.nameClient = this.lendingCreate.firstName + " " + this.lendingCreate.fatherLastname;

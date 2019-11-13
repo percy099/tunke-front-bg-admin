@@ -125,7 +125,7 @@ export function deleteLending(idLoan,token){
     });
 }
 
-export function createLending(idClient,totalShares,amount,interestRate,idShareType,idAccount,share,commission,token){
+export function createLending(idClient,totalShares,amount,interestRate,idShareType,idAccount,share,commission,idCampaign,token){
     let url = process.env.VUE_APP_API_URL + 'api/loans/'
     
     var body ={
@@ -136,7 +136,8 @@ export function createLending(idClient,totalShares,amount,interestRate,idShareTy
         "idShareType" : idShareType,
         "idAccount" : idAccount,
         "share" : share,
-        "commission" : commission
+        "commission" : commission,
+        "idCampaign" : idCampaign
     }
 
     return axios.post(url,body,{
@@ -206,6 +207,16 @@ export function chargeBlackList(token,body){
     let url = process.env.VUE_APP_API_URL + 'api/blackLists/'
 
     return axios.post(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function getClientByID(idClient,token){
+    let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient;  
+    return axios.get(url,{
         auth:{
             username: token,
             password: ''
