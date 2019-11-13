@@ -12,20 +12,47 @@
                         <label class="mt-3 ml-5">Mayoría de edad</label>
                     </div>                    
                     <div class="col-md-5">
-                        <input style="width:50%;" type="text" class="form-control mt-2">
-                        <input style="width:50%;" type="text" class="form-control mt-2">
-                        <input style="width:50%;" type="text" class="form-control mt-2">
-                        <input style="width:50%;" type="text" class="form-control mt-2">
+                        <input :disabled="disable"  style="width:50%;" type="text" class="form-control mt-2">
+                        <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
+                        <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
+                        <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
                     </div>                    
                 </div>
             </form>
             <div class="row">
                 <button style="background-color: rgba(0,203,138,0.66);" class="btn text-black btn-lg bnt-md" @click="modify">Modificar</button>
-                <button style="background-color: rgba(0,203,138,0.66);" class="btn text-black btn-lg bnt-md" @click="accept">Aceptar</button>
+                <button style="background-color: rgba(0,203,138,0.66);" class="btn text-black btn-lg bnt-md" @click="save">Guardar</button>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+import router from "@/router.js";
+import { mapState } from "vuex";
+import Swal from 'sweetalert2';
+export default {
+    data(){
+        return{
+            disable: true,
+        }
+    },
+    methods:{
+        modify(){
+            this.disable = false;
+        },
+        save(){
+            Swal.fire({ 
+                type: 'success',
+                title: 'Se ha guardado exitosamente',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            this.disable = true;
+        }
+    }
+}
+</script>
 
 <style scope>
 .card{
