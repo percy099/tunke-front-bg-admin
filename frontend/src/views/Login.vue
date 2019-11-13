@@ -83,6 +83,11 @@
       computed:{
         ...mapState(['user','token'])
       },
+      mounted() {
+        gapi.signin2.render('google-signin-btn', { // this is the button "id"
+          onsuccess: this.onSignIn
+        })
+      },
       methods:{
           ...mapActions(['setToken','setAdmin']),
           login(){
@@ -133,12 +138,7 @@
                   text: 'Cuenta Gmail no registrada'
                 })
               })
-            }      
-    },
-    mounted() {
-          gapi.signin2.render('google-signin-btn', { // this is the button "id"
-            onsuccess: this.onSignIn 
-          })
+            }
     },
     updated(){
       this.user.username = this.userr;
