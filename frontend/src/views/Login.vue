@@ -227,4 +227,9 @@ button:hover{
   background-color: rgba(0,203,138,0.66);;
   height: 5vh;
 }
+
+#google-signin-btn{
+  margin-left: 33%;
+  margin-right: 33%;
+}
 </style>
