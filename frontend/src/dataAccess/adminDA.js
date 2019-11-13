@@ -103,7 +103,7 @@ export function deleteAccount(idAccount,token){
 }
 
 export function deleteCampaign(idCampaign,token){
-    let url = process.env.VUE_APP_API_URL + 'api/campaigns/' + idCampaign;
+    let url = process.env.VUE_APP_API_URL + 'api/campaign/' + idCampaign;
 
     return axios.delete(url,{
         auth:{
