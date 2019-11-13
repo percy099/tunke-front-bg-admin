@@ -255,7 +255,13 @@ table.table .avatar {
     left: -10px;
 }
 
+#butt{
+    background-color: #090d4d;
+    font-weight: 600;  
+    width: 20vh;
+    color : white;
+}
+
 .btn{
-  background-color: #090d4d;
-  
+    background-color: #090d4d;
 }
