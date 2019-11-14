@@ -1,11 +1,11 @@
 <template>
     <div class="container">
         <div class="Chart">
-          <h1 style="text-align:center;">Número de Préstamos por mes</h1>
+          <h1 style="text-align:center;">Número de Préstamos por mes - 2019</h1>
           <bar-lending/>          
         </div>  
         <div class="Chart">
-          <h1 style="text-align:center;">Número de Préstamos por mes</h1>
+          <h1 style="text-align:center;">Número de Préstamos por mes - 2019</h1>
           <line-lending/>
         </div>
     </div>

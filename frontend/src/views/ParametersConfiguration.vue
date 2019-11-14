@@ -20,8 +20,12 @@
                 </div>
             </form>
             <div class="row">
+                <div class="col">
                 <button style="background-color: rgba(0,203,138,0.66);" class="btn text-black btn-lg bnt-md" @click="modify">Modificar</button>
+                </div>
+                <div class="col">
                 <button style="background-color: rgba(0,203,138,0.66);" class="btn text-black btn-lg bnt-md" @click="save">Guardar</button>
+                </div>           
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['cntAccJan','cntAccFeb','cntAccMar','cntAccApr','cntAccMay','cntAccJun','cntAccJul','cntAccAug','cntAccSep','cntAccOct','cntAccNov','cntAccDec'])
+    ...mapState(['cntAccJanLen','cntAccFebLen','cntAccMarLen','cntAccAprLen','cntAccMayLen','cntAccJunLen','cntAccJulLen','cntAccAugLen','cntAccSepLen','cntAccOctLen','cntAccNovLen','cntAccDecLen'])
     //...mapState(['countAccount'])
   },
   mounted () {
@@ -19,8 +19,8 @@ export default {
         {
           label: 'Número de Préstamos',
           backgroundColor: '#f87979',
-          data: [this.cntAccJan, this.cntAccFeb, this.cntAccMar, this.cntAccApr, this.cntAccMay, this.cntAccJun,
-                 this.cntAccJul, this.cntAccAug, this.cntAccSep, this.cntAccOct, this.cntAccNov, this.cntAccDec]
+          data: [this.cntAccJanLen, this.cntAccFebLen, this.cntAccMarLen, this.cntAccAprLen, this.cntAccMayLen, this.cntAccJunLen,
+                 this.cntAccJulLen, this.cntAccAugLen, this.cntAccSepLen, this.cntAccOctLen, this.cntAccNovLen, this.cntAccDecLen]
         }
       ]
     }, {responsive: true, maintainAspectRatio: false})
