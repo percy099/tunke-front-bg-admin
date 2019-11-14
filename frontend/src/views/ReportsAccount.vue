@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <label class="mr-1">Seleccione año inicio: </label>
+      <label class="mr-1">Seleccione año: </label>
       <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
       <!--<label class="ml-2 mr-1">Seleccione año fin:</label>-->
       <!--<date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>-->
@@ -108,7 +108,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .container {
     max-width: 800px;
     margin: 0 auto;

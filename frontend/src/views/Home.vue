@@ -118,7 +118,7 @@ export default {
             this.completeSalesRecords(res.data);
         }).catch(error =>{
             Swal.fire({
-                title: 'Erorr',
+                title: 'Error',
                 type: 'error',
                 text: 'Error obteniendo los expedientes de Venta'
             })
@@ -127,7 +127,7 @@ export default {
             this.completeClientsBlackList(res.data);
         }).catch(error =>{
             Swal.fire({
-                title: 'Erorr',
+                title: 'Error',
                 type: 'error',
                 text: 'Error obteniendo los clientes especiales'
             })

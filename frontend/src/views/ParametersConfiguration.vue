@@ -12,7 +12,7 @@
                         <label class="mt-3 ml-5">Mayoría de edad</label>
                     </div>                    
                     <div class="col-md-5">
-                        <input :disabled="disable"  style="width:50%;" type="text" class="form-control mt-2">
+                        <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
                         <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
                         <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
                         <input :disabled="disable" style="width:50%;" type="text" class="form-control mt-2">
@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .card{
     color: #566787;
 	background: #f5f5f5;
