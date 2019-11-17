@@ -62,16 +62,22 @@ export function doCreateAccount(idPer,cur){
 }
 
 
-export function doEditSalesRecord(idSales, cur){
-    /*
-    let url = process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
+export function doEditSalesRecord(idSalesRecord, cur, token){
+    
+    let url = process.env.VUE_APP_API_URL + 'api/salesRecord/' + idSalesRecord;
+    console.log(url);
+    console.log(cur);
     var body = {
-        "idSalesRecord" : idSales,
-        "currency" : cur
+        "state" : cur
     }
     
-    return axios.post(url, body);
-    */
+    return axios.put(url, body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+    
 }
 
 export function deleteClient(idClient,token){
@@ -97,7 +103,7 @@ export function deleteAccount(idAccount,token){
 }
 
 export function deleteCampaign(idCampaign,token){
-    let url = process.env.VUE_APP_API_URL + 'api/campaigns/' + idCampaign;
+    let url = process.env.VUE_APP_API_URL + 'api/campaign/' + idCampaign;
 
     return axios.delete(url,{
         auth:{
@@ -152,7 +158,7 @@ export function getCampaignByID(token){
 }
 
 
-export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,cur,token){
     let url = process.env.VUE_APP_API_URL + 'api/campaigns/'
     
     var body ={
@@ -165,7 +171,7 @@ export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumL
         "minimumPeriod" : minimumPeriod,
         "maximumPeriod" : maximumPeriod,
         "interestRate" : interestRate,
-        "idCurrency" : 1,
+        "idCurrency" : cur,
     }
 
     return axios.post(url,body,{

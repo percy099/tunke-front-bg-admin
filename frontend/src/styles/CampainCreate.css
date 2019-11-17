@@ -18,6 +18,10 @@ input[type="date"]{
     width : 90%;
 }
 
+input[type="month"]{
+    width : 90%;
+}
+
 select{
     width: 60%;
 }

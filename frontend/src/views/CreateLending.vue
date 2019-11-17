@@ -40,9 +40,10 @@
                     <h6 class="mt-3">Monto Total</h6>
                     <input v-model="lendingCreate.amount" type="text" class="form-control"> 
                     <h6 class="mt-3">Tipo de Cuota</h6>
-                    <select name="TipoCuota" style="height:2.3em; width:21em;" :value="$store.myValue" @input="setSelected">
-                        <option value="1">Ordinaria</option>
-                        <option value="2">Extraordinaria</option>
+                    <select v-model="selectShare" style="height:2.3em; width:27em;">
+                        <option v-for="optionShare in optionsShare" v-bind:value="optionShare.value">
+                            {{ optionShare.text }}
+                        </option>
                     </select>
                     <h6 class="mt-3">Tasa de interés</h6>
                     <input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
@@ -53,11 +54,22 @@
                     <h6>Nro. Documento</h6>
                     <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Campaña</h6>
-                    <input v-model="lendingCreate.campaignName" type="text" class="form-control" disabled>
+                    <select v-model="selectCampaign" style="height:2.3em; width:27em;">
+                        <option v-for="optionCampaign in optionsCampaign" v-bind:value="optionCampaign.value">
+                            {{ optionCampaign.text }}
+                        </option>
+                    </select>
                     <h6 class="mt-3">Número de cuenta</h6>
-                    <select v-model="accountsByClient.accountNumber" style="height:2.3em; width:27em;">
-                        <option v-for="(accountsByClients,index) in accountsByClient" v-bind:key="index">{{accountsByClients.accountNumber}}</option>
-                    </select>   
+                    <select v-if="selectCampaign == 1" v-model="selectAccount" style="height:2.3em; width:27em;">
+                        <option v-for="accountsByClients in solesAccounts" v-bind:value="accountsByClients.idAccount">
+                            {{accountsByClients.accountNumber}}
+                        </option>
+                    </select>  
+                    <select v-if="selectCampaign == 2" v-model="selectAccount" style="height:2.3em; width:27em;">
+                        <option v-for="accountsByClients in dolarAccounts" v-bind:value="accountsByClients.idAccount">
+                            {{accountsByClients.accountNumber}}
+                        </option>
+                    </select>  
                     <h6 class="mt-3">Número de cuotas</h6>
                     <input v-model="lendingCreate.totalShares" type="text" class="form-control">
                     <h6 class="mt-3">Cuota</h6>
@@ -110,7 +122,19 @@ export default {
     },
     data(){
         return {dniClient : '',
-                enableButton : false};
+                enableButton : false,
+                selectAccount : 1,
+                selectCampaign : 1,
+                selectShare: 1,
+                optionsCampaign: [
+                { text: 'Campaña Ventanilla Soles', value: 1 },
+                { text: 'Campaña Ventanilla Dólares', value: 2 }],
+                optionsShare: [
+                { text: 'Ordinaria', value: 1 },
+                { text: 'Extraordinaria', value: 2 }],
+                dolarAccounts : [],
+                solesAccounts : []
+                };
     },
     validations: {
         dniClient: {
@@ -147,6 +171,24 @@ export default {
     },
     methods:{
         ...mapActions (['completeLendingCreate','cleanLendingCreate','fillAccountsByClient','completeLendingCreateCampaign']),
+        fillAccountsPerType(accounts){
+            let aux=accounts;
+            for(let i = 0; i < aux.length; i++){
+                if(aux[i].idCurrency == 1){
+                    this.solesAccounts.push({
+                        idAccount : aux[i].idAccount,
+                        accountNumber : aux[i].accountNumber,
+                        idCurrency : aux[i].idCurrency,
+                    })
+                } else {
+                    this.dolarAccounts.push({
+                        idAccount : aux[i].idAccount,
+                        accountNumber : aux[i].accountNumber,
+                        idCurrency : aux[i].idCurrency,
+                    })
+                }
+            }
+        },
          openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -188,6 +230,7 @@ export default {
                                 let accountsData = res.data;
                                 accountsData = accountsData.accounts;
                                 this.fillAccountsByClient(accountsData);
+                                this.fillAccountsPerType(accountsData);
                             }).catch(error =>{  
                                 this.enableButton = false;
                                 this.cleanLendingCreate();
@@ -216,7 +259,8 @@ export default {
                         type: 'error',
                         text: 'No se encontraron registros del cliente con DNI ' + this.dniClient
                     })
-                }),
+                })
+                /*
                 adminDA.getCampaignByID(this.token).then((res)=>{
                     console.log('Leo');
                     this.completeLendingCreateCampaign(res.data)
@@ -229,19 +273,26 @@ export default {
                         text: 'No se encontraron campañas activas'
                     })
                 })
+                */
             }
         },
         setSelected(value) {
           this.lendingCreate.idAccount=value;  
         },
         
-        saveLending(index){
+        saveLending(){
+            //Usas estos 3 valores para completar la creación del lending
+            console.log(this.selectAccount);  //Id de la cuenta escogida
+            console.log(this.selectCampaign);  //Id de la campaña escogida, solo estos valores necesitas para el back
+            console.log(this.selectShare);  //Id del tipo de la cuota
+            /*
             console.log('idClient: ' + this.lendingCreate.idClient);
             console.log('totalShares: ' +this.lendingCreate.totalShares);
             console.log('interestRate: ' +this.lendingCreate.interestRate);
             console.log('amount: ' +this.lendingCreate.amount);
             console.log('share: ' +this.lendingCreate.share);
             console.log('comision: ' + this.lendingCreate.commission)
+
             //Need to capture the idShareType and idAccount values
             //console.log('idAccount1: ' +this.accountsByClient[index].idAccount);
             //console.log('idAccount: ' + this.lendingCreate.idAccount);
@@ -259,6 +310,7 @@ export default {
                     text : 'Error al crear al préstamo'
                 })
             })
+            */
         }
     },
     mounted(){

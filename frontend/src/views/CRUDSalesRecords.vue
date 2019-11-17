@@ -25,12 +25,15 @@
                         <td>{{salesRecord.origin}}</td>
                         <td>{{salesRecord.nameRecordStatus}}</td>
                         <td>
-                            <a @click="viewSalesRecord(index)" href="#verExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalles">&#xE880;</i></a>
-                            <a v-if="salesRecord.productName == 'Prestamo'" @click="editSalesRecord(index)" href="#editarExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar Estado">&#xE254;</i></a>
+                            <a @click="viewSalesRecord(index)" href="#verExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE880;</i></a>
+                            <a v-if="salesRecord.productName == 'Prestamo' && salesRecord.nameRecordStatus == 'En proceso'" @click="editSalesRecord(index)" href="#editarExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE254;</i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <button class="btn mr-3" id="butt" @click=$router.go(-1)>Volver</button>
         </div>
     </div>
 </div>
@@ -61,7 +64,6 @@ export default {
                 inputOptions: {
                     1 : 'Aprobado',
                     2 : 'Desaprobado',
-                    3 : 'En proceso',
                 },
                 showCancelButton: true,
                 confirmButtonText: 'Cambiar Estado',
@@ -69,7 +71,8 @@ export default {
                     if (!value) {
                     return 'Debes seleccionar un estado'
                     }
-                    adminDA.doEditSalesRecord(this.salesRecordCreate.idSalesRecord,value).then((res)=>{
+                    console.log(this.salesRecordCreate.idSalesRecord)
+                    adminDA.doEditSalesRecord(this.salesRecordCreate.idSalesRecord,parseInt(value), this.token).then((res)=>{
                         Swal.fire({
                             type: 'success',
                             title: 'Enhorabuena',
@@ -79,7 +82,7 @@ export default {
                         Swal.fire({
                             title: 'Error',
                             type: 'error',
-                            text: 'Error al intentar editar el expediente'
+                            text: error
                         })
                     })
                 }
