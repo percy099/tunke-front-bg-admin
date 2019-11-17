@@ -48,7 +48,7 @@
                     <h6 class="mt-3">Apellido Paterno</h6>
                     <input v-model="clientCreate.fatherLastname" type="text" class="form-control" disabled>
                     <div class="mt-3">
-                        <span>Fecha de Nacimiento</span><input v-model="clientCreate.birthdate" class="ml-3" type="date" disabled>
+                        <span class="extraSpan">Fecha de Nacimiento</span><input v-model="clientCreate.birthdate" class="ml-3" type="date" disabled>
                     </div>
                     <h6 class="mt-3">Dirección</h6>
                     <input v-model="clientCreate.address" type="text" class="form-control mb-3" disabled>
@@ -71,13 +71,55 @@
             <div class="row mt-4">
                 <div class="col-6 groupLeftPersonal">
                     <h6>E-mail primario</h6>
-                    <input v-model="clientCreate.email1" type="text" class="form-control" :disabled='isDisabled'>
+                    <div>
+                        <input type="text" class="form-control" :disabled='isDisabled'
+                        v-model.trim="$v.email1.$model" :class="{
+                        'is-invalid' : $v.email1.$error, 'is-valid':!$v.email1.$invalid }">
+                        <div class="valid-feedback">Email Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.email1.email">Formato inadecuado</span>
+                            <span v-if="!$v.email1.required">Email Principal Requerido.</span>
+                        </div>
+                    </div>
                     <h6 class="mt-3">E-mail secundario</h6>
-                    <input v-model="clientCreate.email2" type="text" class="form-control" :disabled='isDisabled'>
+                    <div>
+                        <input type="text" class="form-control" :disabled='isDisabled'
+                        v-model.trim="$v.email2.$model" :class="{
+                        'is-invalid' : $v.email2.$error, 'is-valid':!$v.email2.$invalid && email2 != ''}">
+                        <div v-if="email2 != ''" class="valid-feedback">Email Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.email2.email">Formato inadecuado</span>
+                        </div>
+                    </div>
                     <h6 class="mt-3">Teléfono primario</h6>
-                    <input v-model="clientCreate.cellphone1" type="text" class="form-control" :disabled='isDisabled'>
+                    <div>
+                        <input type="text" class="form-control" :disabled='isDisabled'
+                        v-model.trim="$v.phone1.$model" :class="{
+                        'is-invalid' : $v.phone1.$error, 'is-valid':!$v.phone1.$invalid }">
+                        <div class="valid-feedback">Teléfono Válido</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.phone1.required">Télefono Principal Requerido. </span>
+                            <span v-if="!$v.phone1.minLength">Debe ser de {{
+                            $v.phone1.$params.minLength.min}} dígitos. </span>
+                            <span v-if="!$v.phone1.maxLength">Debe ser de {{
+                            $v.phone1.$params.maxLength.max}} dígitos. </span>
+                            <span v-if="!$v.phone1.numeric">Debe contener solo números. </span>
+                        </div>
+                    </div>
                     <h6 class="mt-3">Teléfono secundario</h6>
-                    <input v-model="clientCreate.cellphone2" type="text" class="form-control mb-5" :disabled='isDisabled'>
+                    <div class="mb-5" style="box-sizing: border-box;">
+                        <input type="text" class="form-control" :disabled='isDisabled'
+                        v-model.trim="$v.phone2.$model" :class="{
+                        'is-invalid' : $v.phone2.$error, 'is-valid':!$v.phone2.$invalid && phone2 != ''}">
+                        <div class="valid-feedback">Teléfono Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.phone2.minLength">Debe ser de al menos {{
+                            $v.phone2.$params.minLength.min}} dígitos. </span>
+                            <span v-if="!$v.phone2.maxLength">Debe ser a lo mucho de {{
+                            $v.phone2.$params.maxLength.max}} letters. </span>
+                            <span v-if="!$v.phone2.numeric">Debe contener solo números. </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,7 +152,7 @@ import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
-import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, numeric, email} from 'vuelidate/lib/validators'
 
 export default {
     components:{
@@ -118,6 +160,10 @@ export default {
     },
     data(){
         return {dniPerson : '',
+                email1 :'',
+                email2 : '',
+                phone1 : '',
+                phone2 : '',
                 enableButton : false};
     },
     validations: {
@@ -126,6 +172,24 @@ export default {
             minLength: minLength(8),
             maxLength: maxLength(8),
             numeric
+        },
+        phone1: {
+            required,
+            minLength: minLength(9),
+            maxLength: maxLength(9),
+            numeric
+        },
+        phone2: {
+            minLength: minLength(9),
+            maxLength: maxLength(9),
+            numeric
+        },
+        email1: {
+            required,
+            email
+        },
+        email2: {
+            email
         }
     },
     computed :{
@@ -169,7 +233,7 @@ export default {
             document.getElementById(btn).classList.add('active');
         },
         getPersonCreate(){
-            this.$v.$touch();
+            this.$v.dniPerson.$touch();
             if (this.$v.$invalid) {
             } else {
                 userDA.getPersonData(this.dniPerson).then((res) =>{
@@ -207,34 +271,66 @@ export default {
             }
         },
         saveClient(){
-            adminDA.createClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
+            this.$v.email1.$touch();
+            this.$v.email2.$touch();
+            this.$v.phone1.$touch();
+            this.$v.phone2.$touch();
+            if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid){
+                this.openData('Contact');
+            } else {
+                this.clientCreate.email1 = this.email1;
+                this.clientCreate.email2 = this.email2;
+                this.clientCreate.cellphone1 = this.phone1;
+                this.clientCreate.cellphone2 = this.phone2;
+                adminDA.createClient(this.clientCreate.idPerson,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
                 Swal.fire({
                     type: 'success',
                     title: 'Enhorabuena',
                     text: 'Cliente creado satisfactoriamente'
                 })
-            }).catch(error =>{
-                Swal.fire({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al crear al cliente'
+                }).catch(error =>{
+                    Swal.fire({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al crear al cliente'
+                    })
                 })
-            })
+            }
         },
         editClientAct(){
-            adminDA.editClient(this.clientCreate.idClient,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
-                Swal.fire({
-                    type: 'success',
-                    title: 'Enhorabuena',
-                    text: 'Cliente editado satisfactoriamente'
+            this.$v.email1.$touch();
+            this.$v.email2.$touch();
+            this.$v.phone1.$touch();
+            this.$v.phone2.$touch();
+            if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid){
+                console.log('No pasó');
+                console.log(this.email1);
+                
+                this.openData('Contact');
+                
+            } else {
+                console.log('Si pasó');
+                console.log(this.email1);
+                
+                this.clientCreate.email1 = this.email1;
+                this.clientCreate.email2 = this.email2;
+                this.clientCreate.cellphone1 = this.phone1;
+                this.clientCreate.cellphone2 = this.phone2;
+                adminDA.editClient(this.clientCreate.idClient,this.clientCreate.email1,this.clientCreate.email2,this.clientCreate.cellphone1,this.clientCreate.cellphone2,this.token).then((res) =>{
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Enhorabuena',
+                        text: 'Cliente editado satisfactoriamente'
+                    })
+                }).catch(error =>{
+                    Swal.fire({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al editar al cliente'
+                    })
                 })
-            }).catch(error =>{
-                Swal.fire({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al editar al cliente'
-                })
-            })
+                
+            }
         },
         editClientAccounts(){
             adminDA.getAccountsByClient(this.clientCreate.idClient,this.token).then((res)=>{
@@ -260,6 +356,10 @@ export default {
         else{
             this.enableButton = true;
         }
+        this.email1 = this.clientCreate.email1;
+        this.email2 = this.clientCreate.email2;
+        this.phone1 = this.clientCreate.cellphone1;
+        this.phone2 = this.clientCreate.cellphone2;
     }
 }
 </script>
