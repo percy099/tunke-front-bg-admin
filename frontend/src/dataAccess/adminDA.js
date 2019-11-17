@@ -207,3 +207,14 @@ export function chargeBlackList(token,body){
     });
 }
 
+export function chargeCampaigns(token,body){
+    let url = process.env.VUE_APP_API_URL + 'api/campaignCharge/'
+
+    return axios.post(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+

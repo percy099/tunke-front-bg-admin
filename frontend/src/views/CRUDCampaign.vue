@@ -91,17 +91,17 @@ export default {
     methods:{
         ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate']),
         viewCampaign(index){
-            this.$router.push('/editCampaign');
+            this.$router.push('/campaignCreate');
             this.setActionCampaign(0);
             this.setCampaignIndex(index);
         },
 		createCampaign(){
-            this.$router.push('/editCampaign');
+            this.$router.push('/campaignOptions');
             this.setActionCampaign(1);
             this.cleanCampaignCreate();
         },
         editCampaign(index){
-            this.$router.push('/editCampaign');
+            this.$router.push('/campaignCreate');
             this.setActionCampaign(2);
             this.setCampaignIndex(index);
         },
