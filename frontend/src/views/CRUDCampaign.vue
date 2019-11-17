@@ -94,7 +94,7 @@ export default {
             this.setCampaignIndex(index);
         },
 		createCampaign(){
-            this.$router.push('/campaignCreate');
+            this.$router.push('/campaignOptions');
             this.setActionCampaign(1);
             this.cleanCampaignCreate();
         },
