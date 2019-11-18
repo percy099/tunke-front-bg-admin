@@ -23,79 +23,99 @@
         </div>
         <!-- Tab links -->
         <div class="tab">
-        <button id="btnLending" class="tablinks inactive" @click="openData('Lending')">Datos del Préstamo</button>
         <button id="btnClient" class="tablinks inactive" @click="openData('Client')">Datos del Cliente</button>
+        <button id="btnLending" class="tablinks inactive" @click="openData('Lending')">Datos del Préstamo</button>
         </div>
 
         <!-- Tab content -->
+        <div id="Client" class="tabcontent">
+            <div class="row mt-4">
+                <div class="col-6 groupLeftPersonal">
+                    <h6>Primer Nombre</h6>
+                    <input v-model="clientCreate.firstName" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Apellido Paterno</h6>
+                    <input v-model="clientCreate.fatherLastname" type="text" class="form-control" disabled>
+                    <div class="mt-3">
+                        <span >Fecha de Nacimiento</span>
+                        <br><input v-model="clientCreate.birthdate"  type="date" style="height:2.3em; width:21em;" disabled>
+                    </div>
+                    <h6 class="mt-2">Nro. Documento</h6>
+                    <input v-model="clientCreate.documentNumber" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Correo electrónico</h6>
+                    <input v-model="clientCreate.email1"  type="text" class="form-control mb-5" disabled>
+                </div>
+                <div class="col-6 groupRightPersonal">
+                    <h6>Segundo Nombre</h6>
+                    <input v-model="clientCreate.middleName" id="right1" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Apellido Materno</h6>
+                    <input v-model="clientCreate.motherLastname" id="right2" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Nacionalidad</h6>
+                    <div>
+                        <input v-model="clientCreate.nationality" id="right3" type="text" class="form-control d-inline" disabled>
+                        <img class="ml-3" v-bind:src="clientCreate.flag" height="30" width="auto">
+                    </div>
+                    <h6 class="mt-3">Dirección</h6>
+                    <input v-model="clientCreate.address" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Teléfono</h6>
+                    <input v-model="clientCreate.cellphone1" id="right2" type="text" class="form-control mb-5" disabled>   
+                </div>
+            </div>
+        </div>
         <div id="Lending" class="tabcontent">
             <div class="row mt-4">
                 <div class="col-6 groupLeftPersonal">
-                    <h6>Nombre Cliente</h6>
-                    <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>
+                    <!--<h6>Nombre Cliente</h6>
+                    <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>-->
                     <h6 class="mt-3">Fecha Préstamo</h6>
-                    <input v-model="lendingCreate.requestDate" type="text" class="form-control" disabled>
+                    <!--<input v-model="lendingCreate.requestDate" type="text" class="form-control" disabled>-->
+                    <input type='date' v-model='myDate' class="form-control" style="width:21em;" disabled>
                     <h6 class="mt-3">Tipo de moneda</h6>
-                    <input v-model="lendingCreate.currency" type="text" class="form-control" disabled> 
+                    <input v-if="selectCampaign == 1" placeholder="Soles" type="text" class="form-control" disabled>
+                    <input v-if="selectCampaign == 2" placeholder="Dólares" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Total</h6>
                     <input v-model="lendingCreate.amount" type="text" class="form-control"> 
                     <h6 class="mt-3">Tipo de Cuota</h6>
-                    <select v-model="selectShare" style="height:2.3em; width:27em;">
+                    <select v-model="selectShare" style="height:2.3em; width:21em;">
                         <option v-for="optionShare in optionsShare" v-bind:value="optionShare.value">
                             {{ optionShare.text }}
                         </option>
                     </select>
                     <h6 class="mt-3">Tasa de interés</h6>
-                    <input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
-                    
+                    <!--<input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>-->
+                    <input placeholder="12 %" type="text" class="form-control mb-5" disabled>
                     
                 </div>
                 <div class="col-6 groupRightPersonal">
-                    <h6>Nro. Documento</h6>
-                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
+                    <!--h6>Nro. Documento</h6>
+                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>-->
                     <h6 class="mt-3">Campaña</h6>
-                    <select v-model="selectCampaign" style="height:2.3em; width:27em;">
+                    <select v-model="selectCampaign" id="right2" style="height:2.3em; ">
                         <option v-for="optionCampaign in optionsCampaign" v-bind:value="optionCampaign.value">
                             {{ optionCampaign.text }}
                         </option>
                     </select>
                     <h6 class="mt-3">Número de cuenta</h6>
-                    <select v-if="selectCampaign == 1" v-model="selectAccount" style="height:2.3em; width:27em;">
+                    <select v-if="selectCampaign == 1" v-model="selectAccount" id="right2" style="height:2.3em;">
                         <option v-for="accountsByClients in solesAccounts" v-bind:value="accountsByClients.idAccount">
                             {{accountsByClients.accountNumber}}
                         </option>
                     </select>  
-                    <select v-if="selectCampaign == 2" v-model="selectAccount" style="height:2.3em; width:27em;">
+                    <select v-if="selectCampaign == 2" v-model="selectAccount" id="right2" style="height:2.3em;">
                         <option v-for="accountsByClients in dolarAccounts" v-bind:value="accountsByClients.idAccount">
                             {{accountsByClients.accountNumber}}
                         </option>
                     </select>  
                     <h6 class="mt-3">Número de cuotas</h6>
-                    <input v-model="lendingCreate.totalShares" type="text" class="form-control">
+                    <input v-model="lendingCreate.totalShares" type="text" id="right2" class="form-control">
                     <h6 class="mt-3">Cuota</h6>
-                    <input v-model="calculateShare" type="text" class="form-control" disabled>
+                    <input v-model="calculateShare" type="text" id="right2" class="form-control" disabled>
                     <h6 class="mt-3">Comisión</h6>
-                    <input v-model="calculateCommission" type="text" class="form-control mb-5" disabled>
+                    <input v-model="calculateCommission" type="text" id="right2" class="form-control mb-5" disabled>
                 </div>
             </div>
         </div>
 
-        <div id="Client" class="tabcontent">
-            <div class="row mt-4">
-                <div class="col-6 groupLeftPersonal">
-                    <h6>Nombre Cliente</h6>
-                    <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Número de cuenta</h6>
-                    <input v-model="lendingCreate.accountNumber" type="text" class="form-control mb-5" disabled>
-                </div>
-                <div class="col-6 groupRightPersonal">
-                    <h6>Nro. Documento</h6>
-                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Tipo de moneda</h6>
-                    <input v-model="lendingCreate.currency"  type="text" class="form-control mb-5" disabled>
-                </div>
-            </div>
-        </div>
+        
         <div class="d-flex justify-content-center mt-3">
             <button class="btn mr-3" @click=$router.go(-1)>Cancelar</button>
             <button  @click="saveLending()" class="btn ml-5">Guardar</button>
@@ -126,6 +146,7 @@ export default {
                 selectAccount : 1,
                 selectCampaign : 1,
                 selectShare: 1,
+                selectCurrency: 1,
                 optionsCampaign: [
                 { text: 'Campaña Ventanilla Soles', value: 1 },
                 { text: 'Campaña Ventanilla Dólares', value: 2 }],
@@ -133,7 +154,8 @@ export default {
                 { text: 'Ordinaria', value: 1 },
                 { text: 'Extraordinaria', value: 2 }],
                 dolarAccounts : [],
-                solesAccounts : []
+                solesAccounts : [],
+                myDate : new Date().toISOString().slice(0,10) 
                 };
     },
     validations: {
@@ -145,7 +167,7 @@ export default {
         }
     },
     computed :{
-        ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient']),
+        ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate']),
         calculateShare : function (){
             let amount = this.lendingCreate.amount;
             let term = this.lendingCreate.totalShares;
@@ -165,12 +187,12 @@ export default {
             let commission = 0.25;
             let comissionAmount = amount*commission/100;
             //Which commission?
-            this.lendingCreate.commission=commission;
+            this.lendingCreate.commission=comissionAmount;
             return this.lendingCreate.commission;
         }
     },
     methods:{
-        ...mapActions (['completeLendingCreate','cleanLendingCreate','fillAccountsByClient','completeLendingCreateCampaign']),
+        ...mapActions (['completeLendingCreate','cleanLendingCreate','completePersonCreate','completeLendingCreateCampaign','cleanClientCreate']),
         fillAccountsPerType(accounts){
             let aux=accounts;
             for(let i = 0; i < aux.length; i++){
@@ -193,12 +215,11 @@ export default {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
             switch(dataType){
-                case 'Lending':
-                    btn = 'btnLending';
-                break ;
-
                 case 'Client':
                     btn = 'btnClient';
+                break ;
+                case 'Lending':
+                    btn = 'btnLending';
                 break;
             }
             // Get all elements with class="tabcontent" and hide them
@@ -224,23 +245,36 @@ export default {
                 userDA.getPersonData(this.dniClient).then((res) =>{
                     switch(res.data.type){
                         case 1:
-                            this.completeLendingCreate(res.data);
-                             adminDA.getAccountsByClient(this.lendingCreate.idClient,this.token).then((res)=>{
-                                console.log('Leonella');
-                                let accountsData = res.data;
-                                accountsData = accountsData.accounts;
-                                this.fillAccountsByClient(accountsData);
-                                this.fillAccountsPerType(accountsData);
-                            }).catch(error =>{  
-                                this.enableButton = false;
-                                this.cleanLendingCreate();
+                            if(res.data.activeLoans==true){
                                 Swal.fire({
-                                    title: 'Error',
-                                    type: 'error',
-                                    text: 'No se encontraron cuentas del cliente'
+                                title : 'Error',
+                                type : 'error',
+                                text : 'El cliente ya tiene un préstamo en proceso o activo'
                                 })
-                            });
-                            this.enableButton = true;
+                                this.cleanLendingCreate();
+                                this.cleanClientCreate();
+                                this.enableButton = false;
+                            }else{
+                                this.completePersonCreate(res.data);
+                                this.completeLendingCreate(res.data);
+                                adminDA.getAccountsByClient(this.lendingCreate.idClient,this.token).then((res)=>{
+                                    //console.log('Leonella');
+                                    let accountsData = res.data;
+                                    accountsData = accountsData.accounts;
+                                    //this.fillAccountsByClient(accountsData);
+                                    this.fillAccountsPerType(accountsData);
+                                }).catch(error =>{  
+                                    this.enableButton = false;
+                                    this.cleanLendingCreate();
+                                    this.cleanClientCreate();
+                                    Swal.fire({
+                                        title: 'Error',
+                                        type: 'error',
+                                        text: 'No se encontraron cuentas del cliente'
+                                    })
+                                });
+                                this.enableButton = true;
+                            }
                         break;
                         case 2:
                             Swal.fire({
@@ -250,10 +284,19 @@ export default {
                             })
                             this.enableButton = false;
                         break;
+                        case 3:
+                            Swal.fire({
+                                title : 'Error',
+                                type : 'error',
+                                text : 'Esta persona se encuentra en la BlackList'
+                            })
+                            this.enableButton = false;
+                        break;
                     }
                 }).catch(error =>{
                     this.enableButton = false;
                     this.cleanLendingCreate();
+                    this.cleanClientCreate();
                     Swal.fire({
                         title: 'Error',
                         type: 'error',
@@ -276,28 +319,25 @@ export default {
                 */
             }
         },
-        setSelected(value) {
-          this.lendingCreate.idAccount=value;  
-        },
         
         saveLending(){
             //Usas estos 3 valores para completar la creación del lending
             console.log(this.selectAccount);  //Id de la cuenta escogida
             console.log(this.selectCampaign);  //Id de la campaña escogida, solo estos valores necesitas para el back
             console.log(this.selectShare);  //Id del tipo de la cuota
-            /*
+            
             console.log('idClient: ' + this.lendingCreate.idClient);
             console.log('totalShares: ' +this.lendingCreate.totalShares);
-            console.log('interestRate: ' +this.lendingCreate.interestRate);
-            console.log('amount: ' +this.lendingCreate.amount);
-            console.log('share: ' +this.lendingCreate.share);
+            console.log('Monto: ' +this.lendingCreate.amount);
+            //console.log('interestRate: ' +this.lendingCreate.interestRate);
+            console.log('tipo cuota: ' + this.selectShare);
+            console.log('amount: ' + this.selectAccount);
+            console.log('cuota: ' + this.lendingCreate.share);
             console.log('comision: ' + this.lendingCreate.commission)
 
             //Need to capture the idShareType and idAccount values
-            //console.log('idAccount1: ' +this.accountsByClient[index].idAccount);
-            //console.log('idAccount: ' + this.lendingCreate.idAccount);
             
-            adminDA.createLending(this.lendingCreate.idClient,this.lendingCreate.totalShares,this.lendingCreate.amount,this.lendingCreate.interestRate,1,1,this.lendingCreate.share,this.lendingCreate.commission,this.token).then((res) =>{
+            adminDA.createLending(this.lendingCreate.idClient,this.lendingCreate.totalShares,this.lendingCreate.amount,12,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
                 Swal.fire({
                     type: 'success',
                     title: 'Enhorabuena',
@@ -310,14 +350,14 @@ export default {
                     text : 'Error al crear al préstamo'
                 })
             })
-            */
+            
         }
     },
     mounted(){
-        document.getElementById('Lending').style.display = "block";
-        document.getElementById('btnLending').classList.add('active');
+        document.getElementById('Client').style.display = "block";
+        document.getElementById('btnClient').classList.add('active');
         this.cleanLendingCreate();
-        
+        this.cleanClientCreate();
     }
 }
 </script>

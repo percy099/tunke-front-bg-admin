@@ -13,14 +13,42 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
+    cntAccJan: 0,
+    cntAccFeb: 0,
+    cntAccMar: 0,
+    cntAccApr: 0,
+    cntAccMay: 0,
+    cntAccJun: 0,
+    cntAccJul: 0,
+    cntAccAug: 0,
+    cntAccSep: 0,
+    cntAccOct: 0,
+    cntAccNov: 0,
+    cntAccDec: 0,
+    cntAccJanLen: 0,
+    cntAccFebLen: 0,
+    cntAccMarLen: 0,
+    cntAccAprLen: 0,
+    cntAccMayLen: 0,
+    cntAccJunLen: 0,
+    cntAccJulLen: 0,
+    cntAccAugLen: 0,
+    cntAccSepLen: 0,
+    cntAccOctLen: 0,
+    cntAccNovLen: 0,
+    cntAccDecLen: 0,
     token : '',
     clients : [],
     lendings: [],
     campaigns:[],
     accounts: [],
+    transactions: [],
+    transactionsSoles: [],
+    transactionsDollar: [],
     salesRecords: [],
     accountsByClient : [],
     campaigns: [],
+    bankAccounts:[],
     login_entry: false,
     countries : [],
     clientsBlackList:[],
@@ -92,6 +120,7 @@ export default new Vuex.Store({
       documentNumber: '',
       documentType: '',
       requestDate: '',
+      commission: -1,
     },
     salesRecordCreate :{
       activeAccount : false,
@@ -156,32 +185,85 @@ export default new Vuex.Store({
           }
     },
     fillLendings(state,lendings_data){
+      console.log(lendings_data.length);
       state.lendings=[];
-        for (let i=0; i< lendings_data.length;i++){
-          if(lendings_data[i].active){       
-            state.lendings.push({
-              idLoan : lendings_data[i].idLoan,
-              totalShares : lendings_data[i].totalShares,
-              amount : lendings_data[i].amount,
-              interestRate : lendings_data[i].interestRate,
-              idCampaign : lendings_data[i].idCampaign,
-              idClient : lendings_data[i].idClient,
-              idSalesRecord : lendings_data[i].idSalesRecord,
-              idShareType : lendings_data[i].idShareType,
-              idAccount : lendings_data[i].idAccount,
-              share: lendings_data[i].share,
-              active : lendings_data[i].active,
-              campaignName : lendings_data[i].campaignName ,
-              accountNumber : lendings_data[i].accountNumber,
-              currency : lendings_data[i].currency,
-              fullName : lendings_data[i].fullName,
-              documentNumber : lendings_data[i].documentNumber,
-              documentType : lendings_data[i].documentType,
-              requestDate : lendings_data[i].requestDate,
-              commission : lendings_data[i].commission
-            });
-          }
+      state.cntAccJanLen = 0;
+      state.cntAccFebLen = 0;
+      state.cntAccMarLen = 0;
+      state.cntAccAprLen = 0;
+      state.cntAccMayLen = 0;
+      state.cntAccJunLen = 0;
+      state.cntAccJulLen = 0;
+      state.cntAccAugLen = 0;
+      state.cntAccSepLen = 0;
+      state.cntAccOctLen = 0;
+      state.cntAccNovLen = 0;
+      state.cntAccDecLen = 0;
+      for (let i=0; i< lendings_data.length;i++){
+        if(lendings_data[i].active){       
+          state.lendings.push({
+            idLoan : lendings_data[i].idLoan,
+            totalShares : lendings_data[i].totalShares,
+            amount : lendings_data[i].amount,
+            interestRate : lendings_data[i].interestRate,
+            idCampaign : lendings_data[i].idCampaign,
+            idClient : lendings_data[i].idClient,
+            idSalesRecord : lendings_data[i].idSalesRecord,
+            idShareType : lendings_data[i].idShareType,
+            idAccount : lendings_data[i].idAccount,
+            share: lendings_data[i].share,
+            active : lendings_data[i].active,
+            campaignName : lendings_data[i].campaignName ,
+            accountNumber : lendings_data[i].accountNumber,
+            currency : lendings_data[i].currency,
+            fullName : lendings_data[i].fullName,
+            documentNumber : lendings_data[i].documentNumber,
+            documentType : lendings_data[i].documentType,
+            requestDate : lendings_data[i].requestDate,
+            commission : lendings_data[i].commission
+          });
         }
+        var str=lendings_data[i].requestDate; //'12-12-2019'4
+        console.log(str);
+        var res=str.substring(3,5);
+        if(res=='12'){
+          console.log(res);          
+          state.cntAccDecLen = state.cntAccDecLen + 1;
+        }else if(res=='11'){
+          console.log(res);
+          state.cntAccNovLen = state.cntAccNovLen + 1;
+        }else if(res=='10'){
+          console.log(res);
+          state.cntAccOctLen = state.cntAccOctLen + 1;
+        }else if(res=='09'){
+          console.log(res);
+          state.cntAccSepLen = state.cntAccSepLen + 1;
+        }else if(res=='08'){
+          console.log(res);
+          state.cntAccAugLen = state.cntAccAugLen + 1;
+        }else if(res=='07'){
+          console.log(res);
+          state.cntAccJulLen = state.cntAccJulLen + 1;
+        }else if(res=='06'){
+          console.log(res);
+          state.cntAccJunLen = state.cntAccJunLen + 1;
+        }else if(res=='05'){
+          console.log(res);
+          state.cntAccMayLen = state.cntAccMayLen + 1;
+        }else if(res=='04'){
+          console.log(res);
+          state.cntAccAprLen = state.cntAccAprLen + 1;
+        }else if(res=='03'){
+          console.log(res);
+          state.cntAccMarLen = state.cntAccMarLen + 1;
+        }else if(res=='02'){
+          console.log(res);
+          state.cntAccFebLen = state.cntAccFebLen + 1;
+        }else if(res=='01'){
+          console.log(res);
+          state.cntAccJanLen = state.cntAccJanLen + 1;
+        }
+      }
     },
 
     fillCampaigns(state,campaigns_data){
@@ -205,9 +287,199 @@ export default new Vuex.Store({
         }
       }
     },
+    fillBankAccount(state,bankAccount_data){
+      state.bankAccounts=[]; 
+      for(let bankAccount of bankAccount_data){
+        if(bankAccount.active){
+          state.bankAccounts.push({
+            idBankAccount : bankAccount.idBankAccount,
+            accountNumber : bankAccount.accountNumber,
+            balance : bankAccount.balance,
+            idCurrency : bankAccount.idCurrency,
+            active : bankAccount.active
+          });
+        }
+      }
+    },
+    fillTransaction(state,transaction_data){
+      state.transactions=[]; 
+      for(let transaction of transaction_data){
+          state.transactions.push({
+            id : transaction.id,
+            datetime : transaction.datetime,
+            amount : transaction.amount,
+            accountNumber : transaction.accountNumber,
+            bankAccountNumber : transaction.bankAccountNumber,
+            currency : transaction.currency
+          });
+      }
+    },
+    fillTransactionSoles(state,transactionSoles_data){
+      state.transactionsSoles=[]; 
+      for(let transaction of transactionSoles_data){
+        if(transaction.currency=="Soles"){
+          state.transactionsSoles.push({
+            id : transaction.id,
+            datetime : transaction.datetime,
+            amount : transaction.amount,
+            accountNumber : transaction.accountNumber,
+            bankAccountNumber : transaction.bankAccountNumber,
+            currency : transaction.currency
+          });
+        }  
+      }
+    },
+    fillTransactionDollar(state,transactionDollar_data){
+      state.transactionsDollar=[]; 
+      for(let transaction of transactionDollar_data){
+        if(transaction.currency=="Dólares"){
+          state.transactionsDollar.push({
+            id : transaction.id,
+            datetime : transaction.datetime,
+            amount : transaction.amount,
+            accountNumber : transaction.accountNumber,
+            bankAccountNumber : transaction.bankAccountNumber,
+            currency : transaction.currency
+          });
+        } 
+      }
+    },
+
+    /*Ronaldo*/
+    countAccountPerMonth(state,account_data){
+      let aux=account_data.accounts;
+      state.countAccount=[];
+      for(let i=0;i<aux.length;i++){
+        var str=aux.openingDate; //'12-12-2019'
+        var res=str.substring(3,5);
+        if(res=='12'){
+          
+          let i=11;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='11'){
+          
+          let i=10;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='10'){
+        
+          let i=9;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='09'){
+          
+          let i=8;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='08'){
+          
+          let i=7;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='07'){
+          
+          let i=6;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='06'){
+          
+          let i=5;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='05'){
+          
+          let i=4;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='04'){
+          
+          let i=3;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='03'){
+          
+          let i=2;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='02'){
+          
+          let i=1;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }else if(res=='01'){
+          
+          let i=0;
+          state.countAccount[i]=state.countAccount[i]+1;
+        }
+      }
+    },
+    /*-------*/
+    /*Ronaldo*/
+    fillAccountDataBarChart(state, year){
+      let aux=state.accounts;
+        
+      state.cntAccJan = 0;
+      state.cntAccFeb = 0;
+      state.cntAccMar = 0;
+      state.cntAccApr = 0;
+      state.cntAccMay = 0;
+      state.cntAccJun = 0;
+      state.cntAccJul = 0;
+      state.cntAccAug = 0;
+      state.cntAccSep = 0;
+      state.cntAccOct = 0;
+      state.cntAccNov = 0;
+      
+      state.cntAccDec = 0;      
+      for(let i = 0; i < aux.length; i++){
+        let str=aux[i].openingDate; //'12-12-2019'
+        let res=str.substring(3,5);
+        let yy=str.substring(6,10);
+        
+        if(res=='12' && yy==year){
+                    
+          state.cntAccDec = state.cntAccDec + 1;
+        }else if(res=='11' && yy==year){
+          
+          state.cntAccNov = state.cntAccNov + 1;
+        }else if(res=='10' && yy==year){
+          
+          state.cntAccOct = state.cntAccOct + 1;
+        }else if(res=='09' && yy==year){
+          
+          state.cntAccSep = state.cntAccSep + 1;
+        }else if(res=='08' && yy==year){
+          
+          state.cntAccAug = state.cntAccAug + 1;
+        }else if(res=='07' && yy==year){
+          
+          state.cntAccJul = state.cntAccJul + 1;
+        }else if(res=='06' && yy==year){
+          
+          state.cntAccJun = state.cntAccJun + 1;
+        }else if(res=='05' && yy==year){
+          
+          state.cntAccMay = state.cntAccMay + 1;
+        }else if(res=='04' && yy==year){
+          
+          state.cntAccApr = state.cntAccApr + 1;
+        }else if(res=='03' && yy==year){
+          
+          state.cntAccMar = state.cntAccMar + 1;
+        }else if(res=='02' && yy==year){
+          
+          state.cntAccFeb = state.cntAccFeb + 1;
+        }else if(res=='01' && yy==year){
+          
+          state.cntAccJan = state.cntAccJan + 1;
+        }
+      }
+    },    
     fillAccounts(state, account_data){
       let aux=account_data.accounts;
       state.accounts=[];
+      state.cntAccJan = 0;
+      state.cntAccFeb = 0;
+      state.cntAccMar = 0;
+      state.cntAccApr = 0;
+      state.cntAccMay = 0;
+      state.cntAccJun = 0;
+      state.cntAccJul = 0;
+      state.cntAccAug = 0;
+      state.cntAccSep = 0;
+      state.cntAccOct = 0;
+      state.cntAccNov = 0;
+      state.cntAccDec = 0;
       for(let i = 0; i < aux.length; i++){
         if(aux[i].active){
           state.accounts.push({
@@ -232,6 +504,47 @@ export default new Vuex.Store({
             typeName : aux[i].typeName
           })
         }
+        /*Ronaldo*/
+        let str=aux[i].openingDate; //'12-12-2019'
+        let res=str.substring(3,5);
+        if(res=='12'){
+                   
+          state.cntAccDec = state.cntAccDec + 1;
+        }else if(res=='11'){
+          
+          state.cntAccNov = state.cntAccNov + 1;
+        }else if(res=='10'){
+          
+          state.cntAccOct = state.cntAccOct + 1;
+        }else if(res=='09'){
+          
+          state.cntAccSep = state.cntAccSep + 1;
+        }else if(res=='08'){
+          
+          state.cntAccAug = state.cntAccAug + 1;
+        }else if(res=='07'){
+          
+          state.cntAccJul = state.cntAccJul + 1;
+        }else if(res=='06'){
+          
+          state.cntAccJun = state.cntAccJun + 1;
+        }else if(res=='05'){
+          
+          state.cntAccMay = state.cntAccMay + 1;
+        }else if(res=='04'){
+          
+          state.cntAccApr = state.cntAccApr + 1;
+        }else if(res=='03'){
+          
+          state.cntAccMar = state.cntAccMar + 1;
+        }else if(res=='02'){
+          
+          state.cntAccFeb = state.cntAccFeb + 1;
+        }else if(res=='01'){
+          
+          state.cntAccJan = state.cntAccJan + 1;
+        }
+      /*-------*/
       }
     },
     fillClientsBlackList(state, clientsBlackList_data){
@@ -596,7 +909,7 @@ export default new Vuex.Store({
       state.editCampaign = flag;
     }
   },
-  actions: {
+  actions: {      
       completeClients(context,clients_data){
         context.commit('fillClients',clients_data);
       },
@@ -608,6 +921,18 @@ export default new Vuex.Store({
       },
       completeCampaigns(context, campaigns_data){
         context.commit('fillCampaigns',campaigns_data);
+      },
+      completeBankAccount(context, bankAccount_data){
+        context.commit('fillBankAccount',bankAccount_data);
+      },
+      completeTransactions(context, transaction_data){
+        context.commit('fillTransaction',transaction_data);
+      },
+      completeTransactionsDollar(context, transactionDollar_data){
+        context.commit('fillTransactionDollar',transactionDollar_data);
+      },
+      completeTransactionsSoles(context, transactionSoles_data){
+        context.commit('fillTransactionSoles',transactionSoles_data);
       },
       setLendingIndex(context, index){
         context.commit('setLendingInd', index);
@@ -642,6 +967,11 @@ export default new Vuex.Store({
       completePersonCreate(context,person_data){
         context.commit('fillPersonCreate',person_data);
       },
+      /*Ronaldo*/
+      prueba(context, year){
+        context.commit('fillAccountDataBarChart', year);
+      },
+      /*-------*/
       completeAccounts(context, account_data){
         context.commit('fillAccounts', account_data);
       },

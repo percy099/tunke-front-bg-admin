@@ -21,6 +21,10 @@ import BlackListCreate from './views/BlackListCreate.vue'
 import MassiveCharge from './views/MassiveCharge.vue'
 import CampaignOptions from './views/CampaignOptions.vue'
 import MassiveChargeCampaign from './views/MassiveChargeCampaign.vue'
+import ParametersConfiguration from './views/ParametersConfiguration.vue'
+import CRUDAccountStatus from './views/CRUDAccountStatus.vue'
+import ViewDetailSoles from './views/ViewDetailSoles.vue'
+import ViewDetailDollar from './views/ViewDetailDollar.vue'
 
 Vue.use(Router)
 
@@ -132,6 +136,26 @@ export default new Router({
       path : '/massiveChargeCampaign',
       name : 'massiveChargeCampaign',
       component : MassiveChargeCampaign
-    }
+    },
+    {
+      path : '/parametersConfiguration',
+      name : 'parametersConfiguration',
+      component : ParametersConfiguration
+    },
+    {
+      path : '/AccountStatus',
+      name : 'accountStatus',
+      component : CRUDAccountStatus
+    },
+    {
+      path : '/ViewDetailSoles',
+      name : 'viewDetailSoles',
+      component : ViewDetailSoles
+    },
+    {
+      path : '/ViewDetailDollar',
+      name : 'viewDetailDollar',
+      component : ViewDetailDollar
+    },
   ]
 })
