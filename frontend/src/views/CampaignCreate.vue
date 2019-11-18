@@ -20,7 +20,7 @@
                     <input v-model="campaignCreate.startDate" type="date" class="form-control" disabled>
                     <h6 class="mt-3">Préstamo Rango</h6>
                     <input v-model="campaignCreate.loanRange" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Ratio de interés</h6>
+                    <h6 class="mt-3">Tasa de interés</h6>
                     <input v-model="campaignCreate.interestRate" type="text" class="form-control mb-5" disabled>
                 </div>
                 <div v-if="editCampaign == 0" class="col-6 groupRightPersonal">
@@ -40,7 +40,7 @@
                     <input v-model="campaignCreate.minimumLoan" type="text" class="form-control">
                     <h6 class="mt-3">Periodo mínimo</h6>
                     <input v-model="campaignCreate.minimumPeriod" type="text" class="form-control">
-                    <h6 class="mt-3">Ratio de interés</h6>
+                    <h6 class="mt-3">Tasa de interés</h6>
                     <input v-model="campaignCreate.interestRate" type="text" class="form-control mb-5">
                 </div>
                 <div v-if="editCampaign == 1" class="col-6 groupRightPersonal">
@@ -50,6 +50,12 @@
                     <input v-model="campaignCreate.maximumLoan" type="text" class="form-control">
                     <h6 class="mt-3">Periodo máximo</h6>
                     <input v-model="campaignCreate.maximumPeriod" type="text" class="form-control">
+                    <h6 class="mt-3">Moneda</h6>
+                    <select v-model="selectCurrency" style="height:2.3em; width:27em;">
+                        <option v-for="optionCurrency in optionsCurrency" v-bind:value="optionCurrency.value">
+                            {{ optionCurrency.text }}
+                        </option>
+                    </select>
                 </div>
                 <div v-if="editCampaign == 2" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
@@ -60,21 +66,21 @@
                     <input v-model="campaignCreate.minimumPeriod" type="text" class="form-control">
                 </div>
                 <div v-if="editCampaign == 2" class="col-6 groupRightPersonal">
-                    <h6>Ratio de interés</h6>
+                    <h6>Tasa de interés</h6>
                     <input v-model="campaignCreate.interestRate" type="text" class="form-control">
-                    <h6 class="mt-3">Fecha Inicio</h6>
+                    <h6 class="mt-3">Monto Máximo</h6>
                     <input v-model="campaignCreate.maximumLoan" type="text" class="form-control">
                     <h6 class="mt-3">Plazo máximo</h6>
                     <input v-model="campaignCreate.maximumPeriod" type="text" class="form-control mb-5">
                 </div>
             </div>
+        </div>
 
         <div class="d-flex justify-content-center mt-3">
             <button class="btn mr-3" @click=$router.go(-1)>Volver</button>
              <button v-if="this.editCampaign == 1" @click="saveCampaign()" class="btn ml-5">Guardar</button>
              <button v-if="this.editCampaign == 2" @click="editCampaign()" class="btn ml-5">Editar</button>
         </div>
-    |   </div>
     </div>
 </template>
 
@@ -87,6 +93,8 @@ import { mapState, mapActions } from 'vuex';
 import * as userDA from '@/dataAccess/userDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
+import * as adminDA from '@/dataAccess/adminDA.js'
+import { required, minLength, maxLength, numeric, email} from 'vuelidate/lib/validators'
 
 export default {
     components:{
@@ -96,7 +104,28 @@ export default {
         return {
             enableButton : false,
             dateAux : '',
+            selectCurrency : 1,
+            optionsCurrency: [
+                { text: 'Soles', value: 1 },
+                { text: 'Dolares', value: 2 }
+            ],
         };
+    },
+    validations: {
+        name: {
+            required
+        },
+        minimumLoan: {
+            required,
+            numeric
+        },
+        maximumLoan: {
+            required,
+            numeric
+        },
+        minimumPeriod: {
+            
+        }
     },
     computed :{
         ...mapState (['token','campaignCreate','editCampaign']),
@@ -129,6 +158,7 @@ export default {
         },
 
         saveCampaign(){
+            
             this.campaignCreate.startDate = this.dateAux.substring(0,4) + '-' + this.dateAux.substring(5,7) + '-01';
             console.log(this.campaignCreate.startDate);
             var flag;
@@ -167,7 +197,8 @@ export default {
             maxDay[9] = "31";
             maxDay[10] = "30";
             maxDay[11] = "31";
-            maxDay[12] = "29"; /* Año bisiesto */ 
+            maxDay[12] = "29"; /* Año bisiesto */
+            
             if(parseInt(this.dateAux.substring(0,4)) % 4 == 0 && parseInt(monthAux) == 2){ /* Febrero en año bisiesto */
                 if(flag){
                     this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-0' + monthAux + '-' + maxDay[12];
@@ -185,7 +216,7 @@ export default {
             
             adminDA.createCampaign(this.campaignCreate.name,this.campaignCreate.month,
             this.campaignCreate.startDate,this.campaignCreate.endDate,this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan,
-            this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate, this.token).then((res) =>{
+            this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate, this.selectCurrency, this.token).then((res) =>{
                 Swal.fire({
                     type: 'success',
                     title: 'Enhorabuena',
@@ -198,6 +229,7 @@ export default {
                     text : 'Error al crear la campaña'
                 })
             })
+            
         },
         
         editCampaign(){

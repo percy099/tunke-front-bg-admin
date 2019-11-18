@@ -272,3 +272,14 @@ body {
 #createI{
 	padding-top : 1.7%;
 }
+
+.btn{
+    background-color: #090d4d;
+}
+
+#butt{
+    font-weight: 600;  
+    width: 20vh;
+    color : white;
+    background-color: #090d4d;
+}

@@ -48,7 +48,7 @@ export function getAllAccounts(token){
 export function getAllSalesRecord(token){
 
     let url = process.env.VUE_APP_API_URL + 'api/salesRecords/';
-    console.log(url);
+    //console.log(url);
     return axios.get(url, {
         auth: {
             username: token,
@@ -94,6 +94,26 @@ export function getAllLendings(token){
 
 export function getAllClientsBlackList(token){
     let url = process.env.VUE_APP_API_URL + 'api/blackLists/';
+    return axios.get(url,{
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function getAllBankAccount(token){
+    let url = process.env.VUE_APP_API_URL + 'api/bankAccount/';
+    return axios.get(url,{
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function getAllTransactions(token){
+    let url = process.env.VUE_APP_API_URL + 'api/transactions/';
     return axios.get(url,{
         auth: {
             username: token,

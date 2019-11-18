@@ -10,6 +10,7 @@
                     <button @click="openWindow('account')" class="btn">Cuentas de Ahorro</button>
                     <button @click="openWindow('blackList')" class="btn">Clientes especiales</button>
                     <button @click="openWindow('salesRecord')" class="btn">Expedientes de Venta</button> 
+                    <button @click="openWindow('accountStatus')" class="btn">Estado de cuenta</button> 
                 </div>
             </div>
             <div class="col-6">
@@ -20,7 +21,7 @@
                 </div>
                 <h2 class="mt-4">Configuración:</h2>
                 <div class="d-flex flex-column justify-content-center">
-                    <button class="btn">Configuración de Parámetros</button>
+                    <button @click="openWindow('parConfig')" class="btn">Configuración de Parámetros</button>
                 </div>
             </div>
         </div>
@@ -41,7 +42,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -67,6 +68,11 @@ export default {
                 break;
                 case 'reportsL':
                     router.push('/reportsLending');
+                break;
+                case 'parConfig':
+                    router.push('/parametersConfiguration');
+                case 'accountStatus':
+                    router.push('/AccountStatus');
                 break;
             }
         }
@@ -116,7 +122,7 @@ export default {
             this.completeSalesRecords(res.data);
         }).catch(error =>{
             Swal.fire({
-                title: 'Erorr',
+                title: 'Error',
                 type: 'error',
                 text: 'Error obteniendo los expedientes de Venta'
             })
@@ -125,9 +131,45 @@ export default {
             this.completeClientsBlackList(res.data);
         }).catch(error =>{
             Swal.fire({
-                title: 'Erorr',
+                title: 'Error',
                 type: 'error',
                 text: 'Error obteniendo los clientes especiales'
+            })
+        });
+        userDA.getAllBankAccount(this.token).then((res) =>{
+            this.completeBankAccount(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las cuentas del banco'
+            })
+        });
+        userDA.getAllTransactions(this.token).then((res) =>{
+            this.completeTransactions(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las transacciones del banco'
+            })
+        });
+        userDA.getAllTransactions(this.token).then((res) =>{
+            this.completeTransactionsDollar(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las transacciones en Dólares del banco'
+            })
+        });
+        userDA.getAllTransactions(this.token).then((res) =>{
+            this.completeTransactionsSoles(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las transacciones en Soles del banco'
             })
         });
     }

@@ -22,7 +22,7 @@ select{
     width: 60%;
 }
 
-span{
+.extraSpan{
     font-size: 1rem;
     font-weight: 500;
 }
