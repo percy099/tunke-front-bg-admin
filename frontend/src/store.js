@@ -116,6 +116,13 @@ export default new Vuex.Store({
       requestDate : '',
       activeSalesRecord : '',
       productName : '',
+      completeName : '',
+      /*  info del préstamo */ 
+      activeLoan: false,
+      totalShares: -1,
+      interestRate: -1,
+      shareType: '',
+      idLoan: -1,
     },
   }, 
 
@@ -491,11 +498,13 @@ export default new Vuex.Store({
               totalShares: -1,
               interestRate: -1,
               shareType: '',
+              idLoan: -1,
             });
           } else {
             state.salesRecords.push({
               activeLoan: aux[i].activeLoan,
               totalShares: aux[i].totalShares,
+              idLoan: aux[i].idLoan,
               interestRate: aux[i].interestRate,
               shareType: aux[i].shareType,
               activeClient : aux[i].activeClient,
@@ -540,6 +549,7 @@ export default new Vuex.Store({
           state.salesRecordCreate.closingDate = state.salesRecords[index].closingDate;
         }
       } else {
+        state.salesRecordCreate.idLoan = state.salesRecords[index].idLoan
         if(state.salesRecords[index].activeLoan == 1){
           state.salesRecordCreate.activeLoan = "Activo"
         } else {
