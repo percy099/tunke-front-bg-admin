@@ -17,6 +17,7 @@ import CRUDBlackList from './views/CRUDBlackList.vue'
 import ViewSaleRecord from './views/ViewSaleRecord.vue'
 import ReportsAccount from './views/ReportsAccount.vue'
 import ReportsLending from './views/ReportsLending.vue'
+import BlackListOptions from './views/BlackListOptions.vue'
 import BlackListCreate from './views/BlackListCreate.vue'
 import MassiveCharge from './views/MassiveCharge.vue'
 import CampaignOptions from './views/CampaignOptions.vue'
@@ -114,9 +115,9 @@ export default new Router({
       component : ReportsLending
     },
     {
-      path : '/blackListCreate',
-      name : 'blackListCreate',
-      component : BlackListCreate
+      path : '/blackListOptions',
+      name : 'blackListOptions',
+      component : BlackListOptions
     },
     {
       path : '/massiveCharge',
@@ -132,6 +133,11 @@ export default new Router({
       path : '/massiveChargeCampaign',
       name : 'massiveChargeCampaign',
       component : MassiveChargeCampaign
+    },
+    {
+      path: '/blackListCreate',
+      name : 'blackListCreate',
+      component : BlackListCreate
     }
   ]
 })
