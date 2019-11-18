@@ -51,11 +51,12 @@ export function getAccountsByClient(idClient,token){
     });
 }
 
-export function doCreateAccount(idPer,cur){
+export function doCreateAccount(idPer,cur,origin){
     let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
     var body ={
         "idPerson" : idPer,
-        "currency" : cur
+        "currency" : cur,
+        "origin" : origin
     }
     
     return axios.post(url,body);

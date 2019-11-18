@@ -45,12 +45,12 @@
                 </div>
                 <div class="col-6">
                     <h6>Segundo Nombre</h6>
-                    <input v-model="accountCreate.middleName" type="text" class="form-control" disabled>
+                    <input v-model="accountCreate.middleName" id="right1" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Apellido Materno</h6>
-                    <input v-model="accountCreate.motherLastname" type="text" class="form-control" disabled>
+                    <input v-model="accountCreate.motherLastname" id="right2" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Nacionalidad</h6>
                     <div>
-                        <input v-model="accountCreate.nationality" type="text" class="form-control d-inline" disabled>
+                        <input v-model="accountCreate.nationality" id="right3" type="text" class="form-control d-inline" disabled>
                         <img class="ml-3" v-bind:src="accountCreate.flag" height="30" width="auto">
                     </div>
                 </div>
@@ -61,12 +61,12 @@
             <div class="row mt-4">
                 <div class="col-6">
                     <span class="mr-sm-6">
-                        <input type="radio" @click="dolar = true" name="option1" value="option2"> Dólares
+                        <input type="radio" @click="dolar = 2" name="option1" value="option2"> Dólares
                     </span>
                 </div>
                 <div class="col-6">
                     <span class="mr-sm-6">
-                        <input type="radio" @click="dolar = false" name="option1" value="option2"> Soles
+                        <input type="radio" @click="dolar = 1" name="option1" value="option2"> Soles
                     </span>
                 </div>
             </div>
@@ -91,7 +91,7 @@ export default {
         return {
             dniPerson : '',
             enableButton : false,
-            dolar : true
+            dolar : 0
         };
     },
     validations: {
@@ -105,6 +105,9 @@ export default {
     computed :{
         ...mapState (['accountCreate']),
         isDisabled: function(){
+            if(this.dolar != 0){
+                this.enableButton = true;
+            }
     	    return !this.enableButton;
         }
     },
@@ -146,7 +149,7 @@ export default {
                     switch(res.data.type){
                         case 1:
                             this.completeAccountCreate(res.data);
-                            this.enableButton = true;
+                            //this.enableButton = true;
                         break;
                         case 2:
                             Swal.fire({
@@ -177,10 +180,12 @@ export default {
             }
         },
         saveAccount(){
-            let currency = 1;
-            if(this.dolar == true) currency = 2;
-            adminDA.doCreateAccount(this.accountCreate.idPerson, currency).then((res) =>{
-                alert('Cliente creado satisfactoriamente');
+            adminDA.doCreateAccount(this.accountCreate.idPerson, this.dolar, 2).then((res) =>{
+                Swal.fire({
+                    type: 'success',
+                    title: 'Enhorabuena',
+                    text: 'Cuenta creada satisfactoriamente'
+                })
             }).catch(error =>{
                 Swal.error({
                     title : 'Error',
