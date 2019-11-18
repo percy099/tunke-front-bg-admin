@@ -20,7 +20,9 @@ import ReportsLending from './views/ReportsLending.vue'
 import BlackListCreate from './views/BlackListCreate.vue'
 import MassiveCharge from './views/MassiveCharge.vue'
 import ParametersConfiguration from './views/ParametersConfiguration.vue'
-
+import CRUDAccountStatus from './views/CRUDAccountStatus.vue'
+import ViewDetailSoles from './views/ViewDetailSoles.vue'
+import ViewDetailDollar from './views/ViewDetailDollar.vue'
 
 Vue.use(Router)
 
@@ -127,6 +129,21 @@ export default new Router({
       path : '/parametersConfiguration',
       name : 'parametersConfiguration',
       component : ParametersConfiguration
+    },
+    {
+      path : '/AccountStatus',
+      name : 'accountStatus',
+      component : CRUDAccountStatus
+    },
+    {
+      path : '/ViewDetailSoles',
+      name : 'viewDetailSoles',
+      component : ViewDetailSoles
+    },
+    {
+      path : '/ViewDetailDollar',
+      name : 'viewDetailDollar',
+      component : ViewDetailDollar
     },
   ]
 })
