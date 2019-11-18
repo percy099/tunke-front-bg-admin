@@ -2,6 +2,7 @@
 <div class="body">
     <div class="container">
         <div class="table-wrapper">
+            <h1>Cuentas de Ahorro</h1>
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">

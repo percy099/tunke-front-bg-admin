@@ -1,7 +1,9 @@
 <template>
 <div class="body">
     <div class="container">
+        
         <div class="table-wrapper">
+            <h1>Expedientes de Venta </h1>
             <div class="table-title">
             </div>
             <table class="table table-striped table-hover" id="mydatatable">
@@ -25,8 +27,8 @@
                         <td>{{salesRecord.origin}}</td>
                         <td>{{salesRecord.nameRecordStatus}}</td>
                         <td>
-                            <a @click="viewSalesRecord(index)" href="#verExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE880;</i></a>
-                            <a v-if="salesRecord.productName == 'Prestamo' && salesRecord.nameRecordStatus == 'En proceso'" @click="editSalesRecord(index)" href="#editarExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE254;</i></a>
+                            <a @click="viewSalesRecord(index)" href="#verExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Visualizar">&#xE880;</i></a>
+                            <a v-if="salesRecord.productName == 'Prestamo' && salesRecord.nameRecordStatus == 'En proceso'" @click="editSalesRecord(index)" href="#editarExpedienteModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                         </td>
                     </tr>
                 </tbody>

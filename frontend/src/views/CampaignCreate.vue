@@ -94,6 +94,7 @@ import * as userDA from '@/dataAccess/userDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
 import * as adminDA from '@/dataAccess/adminDA.js'
+import { required, minLength, maxLength, numeric, email} from 'vuelidate/lib/validators'
 
 export default {
     components:{
@@ -109,6 +110,22 @@ export default {
                 { text: 'Dolares', value: 2 }
             ],
         };
+    },
+    validations: {
+        name: {
+            required
+        },
+        minimumLoan: {
+            required,
+            numeric
+        },
+        maximumLoan: {
+            required,
+            numeric
+        },
+        minimumPeriod: {
+            
+        }
     },
     computed :{
         ...mapState (['token','campaignCreate','editCampaign']),

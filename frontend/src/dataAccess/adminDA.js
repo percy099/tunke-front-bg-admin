@@ -51,11 +51,12 @@ export function getAccountsByClient(idClient,token){
     });
 }
 
-export function doCreateAccount(idPer,cur){
+export function doCreateAccount(idPer,cur,origin){
     let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
     var body ={
         "idPerson" : idPer,
-        "currency" : cur
+        "currency" : cur,
+        "origin" : origin
     }
     
     return axios.post(url,body);
@@ -125,7 +126,7 @@ export function deleteLending(idLoan,token){
     });
 }
 
-export function createLending(idClient,totalShares,amount,interestRate,idShareType,idAccount,share,commission,token){
+export function createLending(idClient,totalShares,amount,interestRate,idShareType,idAccount,share,commission,idCampaign,token){
     let url = process.env.VUE_APP_API_URL + 'api/loans/'
     
     var body ={
@@ -136,7 +137,8 @@ export function createLending(idClient,totalShares,amount,interestRate,idShareTy
         "idShareType" : idShareType,
         "idAccount" : idAccount,
         "share" : share,
-        "commission" : commission
+        "commission" : commission,
+        "idCampaign" : idCampaign
     }
 
     return axios.post(url,body,{
@@ -217,6 +219,16 @@ export function chargeCampaigns(token,body){
     let url = process.env.VUE_APP_API_URL + 'api/campaignCharge/'
 
     return axios.post(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+      
+
+export function getClientByID(idClient,token){
+    let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient;  
+    return axios.get(url,{
         auth:{
             username: token,
             password: ''
