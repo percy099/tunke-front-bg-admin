@@ -236,3 +236,17 @@ export function getClientByID(idClient,token){
     });
 }
 
+export function createBlacklist(token,dni,reason){
+    let url = process.env.VUE_APP_API_URL + 'api/blackList/';
+
+    var body = {
+        "dni" : dni,
+        "reason" : reason
+    }
+    return axios.post(url, body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
