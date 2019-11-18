@@ -235,7 +235,16 @@ export function getClientByID(idClient,token){
         }
     });
 }
+export function doRequestParameters(token){
+    let url = process.env.VUE_APP_API_URL + 'api/parameterSettings/';
 
+    return axios.get(url,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
 export function createBlacklist(token,dni,reason){
     let url = process.env.VUE_APP_API_URL + 'api/blackList/';
 

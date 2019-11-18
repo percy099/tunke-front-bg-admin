@@ -38,11 +38,12 @@
     import router from '@/router.js'
     import * as userDA from '@/dataAccess/userDA.js'
     import * as utilsDA from '@/dataAccess/utilsDA.js'
+    import * as adminDA from '@/dataAccess/adminDA.js'
     import Swal from 'sweetalert2'
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar','fillParameterSettings']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -71,6 +72,7 @@ export default {
                 break;
                 case 'parConfig':
                     router.push('/parametersConfiguration');
+                break;
                 case 'accountStatus':
                     router.push('/AccountStatus');
                 break;
@@ -78,7 +80,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['token']),
+        ...mapState(['token','parameterSettings']),
     },
     beforeMount(){
         this.setLoginEntry(true);
@@ -172,6 +174,19 @@ export default {
                 text: 'Error obteniendo las transacciones en Soles del banco'
             })
         });
-    }
+        adminDA.doRequestParameters(this.token).then((res) =>{
+            let response_create = res.data;
+            this.fillParameterSettings(response_create);
+            console.log("PARAMETROS DE CONFIGURACION")
+            console.log(this.parameterSetting);
+        }).catch(error=>
+        {
+            Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Error en la captura de parámetros de configuración'
+            })
+        });
+}
 }
 </script>

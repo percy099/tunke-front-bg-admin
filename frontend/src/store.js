@@ -13,6 +13,13 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
+    parameterSetting:{
+      maxTokenSends: '',
+      maxDiaryMovements : '',
+      legalAge : '',
+      maxAccountsNumber : '',
+      commissionPercentage:''
+    },
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,
@@ -907,6 +914,13 @@ export default new Vuex.Store({
         2: Editar Campaña
       */
       state.editCampaign = flag;
+    },
+
+    setParameters(state,data){
+      state.parameterSetting.maxTokenSends=data.maxTokenSends;
+      state.parameterSetting.maxDiaryMovements=data.maxDiaryMovements;
+      state.parameterSetting.legalAge=data.legalAge;
+      state.parameterSetting.maxAccountsNumber=data.maxAccountsNumber;
     }
   },
   actions: {      
@@ -972,6 +986,9 @@ export default new Vuex.Store({
         context.commit('fillAccountDataBarChart', year);
       },
       /*-------*/
+      fillParameterSettings(context,parameters){
+        context.commit('setParameters',parameters);
+      },
       completeAccounts(context, account_data){
         context.commit('fillAccounts', account_data);
       },
