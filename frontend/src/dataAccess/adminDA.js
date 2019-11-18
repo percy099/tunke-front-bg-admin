@@ -225,7 +225,7 @@ export function chargeCampaigns(token,body){
         }
     });
       
-
+}
 export function getClientByID(idClient,token){
     let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient;  
     return axios.get(url,{

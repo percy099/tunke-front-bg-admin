@@ -143,6 +143,7 @@ export default new Router({
       name : 'blackListCreate',
       component : BlackListCreate
     },
+    {
       path : '/parametersConfiguration',
       name : 'parametersConfiguration',
       component : ParametersConfiguration
@@ -161,6 +162,6 @@ export default new Router({
       path : '/ViewDetailDollar',
       name : 'viewDetailDollar',
       component : ViewDetailDollar
-    },
+    }
   ]
 })
