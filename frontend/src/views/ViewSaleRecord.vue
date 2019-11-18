@@ -40,7 +40,7 @@
                     <h6 class="mt-3">Apellido Paterno</h6>
                     <input v-model="salesRecordCreate.fatherLastname" type="text" class="form-control" disabled>
                     <div class="mt-3">
-                        <span>Fecha de Nacimiento</span><input v-model="salesRecordCreate.birthdate" class="ml-3" type="date" disabled>
+                        <span class="extraSpan">Fecha de Nacimiento</span><input v-model="salesRecordCreate.birthdate" class="ml-3" type="date" disabled>
                     </div>
                     <h6 class="mt-3">Dirección</h6>
                     <input v-model="salesRecordCreate.address" type="text" class="form-control mb-3" disabled>
