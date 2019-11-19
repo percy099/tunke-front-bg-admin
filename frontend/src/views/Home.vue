@@ -71,6 +71,7 @@ export default {
                 break;
                 case 'parConfig':
                     router.push('/parametersConfiguration');
+                break;                    
                 case 'accountStatus':
                     router.push('/AccountStatus');
                 break;
