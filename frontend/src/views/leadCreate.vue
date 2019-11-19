@@ -92,7 +92,17 @@
                     <h6 class="mt-3">Monto Mínimo Campaña</h6>
                     <input v-model="campaignCreate.minimumLoan" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Mínimo Cliente</h6> 
-                    <input v-model="minimum" type="text" class="form-control mb-3">
+                    <input type="text" class="form-control mb-3"
+                    v-model.trim="$v.minimum.$model" :class="{
+                    'is-invalid' : $v.minimum.$error, 'is-valid':!$v.minimum.$invalid }">
+                    <div class="valid-feedback">Monto Válido!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.minimum.minValue">Debe ser de al menos {{
+                        $v.minimum.$params.minValue.min}} </span>
+                        <span v-if="!$v.minimum.maxValue">Debe ser a lo mucho de {{
+                        $v.minimum.$params.maxValue.max}} </span>
+                        <span v-if="!$v.minimum.numeric">Debe contener solo números. </span>
+                    </div>
                 </div>
                 <div v-if="editLead == 1" class="col-6 groupRightPersonal">
                     <h6>Moneda</h6>
@@ -101,7 +111,17 @@
                     <h6 class="mt-3">Monto Máximo Campaña</h6>
                     <input v-model="campaignCreate.maximumLoan" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Máximo Cliente</h6>
-                    <input v-model="maximum" type="text" class="form-control mb-3">
+                    <input type="text" class="form-control mb-3"
+                    v-model.trim="$v.maximum.$model" :class="{
+                    'is-invalid' : $v.maximum.$error, 'is-valid':!$v.maximum.$invalid }">
+                    <div class="valid-feedback">Monto Válido!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.maximum.minValue">Debe ser de al menos {{
+                        $v.maximum.$params.minValue.min}} </span>
+                        <span v-if="!$v.maximum.maxValue">Debe ser a lo mucho de {{
+                        $v.maximum.$params.maxValue.max}} </span>
+                        <span v-if="!$v.maximum.numeric">Debe contener solo números. </span>
+                    </div>
                 </div>
                 <div v-if="editLead == 0" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
@@ -167,18 +187,24 @@ export default {
             },
             maximum: {
                 required,
-                minValue: minValue(this.minCamp),
-                maxValue: maxValue(this.maxCamp)
+                minValue: minValue(parseInt(this.minimum) + 1),
+                maxValue: maxValue(this.maxCamp),
+                numeric
             },
             minimum: {
                 required,
                 minValue: minValue(this.minCamp),
-                maxValue: maxValue(this.maxCamp)
+                maxValue: maxValue(this.maxCamp - 1),
+                numeric
             },
         }
     },
     computed :{
         ...mapState (['token','clientCreate','campaignCreate','editLead','leadCreate']),
+        cambio(){
+            this.auxMinCap = this.minimum;
+            console.log(this.auxMinCap);
+        }
     },
     methods:{
         ...mapActions (['completePersonCreate','completeLendingCreateCampaign','cleanClientCreate']),
@@ -210,8 +236,8 @@ export default {
             document.getElementById(btn).classList.add('active');
         },
         getClient(){
-            this.$v.$touch();
-            if (this.$v.$invalid) {
+            this.$v.dniClient.$touch();
+            if (this.$v.dniClient.$invalid) {
             } else {
                 userDA.getPersonData(this.dniClient).then((res) =>{
                     switch(res.data.type){
@@ -259,24 +285,23 @@ export default {
         },
         
         saveLead(){
-            console.log(this.clientCreate.idClient);
-            console.log(this.campaignCreate.idCampaign);
-            console.log(this.maximum);
-            console.log(this.minimum);
-            adminDA.createLead(this.clientCreate.idClient,this.campaignCreate.idCampaign,this.maximum, this.minimum, this.token).then((res) =>{
-                Swal.fire({
-                    type: 'success',
-                    title: 'Enhorabuena',
-                    text: 'Lead creado satisfactoriamente'
+            this.$v.$touch();
+            if (this.$v.$invalid) {
+            } else {
+                adminDA.createLead(this.clientCreate.idClient,this.campaignCreate.idCampaign,this.maximum, this.minimum, this.token).then((res) =>{
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Enhorabuena',
+                        text: 'Lead creado satisfactoriamente'
+                    })
+                }).catch(error =>{
+                    Swal.fire({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al crear al lead'
+                    })
                 })
-            }).catch(error =>{
-                Swal.fire({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al crear al lead'
-                })
-            })
-            
+            }  
         }
     },
     mounted(){
