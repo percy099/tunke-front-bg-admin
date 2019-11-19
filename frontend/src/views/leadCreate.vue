@@ -102,6 +102,7 @@
                         <span v-if="!$v.minimum.maxValue">Debe ser a lo mucho de {{
                         $v.minimum.$params.maxValue.max}} </span>
                         <span v-if="!$v.minimum.numeric">Debe contener solo números. </span>
+                        <span v-if="!$v.minimum.required">Monto Requerido. </span>
                     </div>
                 </div>
                 <div v-if="editLead == 1" class="col-6 groupRightPersonal">
@@ -121,6 +122,7 @@
                         <span v-if="!$v.maximum.maxValue">Debe ser a lo mucho de {{
                         $v.maximum.$params.maxValue.max}} </span>
                         <span v-if="!$v.maximum.numeric">Debe contener solo números. </span>
+                        <span v-if="!$v.maximum.required">Monto Requerido. </span>
                     </div>
                 </div>
                 <div v-if="editLead == 0" class="col-6 groupLeftPersonal">
