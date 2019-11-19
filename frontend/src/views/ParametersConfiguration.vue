@@ -21,14 +21,12 @@
                 </div>
             </form>
                 <div class="d-flex justify-content-center mt-3">
+                    <button class="btn mr-3" id="butt" @click=$router.go(-1)>Volver</button>
                     <button class="btn mr-3" @click="modify">Modificar</button>
-                    <button class="btn ml-5" @click="save">Guardar</button>
+                    <button class="btn mr-3" @click="save">Guardar</button>
                 </div>           
         </div>
     </div>
-        <div class="d-flex justify-content-center mt-3">
-            <button class="btn mr-3" id="butt" @click=$router.go(-1)>Volver</button>
-        </div>
     </div>
 </template>
 
