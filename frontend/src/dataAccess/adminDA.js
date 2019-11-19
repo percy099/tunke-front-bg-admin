@@ -51,6 +51,37 @@ export function getAccountsByClient(idClient,token){
     });
 }
 
+export function getLeadsByCampaign(idCampaign, token){
+    let url = process.env.VUE_APP_API_URL + 'api/leads/getByCampaign/'
+    var body = {
+        "idCampaign" : idCampaign,
+    }
+
+    return axios.post(url, body, {
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function createLead(idClient, idCampaign, max, min, token){
+    let url = process.env.VUE_APP_API_URL + 'api/leads/'
+    var body = {
+        "idClient" : idClient,
+        "idCampaign" : idCampaign,
+        "minimumLoan" : min,
+        "maximumLoan" : max
+    }
+
+    return axios.post(url, body, {
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
 export function doCreateAccount(idPer,cur,origin){
     let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
     var body ={

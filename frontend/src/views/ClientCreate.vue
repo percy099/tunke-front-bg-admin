@@ -126,7 +126,7 @@
 
         <div id="Validation" class="tabcontent">
             <div class="row mt-4">
-                <div class="col-6 groupLeftPersonal">n
+                <div class="col-6 groupLeftPersonal">
                     <h6>Placa Vehículo 1</h6>
                     <input v-model="clientCreate.vehicle1Plate" type="text" class="form-control" disabled>
                     <h6 class="mt-5">Placa Vehículo 2</h6>
@@ -236,6 +236,7 @@ export default {
             this.$v.dniPerson.$touch();
             if (this.$v.$invalid) {
             } else {
+                console.log('hola');
                 userDA.getPersonData(this.dniPerson).then((res) =>{
                     switch(res.data.type){
                         case 1:

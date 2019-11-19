@@ -47,11 +47,13 @@ export default new Vuex.Store({
     transactionsDollar: [],
     salesRecords: [],
     accountsByClient : [],
+    leadsByCampaign : [],
     campaigns: [],
     bankAccounts:[],
     login_entry: false,
     countries : [],
     clientsBlackList:[],
+    editLead: 0,
     clientCreate :{
       idPerson : -1,
       idClient : -1,
@@ -152,6 +154,22 @@ export default new Vuex.Store({
       interestRate: -1,
       shareType: '',
       idLoan: -1,
+    },
+    leadCreate :{
+      idLead: -1,
+      minimumLoan: '',
+      maximumLoan: '',
+      active: -1,
+      idCampaign: -1,
+      idClient: -1,
+      nationality: '',
+      flag: '',
+      documentNumber: -1,
+      firstName: '',
+      middleName: '',
+      fatherLastname: '',
+      motherLastname: '',
+      birthdate: ''
     },
   }, 
 
@@ -581,6 +599,7 @@ export default new Vuex.Store({
       state.clientCreate.address = person_data.address;
       state.clientCreate.vehicle1Plate = person_data.vehicle1Plate;
       state.clientCreate.vehicle2Plate = person_data.vehicle2Plate;
+      state.clientCreate.idClient = person_data.idClient;
     },
     fillLendingCreate(state,client_data){
       state.lendingCreate.idClient = client_data.idClient;
@@ -732,6 +751,28 @@ export default new Vuex.Store({
         });
       }
     },
+    fillLeadByCamp(state, leadsData){
+      state.leadsByCampaign = [];
+      for(let i=0; i < leadsData.length; i++){
+        state.leadsByCampaign.push({
+          idLead: leadsData[i].idLead,
+          minimumLoan: leadsData[i].minimumLoan,
+          maximumLoan: leadsData[i].maximumLoan,
+          active: leadsData[i].active,
+          idCampaign: leadsData[i].idCampaign,
+          idClient: leadsData[i].idClient,
+          nationality: leadsData[i].nationality,
+          flag: leadsData[i].flag,
+          documentNumber: leadsData[i].documentNumber,
+          firstName: leadsData[i].firstName,
+          middleName: leadsData[i].middleName,
+          fatherLastname: leadsData[i].fatherLastname,
+          motherLastname: leadsData[i].motherLastname,
+          birthdate: leadsData[i].birthdate,
+          address: leadsData[i].address
+        });
+      }
+    },
     setCampaignInd(state, index){
       state.selectedCampaignIndex = index;
       state.campaignCreate.idCampaign = state.campaigns[index].idCampaign;
@@ -778,6 +819,23 @@ export default new Vuex.Store({
       state.lendingCreate.documentType = state.lendings[index].documentType;
       state.lendingCreate.requestDate = state.lendings[index].requestDate;
       state.lendingCreate.commission = state.lendings[index].commission;
+    },
+    setLeadInd(state, index){
+      state.leadCreate.idLead = state.leadsByCampaign[index].idLead;
+      state.leadCreate.minimumLoan = state.leadsByCampaign[index].minimumLoan;
+      state.leadCreate.maximumLoan = state.leadsByCampaign[index].maximumLoan;
+      state.leadCreate.active = state.leadsByCampaign[index].active;
+      state.leadCreate.idCampaign = state.leadsByCampaign[index].idCampaign;
+      state.leadCreate.idClient = state.leadsByCampaign[index].idClient;
+      state.leadCreate.nationality = state.leadsByCampaign[index].nationality;
+      state.leadCreate.flag = state.leadsByCampaign[index].flag;
+      state.leadCreate.documentNumber = state.leadsByCampaign[index].documentNumber;
+      state.leadCreate.firstName = state.leadsByCampaign[index].firstName;
+      state.leadCreate.middleName = state.leadsByCampaign[index].middleName;
+      state.leadCreate.fatherLastname = state.leadsByCampaign[index].fatherLastname;
+      state.leadCreate.motherLastname = state.leadsByCampaign[index].motherLastname;
+      state.leadCreate.birthdate = state.leadsByCampaign[index].birthdate;
+      state.leadCreate.address = state.leadsByCampaign[index].address;
     },
     fillSalesRecord(state, salesRecord_data){
       let aux=salesRecord_data.salesRecords;
@@ -907,6 +965,13 @@ export default new Vuex.Store({
         2: Editar Campaña
       */
       state.editCampaign = flag;
+    },
+    setActLead(state, flag){
+      /*
+        0: Ver Lead
+        1: Crear Lead
+      */
+      state.editLead = flag;
     }
   },
   actions: {      
@@ -961,6 +1026,9 @@ export default new Vuex.Store({
       setActionCampaign(context,edit){
         context.commit('setActCampaign',edit);
       },
+      setActionLead(context, edit){
+        context.commit('setActLead', edit);
+      },
       setClientIndex(context,index){
         context.commit('setCliInd',index);
       },
@@ -1004,6 +1072,12 @@ export default new Vuex.Store({
       },
       cleanCampaignCreate(context){
         context.commit('cleanCampCreate');
+      },
+      fillLeadsByCampaing(context, leads_data){
+        context.commit('fillLeadByCamp', leads_data);
+      },
+      setLeadIndex(context, index){
+        context.commit('setLeadInd', index);
       }
   }
 })
