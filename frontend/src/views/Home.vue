@@ -72,7 +72,7 @@ export default {
                 break;
                 case 'parConfig':
                     router.push('/parametersConfiguration');
-                break;
+                break;                    
                 case 'accountStatus':
                     router.push('/AccountStatus');
                 break;
