@@ -13,6 +13,13 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
+    parameterSetting:{
+      maxTokenSends: '',
+      maxDiaryMovements : '',
+      legalAge : '',
+      maxAccountsNumber : '',
+      commissionPercentage:'',
+    },
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,
@@ -179,6 +186,46 @@ export default new Vuex.Store({
       shareType: '',
       idLoan: -1,
     },
+    person:{
+      idProspectiveClient: -1,
+      lastEnterDate: new Date,
+      enterCount : -1,
+      email1 : '',
+      email2 : '',
+      cellphone1 : '',
+      cellphone2 : '',
+      idPerson : -1,
+      idClient:-1,
+      documentType : '',
+      documentNumber : '',
+      firstName : '',
+      middleName : '',
+      fatherLastname : '',
+      motherLastname : '',
+      birthdate : '',
+      address : '',
+      nationality : '',
+      vehicle1Plate : '',
+      vehicle2Plate : '',
+      activeCampaigns:'',
+      activeLoans: '',
+      campaign:{
+          active:'',
+          endDate:'',
+          idCampaign:'',
+          idCurrency: '',
+          interestRate: '',
+          maximumLoan: '',
+          maximumPeriod: '',
+          minimumLoan: '',
+          minimumPeriod: '',
+          month: '',
+          name: '',
+          startDate: ''
+      },
+      idLead:'',
+      totalAccounts: 0
+    },  
   }, 
 
   mutations: {
@@ -209,6 +256,34 @@ export default new Vuex.Store({
             });
           }
           }
+    },
+    fillPersonData(state,person_data){
+      state.person.idPerson = person_data.idPerson;
+      state.person.documentType = person_data.documentType;
+      state.person.documentNumber = person_data.documentNumber;
+      state.person.firstName = person_data.firstName;
+      state.person.middleName = person_data.middleName;
+      state.person.fatherLastname = person_data.fatherLastname;
+      state.person.motherLastname = person_data.motherLastname;
+      state.person.birthdate = person_data.birthdate;
+      state.person.address = person_data.address;
+      state.person.nationality = person_data.nationality;
+      state.person.vehicle1Plate = person_data.vehicle1Plate;
+      state.person.vehicle2Plate = person_data.vehicle2Plate;
+      state.person.email1  = person_data.email1 ;
+      state.person.email2  = person_data.email2 ;
+      state.person.cellphone1   = person_data.cellphone1  ;
+      state.person.cellphone2  = person_data.cellphone2 ;
+      state.person.idClient  = person_data.idClient ;
+
+      state.person.activeCampaigns=person_data.activeCampaigns;
+      state.person.activeLoans=person_data.activeLoans;
+      state.person.totalAccounts=person_data.totalAccounts;
+
+      if (person_data.activeCampaigns){        
+        state.person.campaign=person_data.campaign;
+        state.person.idLead=person_data.idLead;
+      }
     },
     fillLendings(state,lendings_data){
       console.log(lendings_data.length);
@@ -1021,9 +1096,20 @@ export default new Vuex.Store({
         2: Editar Campaña
       */
       state.editCampaign = flag;
+    },
+
+    setParameters(state,data){
+      state.parameterSetting.maxTokenSends=data.maxTokenSends;
+      state.parameterSetting.maxDiaryMovements=data.maxDiaryMovements;
+      state.parameterSetting.legalAge=data.legalAge;
+      state.parameterSetting.maxAccountsNumber=data.maxAccountsNumber;
+      state.parameterSetting.commissionPercentage=data.commissionPercentage;
     }
   },
   actions: {      
+      fillPer(context,person_data){
+        context.commit('fillPersonData',person_data);
+      },
       completeClients(context,clients_data){
         context.commit('fillClients',clients_data);
       },
@@ -1086,7 +1172,9 @@ export default new Vuex.Store({
         context.commit('fillAccountDataBarChart', year);
       },
       /*-------*/
-      
+      fillParameterSettings(context,parameters){
+        context.commit('setParameters',parameters);
+      },
       completeAccounts(context, account_data){
         context.commit('fillAccounts', account_data);
       },
