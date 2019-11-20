@@ -51,11 +51,12 @@ export function getAccountsByClient(idClient,token){
     });
 }
 
-export function doCreateAccount(idPer,cur){
+export function doCreateAccount(idPer,cur,origin){
     let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
     var body ={
         "idPerson" : idPer,
-        "currency" : cur
+        "currency" : cur,
+        "origin" : origin
     }
     
     return axios.post(url,body);
@@ -214,6 +215,17 @@ export function chargeBlackList(token,body){
     });
 }
 
+export function chargeCampaigns(token,body){
+    let url = process.env.VUE_APP_API_URL + 'api/campaignCharge/'
+
+    return axios.post(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+      
+
 export function getClientByID(idClient,token){
     let url = process.env.VUE_APP_API_URL + 'api/clients/' + idClient;  
     return axios.get(url,{
@@ -224,3 +236,17 @@ export function getClientByID(idClient,token){
     });
 }
 
+export function createBlacklist(token,dni,reason){
+    let url = process.env.VUE_APP_API_URL + 'api/blackList/';
+
+    var body = {
+        "dni" : dni,
+        "reason" : reason
+    }
+    return axios.post(url, body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}

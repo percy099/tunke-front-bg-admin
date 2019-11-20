@@ -2,6 +2,7 @@
 <div class="body">
     <div class="container">
         <div class="table-wrapper">
+            <h1>Campañas</h1>
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
@@ -94,7 +95,7 @@ export default {
             this.setCampaignIndex(index);
         },
 		createCampaign(){
-            this.$router.push('/campaignCreate');
+            this.$router.push('/campaignOptions');
             this.setActionCampaign(1);
             this.cleanCampaignCreate();
         },

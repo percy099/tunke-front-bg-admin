@@ -101,3 +101,23 @@ export function getAllClientsBlackList(token){
         }
     });
 }
+
+export function getAllBankAccount(token){
+    let url = process.env.VUE_APP_API_URL + 'api/bankAccount/';
+    return axios.get(url,{
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function getAllTransactions(token){
+    let url = process.env.VUE_APP_API_URL + 'api/transactions/';
+    return axios.get(url,{
+        auth: {
+            username: token,
+            password: ''
+        }
+    });
+}

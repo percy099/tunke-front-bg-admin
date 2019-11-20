@@ -1,7 +1,3 @@
-#row1{
-    margin-top: 10%;
-}
-
 .btn{
     background-color: #090d4d; 
     font-weight: bold;   
@@ -11,10 +7,10 @@
     font-family: 'Montserrat';
 }
 
-.form-control{
-    width : 70%;
+.row{
+    margin-top: 8%;
 }
 
-#btnAdd{
-    width: 25%;
+#btnBack{
+    margin-top: 15%;
 }

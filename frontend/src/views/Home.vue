@@ -10,6 +10,7 @@
                     <button @click="openWindow('account')" class="btn">Cuentas de Ahorro</button>
                     <button @click="openWindow('blackList')" class="btn">Clientes especiales</button>
                     <button @click="openWindow('salesRecord')" class="btn">Expedientes de Venta</button> 
+                    <button @click="openWindow('accountStatus')" class="btn">Estado de cuenta</button> 
                 </div>
             </div>
             <div class="col-6">
@@ -41,7 +42,7 @@
 
 export default {
     methods:{
-        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList']),
+        ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar']),
         openWindow(window){
             switch(window){
                 case 'client':
@@ -70,6 +71,9 @@ export default {
                 break;
                 case 'parConfig':
                     router.push('/parametersConfiguration');
+                case 'accountStatus':
+                    router.push('/AccountStatus');
+                break;
             }
         }
     },
@@ -130,6 +134,42 @@ export default {
                 title: 'Error',
                 type: 'error',
                 text: 'Error obteniendo los clientes especiales'
+            })
+        });
+        userDA.getAllBankAccount(this.token).then((res) =>{
+            this.completeBankAccount(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las cuentas del banco'
+            })
+        });
+        userDA.getAllTransactions(this.token).then((res) =>{
+            this.completeTransactions(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las transacciones del banco'
+            })
+        });
+        userDA.getAllTransactions(this.token).then((res) =>{
+            this.completeTransactionsDollar(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las transacciones en Dólares del banco'
+            })
+        });
+        userDA.getAllTransactions(this.token).then((res) =>{
+            this.completeTransactionsSoles(res.data);
+        }).catch(error =>{
+            Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'Error obteniendo las transacciones en Soles del banco'
             })
         });
     }

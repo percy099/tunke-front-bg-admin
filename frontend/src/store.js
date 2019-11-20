@@ -42,9 +42,13 @@ export default new Vuex.Store({
     lendings: [],
     campaigns:[],
     accounts: [],
+    transactions: [],
+    transactionsSoles: [],
+    transactionsDollar: [],
     salesRecords: [],
     accountsByClient : [],
     campaigns: [],
+    bankAccounts:[],
     login_entry: false,
     countries : [],
     clientsBlackList:[],
@@ -283,6 +287,64 @@ export default new Vuex.Store({
         }
       }
     },
+    fillBankAccount(state,bankAccount_data){
+      state.bankAccounts=[]; 
+      for(let bankAccount of bankAccount_data){
+        if(bankAccount.active){
+          state.bankAccounts.push({
+            idBankAccount : bankAccount.idBankAccount,
+            accountNumber : bankAccount.accountNumber,
+            balance : bankAccount.balance,
+            idCurrency : bankAccount.idCurrency,
+            active : bankAccount.active
+          });
+        }
+      }
+    },
+    fillTransaction(state,transaction_data){
+      state.transactions=[]; 
+      for(let transaction of transaction_data){
+          state.transactions.push({
+            id : transaction.id,
+            datetime : transaction.datetime,
+            amount : transaction.amount,
+            accountNumber : transaction.accountNumber,
+            bankAccountNumber : transaction.bankAccountNumber,
+            currency : transaction.currency
+          });
+      }
+    },
+    fillTransactionSoles(state,transactionSoles_data){
+      state.transactionsSoles=[]; 
+      for(let transaction of transactionSoles_data){
+        if(transaction.currency=="Soles"){
+          state.transactionsSoles.push({
+            id : transaction.id,
+            datetime : transaction.datetime,
+            amount : transaction.amount,
+            accountNumber : transaction.accountNumber,
+            bankAccountNumber : transaction.bankAccountNumber,
+            currency : transaction.currency
+          });
+        }  
+      }
+    },
+    fillTransactionDollar(state,transactionDollar_data){
+      state.transactionsDollar=[]; 
+      for(let transaction of transactionDollar_data){
+        if(transaction.currency=="Dólares"){
+          state.transactionsDollar.push({
+            id : transaction.id,
+            datetime : transaction.datetime,
+            amount : transaction.amount,
+            accountNumber : transaction.accountNumber,
+            bankAccountNumber : transaction.bankAccountNumber,
+            currency : transaction.currency
+          });
+        } 
+      }
+    },
+
     /*Ronaldo*/
     countAccountPerMonth(state,account_data){
       let aux=account_data.accounts;
@@ -859,6 +921,18 @@ export default new Vuex.Store({
       },
       completeCampaigns(context, campaigns_data){
         context.commit('fillCampaigns',campaigns_data);
+      },
+      completeBankAccount(context, bankAccount_data){
+        context.commit('fillBankAccount',bankAccount_data);
+      },
+      completeTransactions(context, transaction_data){
+        context.commit('fillTransaction',transaction_data);
+      },
+      completeTransactionsDollar(context, transactionDollar_data){
+        context.commit('fillTransactionDollar',transactionDollar_data);
+      },
+      completeTransactionsSoles(context, transactionSoles_data){
+        context.commit('fillTransactionSoles',transactionSoles_data);
       },
       setLendingIndex(context, index){
         context.commit('setLendingInd', index);
