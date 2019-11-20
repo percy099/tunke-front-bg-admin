@@ -34,11 +34,12 @@
                         <td class="space_2">{{campaign.endDate}}</td>
                         <td class="space">{{campaign.minimumPeriod}}</td>
                         <td class="space">{{campaign.maximumPeriod}}</td>
-                        <td class="sapce">{{campaign.interestRate}}%</td>
-                        <td>
-                            <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE880;</i></a>
+                        <td class="space">{{campaign.interestRate}}%</td>
+                        <td class="space_2">
+                            <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Visualizar">&#xE880;</i></a>
                             <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                             <a @click="deleteCampaign(index)" href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                            <a @click="viewLeads(index)" href="#deleteCampaignModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Leads">&#xE873;</i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -88,11 +89,24 @@ export default {
     },
 
     methods:{
-        ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate']),
+        ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate','fillLeadsByCampaing']),
         viewCampaign(index){
             this.$router.push('/campaignCreate');
             this.setActionCampaign(0);
             this.setCampaignIndex(index);
+        },
+        viewLeads(index){
+            this.$router.push('/viewLeads');
+            this.setCampaignIndex(index);
+            adminDA.getLeadsByCampaign(this.campaigns[index].idCampaign,this.token).then((res)=>{
+                this.fillLeadsByCampaing(res.data.leads)
+            }).catch(error=>{
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un problema eliminando a la campaña',
+                    type : 'error'
+                })
+            });
         },
 		createCampaign(){
             this.$router.push('/campaignOptions');
