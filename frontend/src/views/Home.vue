@@ -80,7 +80,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['token','parameterSettings']),
+        ...mapState(['token','person','parameterSettings']),
     },
     beforeMount(){
         this.setLoginEntry(true);
