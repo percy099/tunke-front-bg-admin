@@ -31,9 +31,13 @@
                 </div>
             </div>
         </div>
-        <div id="chart">
-      <apexchart type=line height=350 :options="chartOptions" :series="series" />
-    </div>
+        <div class="Chart">
+        <br><h6 style="text-align:center;">Saldo disponible en las cuentas del Banco - {{ value1 }}</h6>
+        <bank-account-soles/>          
+        </div>  
+      <div class="d-flex justify-content-center mt-3">
+            <button class="btn mr-3" id="butt" @click=$router.go(-1)>Volver</button>
+      </div>
     </div>
 </template>
 
@@ -47,48 +51,58 @@ import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
-import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
-import ApexCharts from 'apexcharts'
-import VueApexCharts from 'vue-apexcharts'
-
+import BankAccountSoles from '@/util/BankAccountSoles';
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 
 export default {
-    
+    components: {
+        BankAccountSoles
+    },
+    data () {
+      return {
+        dataPoints: null,
+        height: 20,
+        value1: '2019',
+        value2: ''
+      }
+    },
     computed :{
-        ...mapState (['bankAccounts','token','transactions','transactionsSoles','transactionsDollar']),
+        ...mapState (['bankAccounts','token','transactions','transactionsSoles','transactionsDollar'])
     },
     methods:{
-        ...mapActions ([]),
-         openData :function(dataType) {
-            // Declare all variables
-            var i, tabcontent, tablinks, btn,buttons;
-            switch(dataType){
-                case 'BankAccount':
-                    btn = 'btnBankAccount';
-                break ;
-            }
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
+      ...mapActions ([]),
+        openData :function(dataType) {
+          // Declare all variables
+          var i, tabcontent, tablinks, btn,buttons;
+          switch(dataType){
+              case 'BankAccount':
+                  btn = 'btnBankAccount';
+              break ;
+          }
+          // Get all elements with class="tabcontent" and hide them
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+              tabcontent[i].style.display = "none";
+          }
 
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
+          // Get all elements with class="tablinks" and remove the class "active"
+          tablinks = document.getElementsByClassName("tablinks");
+          for (i = 0; i < tablinks.length; i++) {
+              tablinks[i].className = tablinks[i].className.replace(" active", "");
+          }
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(dataType).style.display = "block";
-            document.getElementById(btn).classList.add('active');
-        },
-        viewDetailSoles(){
-            this.$router.push('/viewDetailSoles');
-        },
-        viewDetailDollar(){
-            this.$router.push('/viewDetailDollar');
-        } 
+          // Show the current tab, and add an "active" class to the button that opened the tab
+          document.getElementById(dataType).style.display = "block";
+          document.getElementById(btn).classList.add('active');
+      },
+      
+      viewDetailSoles(){
+          this.$router.push('/viewDetailSoles');
+      },
+      viewDetailDollar(){
+          this.$router.push('/viewDetailDollar');
+      }
     },
     mounted(){
         document.getElementById('BankAccount').style.display = "block";

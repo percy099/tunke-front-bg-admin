@@ -35,7 +35,7 @@
                 <div class="col-6">
                     <h6>Primer Nombre</h6>
                     <input v-model="accountCreate.firstName" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Apellido Paterno</h6>
+                    <h6 class="mt-3">Apellido Paterno </h6>
                     <input v-model="accountCreate.fatherLastname" type="text" class="form-control" disabled>
                     <div class="mt-3">
                         <span>Fecha de Nacimiento</span><input v-model="accountCreate.birthdate" class="ml-5" type="date" disabled>
@@ -103,7 +103,7 @@ export default {
         }
     },
     computed :{
-        ...mapState (['accountCreate']),
+        ...mapState (['accountCreate','person','parameterSetting']),
         isDisabled: function(){
             if(this.dolar != 0){
                 this.enableButton = true;
@@ -112,7 +112,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions (['completeAccountCreate','cleanAccountCreate']),
+        ...mapActions (['completeAccountCreate','cleanAccountCreate','fillPer']),
         openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -150,6 +150,9 @@ export default {
                         case 1:
                             this.completeAccountCreate(res.data);
                             //this.enableButton = true;
+                            let person_data = res.data;
+                            console.log(person_data);
+                            this.fillPer(person_data);
                         break;
                         case 2:
                             Swal.fire({
@@ -180,19 +183,30 @@ export default {
             }
         },
         saveAccount(){
-            adminDA.doCreateAccount(this.accountCreate.idPerson, this.dolar, 2).then((res) =>{
+            if(this.person.totalAccounts+1<=this.parameterSetting.maxAccountsNumber){
+                adminDA.doCreateAccount(this.accountCreate.idPerson, this.dolar, 2).then((res) =>{
+                    let response_create = res.data;
+                    console.log("response open account",response_create);
+                    this.$emit('close');
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Enhorabuena',
+                        text: 'Cuenta creada satisfactoriamente'
+                    })
+                }).catch(error =>{
+                    Swal.error({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al crear la cuenta del cliente'
+                    })
+                })
+            }else{
                 Swal.fire({
-                    type: 'success',
-                    title: 'Enhorabuena',
-                    text: 'Cuenta creada satisfactoriamente'
+                    title: 'Se superó el límite de cuentas abiertas',
+                    type: 'error',
+                    text: 'Estimado cliente, usted ya cuenta con muchas cuentas abiertas en Tunke.'
                 })
-            }).catch(error =>{
-                Swal.error({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al crear la cuenta del cliente'
-                })
-            })
+            }
         },
 
     },
