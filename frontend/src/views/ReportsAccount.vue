@@ -7,7 +7,7 @@
         <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
         <button class="ml-3" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
         <div class="Chart">
-          <h3 class="text-center" >Número de Cuentas por Mes</h3>
+          <h3 class="text-center" >Número de Cuentas por Mes {{value1}}</h3>
           <line-chart :chart-data="dataNumMonth"></line-chart>
         </div>
       </div>
@@ -16,7 +16,7 @@
         <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
         <button class="ml-3" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
         <div class="Chart">
-          <h3 class="text-center">Tipo de Cuentas por Mes</h3>
+          <h3 class="text-center">Tipo de Cuentas por Mes {{value2}}</h3>
           <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
         </div>
       </div>
