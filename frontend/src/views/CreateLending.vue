@@ -407,6 +407,7 @@ export default {
             console.log('comision: ' + this.lendingCreate.commission)
 
             //Need to capture the idShareType and idAccount values
+
             */
             
         }

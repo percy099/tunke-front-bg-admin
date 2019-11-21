@@ -38,7 +38,6 @@
       <div class="d-flex justify-content-center mt-3">
             <button class="btn mr-3" id="butt" @click=$router.go(-1)>Volver</button>
       </div>
-    
     </div>
 </template>
 
