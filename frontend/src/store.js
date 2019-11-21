@@ -13,6 +13,8 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
+    listCntDollar: [1,1,1,1,1,1,1,1,1,1,1,1],
+    listCntSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,
@@ -185,7 +187,7 @@ export default new Vuex.Store({
           }
     },
     fillLendings(state,lendings_data){
-      console.log(lendings_data.length);
+      //console.log(lendings_data.length);
       state.lendings=[];
       state.cntAccJanLen = 0;
       state.cntAccFebLen = 0;
@@ -224,43 +226,30 @@ export default new Vuex.Store({
           });
         }
         var str=lendings_data[i].requestDate; //'12-12-2019'4
-        console.log(str);
         var res=str.substring(3,5);
-        if(res=='12'){
-          console.log(res);          
+        if(res=='12'){          
           state.cntAccDecLen = state.cntAccDecLen + 1;
-        }else if(res=='11'){
-          console.log(res);
+        }else if(res=='11'){        
           state.cntAccNovLen = state.cntAccNovLen + 1;
-        }else if(res=='10'){
-          console.log(res);
+        }else if(res=='10'){        
           state.cntAccOctLen = state.cntAccOctLen + 1;
-        }else if(res=='09'){
-          console.log(res);
+        }else if(res=='09'){          
           state.cntAccSepLen = state.cntAccSepLen + 1;
-        }else if(res=='08'){
-          console.log(res);
+        }else if(res=='08'){          
           state.cntAccAugLen = state.cntAccAugLen + 1;
-        }else if(res=='07'){
-          console.log(res);
+        }else if(res=='07'){          
           state.cntAccJulLen = state.cntAccJulLen + 1;
-        }else if(res=='06'){
-          console.log(res);
+        }else if(res=='06'){        
           state.cntAccJunLen = state.cntAccJunLen + 1;
-        }else if(res=='05'){
-          console.log(res);
+        }else if(res=='05'){        
           state.cntAccMayLen = state.cntAccMayLen + 1;
-        }else if(res=='04'){
-          console.log(res);
+        }else if(res=='04'){        
           state.cntAccAprLen = state.cntAccAprLen + 1;
-        }else if(res=='03'){
-          console.log(res);
+        }else if(res=='03'){        
           state.cntAccMarLen = state.cntAccMarLen + 1;
-        }else if(res=='02'){
-          console.log(res);
+        }else if(res=='02'){        
           state.cntAccFebLen = state.cntAccFebLen + 1;
-        }else if(res=='01'){
-          console.log(res);
+        }else if(res=='01'){        
           state.cntAccJanLen = state.cntAccJanLen + 1;
         }
       }
@@ -352,8 +341,7 @@ export default new Vuex.Store({
       for(let i=0;i<aux.length;i++){
         var str=aux.openingDate; //'12-12-2019'
         var res=str.substring(3,5);
-        if(res=='12'){
-          
+        if(res=='12'){          
           let i=11;
           state.countAccount[i]=state.countAccount[i]+1;
         }else if(res=='11'){
@@ -404,8 +392,91 @@ export default new Vuex.Store({
       }
     },
     /*-------*/
+    fillDataAccountTypeMonth(state, year){
+      state.listCntDollar=[0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listCntSoles=[0,0,0,0,0,0,0,0,0,0,0,0];
+      let aux=state.accounts;
+      for(let i = 0; i < aux.length; i++){
+        let str=aux[i].openingDate; //'12-12-2019'
+        let res=str.substring(3,5);
+        let yy=str.substring(6,10);
+        if(res=='12' && yy==year){                   
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[11]++;            
+          }else{
+            state.listCntSoles[11]++;
+          }                      
+        }else if(res=='11' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[10]++;            
+          }else{
+            state.listCntSoles[10]++;
+          }         
+        }else if(res=='10' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[9]++;            
+          }else{
+            state.listCntSoles[9]++;
+          }
+        }else if(res=='09' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[8]++;            
+          }else{
+            state.listCntSoles[8]++;
+          }
+        }else if(res=='08' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[7]++;            
+          }else{
+            state.listCntSoles[7]++;
+          }
+        }else if(res=='07' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[6]++;            
+          }else{
+            state.listCntSoles[6]++;
+          }
+        }else if(res=='06' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[5]++;            
+          }else{
+            state.listCntSoles[5]++;
+          }
+        }else if(res=='05' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[4]++;            
+          }else{
+            state.listCntSoles[4]++;
+          }
+        }else if(res=='04' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[3]++;            
+          }else{
+            state.listCntSoles[3]++;
+          }
+        }else if(res=='03' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[2]++;            
+          }else{
+            state.listCntSoles[2]++;
+          }
+        }else if(res=='02' && yy==year){
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[1]++;            
+          }else{
+            state.listCntSoles[1]++;
+          }
+        }else if(res=='01' && yy==year){          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[0]++;            
+          }else{
+            state.listCntSoles[0]++;
+          }
+        }
+      }
+    },
     /*Ronaldo*/
-    fillAccountDataBarChart(state, year){
+    fillDataAccountDataBarChart(state, year){
       let aux=state.accounts;
         
       state.cntAccJan = 0;
@@ -468,6 +539,8 @@ export default new Vuex.Store({
     fillAccounts(state, account_data){
       let aux=account_data.accounts;
       state.accounts=[];
+      state.listCntDollar=[0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listCntSoles=[0,0,0,0,0,0,0,0,0,0,0,0];
       state.cntAccJan = 0;
       state.cntAccFeb = 0;
       state.cntAccMar = 0;
@@ -504,45 +577,88 @@ export default new Vuex.Store({
             typeName : aux[i].typeName
           })
         }
-        /*Ronaldo*/
+        /*Ronaldo*/        
         let str=aux[i].openingDate; //'12-12-2019'
         let res=str.substring(3,5);
-        if(res=='12'){
-                   
-          state.cntAccDec = state.cntAccDec + 1;
-        }else if(res=='11'){
-          
+        if(res=='12'){                   
+          state.cntAccDec = state.cntAccDec + 1;          
+        }else if(res=='11'){          
           state.cntAccNov = state.cntAccNov + 1;
-        }else if(res=='10'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[10]++;            
+          }else{
+            state.listCntSoles[10]++;
+          }         
+        }else if(res=='10'){          
           state.cntAccOct = state.cntAccOct + 1;
-        }else if(res=='09'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[9]++;            
+          }else{
+            state.listCntSoles[9]++;
+          }
+        }else if(res=='09'){          
           state.cntAccSep = state.cntAccSep + 1;
-        }else if(res=='08'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[8]++;            
+          }else{
+            state.listCntSoles[8]++;
+          }
+        }else if(res=='08'){          
           state.cntAccAug = state.cntAccAug + 1;
-        }else if(res=='07'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[7]++;            
+          }else{
+            state.listCntSoles[7]++;
+          }
+        }else if(res=='07'){          
           state.cntAccJul = state.cntAccJul + 1;
-        }else if(res=='06'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[6]++;            
+          }else{
+            state.listCntSoles[6]++;
+          }
+        }else if(res=='06'){          
           state.cntAccJun = state.cntAccJun + 1;
-        }else if(res=='05'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[5]++;            
+          }else{
+            state.listCntSoles[5]++;
+          }
+        }else if(res=='05'){          
           state.cntAccMay = state.cntAccMay + 1;
-        }else if(res=='04'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[4]++;            
+          }else{
+            state.listCntSoles[4]++;
+          }
+        }else if(res=='04'){          
           state.cntAccApr = state.cntAccApr + 1;
-        }else if(res=='03'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[3]++;            
+          }else{
+            state.listCntSoles[3]++;
+          }
+        }else if(res=='03'){          
           state.cntAccMar = state.cntAccMar + 1;
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[2]++;            
+          }else{
+            state.listCntSoles[2]++;
+          }
         }else if(res=='02'){
-          
           state.cntAccFeb = state.cntAccFeb + 1;
-        }else if(res=='01'){
-          
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[1]++;            
+          }else{
+            state.listCntSoles[1]++;
+          }
+        }else if(res=='01'){          
           state.cntAccJan = state.cntAccJan + 1;
+          if(aux[i].idCurrency==2){          
+            state.listCntDollar[0]++;            
+          }else{
+            state.listCntSoles[0]++;
+          }
         }
       /*-------*/
       }
@@ -755,7 +871,7 @@ export default new Vuex.Store({
         state.campaignCreate.loanRange = "De " + state.campaignCreate.minimumLoan + " a " + state.campaignCreate.maximumLoan + " dólares";
       }
       state.campaignCreate.periodRange = "De " + state.campaignCreate.minimumPeriod + " a " + state.campaignCreate.maximumPeriod + " meses";
-      console.log(state.campaignCreate.startDate);
+      //console.log(state.campaignCreate.startDate);
     },
     setLendingInd(state, index){
       state.selectedLendingIndex = index;
@@ -969,7 +1085,10 @@ export default new Vuex.Store({
       },
       /*Ronaldo*/
       prueba(context, year){
-        context.commit('fillAccountDataBarChart', year);
+        context.commit('fillDataAccountDataBarChart', year);
+      },
+      dynamicDataAccountTypeMonth(context, year){
+        context.commit('fillDataAccountTypeMonth', year);
       },
       /*-------*/
       completeAccounts(context, account_data){

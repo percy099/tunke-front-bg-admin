@@ -3,15 +3,21 @@
     <h1 class="text-center">Reporte de Cuentas</h1>
     <div class="row">      
       <div class="col-md-6">
+        <label class="mr-1">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
         <div class="Chart">
           <h3 class="text-center" >Número de Cuentas por Mes</h3>
-          <line-chart :chart-data="datacollection"></line-chart>
+          <line-chart :chart-data="dataNumMonth"></line-chart>
         </div>
       </div>
       <div class="col-md-6">
+        <label class="mr-1">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
         <div class="Chart">
-          <h3 class="text-center">Número de Cuentas por Mes</h3>
-          <line-chart :chart-data="datacollection"></line-chart>
+          <h3 class="text-center">Tipo de Cuentas por Mes</h3>
+          <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
         </div>
       </div>
     </div>    
@@ -31,20 +37,24 @@
     },
     data () {
       return {
-        datacollection: {},
+        dataNumMonth: {},
+        dataAccountTypeMonth: {},
         value1: '2019',
+        value2: '2019',
       }
     },
     computed:{
-      ...mapState(['cntAccJan','cntAccFeb','cntAccMar','cntAccApr','cntAccMay','cntAccJun','cntAccJul','cntAccAug','cntAccSep','cntAccOct','cntAccNov','cntAccDec'])
+      ...mapState(['cntAccJan','cntAccFeb','cntAccMar','cntAccApr','cntAccMay','cntAccJun','cntAccJul','cntAccAug','cntAccSep','cntAccOct','cntAccNov','cntAccDec',
+                   'listCntDollar','listCntSoles'])
     },
     mounted(){
-      this.fillData();
+      this.fillDataNumMonth();
+      this.fillDataAccountTypeMonth();
     },
     methods:{
-      ...mapActions(['prueba']),
-      fillData(){
-        this.datacollection={
+      ...mapActions(['prueba','dynamicDataAccountTypeMonth']),
+      fillDataNumMonth(){
+        this.dataNumMonth={
           labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           datasets: [
             {
@@ -56,9 +66,36 @@
           ]
         }
       },
-      getData(){
+      fillDataAccountTypeMonth(){
+        this.dataAccountTypeMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: [
+            {
+              fill: false,
+              showLine: true,
+              label: 'Soles',
+              backgroundColor: '#f87979',
+              borderColor: '#f87979',
+              data: this.listCntSoles,
+            },
+            {
+              fill: false,
+              showLine: true,
+              label: 'Dólares',
+              backgroundColor: '#000000',
+              borderColor: '#000000',
+              data: this.listCntDollar,
+            }
+          ]
+        }
+      },      
+      getDataNumMonth(){
         this.prueba(this.value1);
-        this.fillData();
+        this.fillDataNumMonth();
+      },
+      getDataAccountTypeMonth(){
+        this.dynamicDataAccountTypeMonth(this.value2);
+        this.fillDataAccountTypeMonth();
       }
     }
   }
