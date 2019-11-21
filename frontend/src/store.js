@@ -486,9 +486,7 @@ export default new Vuex.Store({
           }else if(res=='01'){
             state.quantityAmountSolesJan = state.quantityAmountSolesJan + transaction.amount;
           }
-        }
-      }
-    },
+        },
     fillTransactionDollar(state,transactionDollar_data){
       state.transactionsDollar=[];
       state.quantityAmountDollarJan = 0;
