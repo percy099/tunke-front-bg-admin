@@ -234,8 +234,9 @@ export default {
         },
         getPersonCreate(){
             this.$v.dniPerson.$touch();
-            if (this.$v.$invalid) {
+            if (this.$v.dniPerson.$invalid) {
             } else {
+                console.log('hola');
                 userDA.getPersonData(this.dniPerson).then((res) =>{
                     switch(res.data.type){
                         case 1:
