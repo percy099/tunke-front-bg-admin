@@ -3,23 +3,26 @@
     <h1 class="text-center">Reporte de Cuentas</h1>
     <div class="row">      
       <div class="col-md-6">
-        <label class="mr-1">Seleccione año: </label>
+        <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
         <div class="Chart">
           <h3 class="text-center" >Número de Cuentas por Mes {{value1}}</h3>
           <line-chart :chart-data="dataNumMonth"></line-chart>
         </div>
       </div>
       <div class="col-md-6">
-        <label class="mr-1">Seleccione año: </label>
+        <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
         <div class="Chart">
           <h3 class="text-center">Tipo de Cuentas por Mes {{value2}}</h3>
           <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
         </div>
       </div>
+    </div>
+    <div class="row">
+      <button class="btn" @click="back()">Volver</button>
     </div>    
   </div>
 </template>
@@ -96,6 +99,9 @@
       getDataAccountTypeMonth(){
         this.dynamicDataAccountTypeMonth(this.value2);
         this.fillDataAccountTypeMonth();
+      },
+      back(){
+        this.$router.push('/home');
       }
     }
   }
@@ -124,12 +130,13 @@
   h3 {
     border-bottom: 1px solid #f1f1f1;
   }
-  button{
+  button {
     font-family: 'Montserrat';
     background-color: rgba(0,203,138,0.66);
     position: relative;
     margin-left: auto;
     margin-right: auto; 
     margin-bottom: 2vh;     
-  }    
+  }
+
 </style>
