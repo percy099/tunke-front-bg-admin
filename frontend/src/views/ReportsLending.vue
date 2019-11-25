@@ -2,10 +2,10 @@
   <div class="container">    
     <h1 class="text-center">Reporte de Préstamos</h1>
     <div class="row">      
-      <div class="col-md-6">
+      <div class="col-md-6">        
         <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>          
         <div class="Chart">
           <h3 class="text-center" >{{ chart1 }}</h3>
           <line-chart :chart-data="dataLendMonth"></line-chart>
@@ -32,7 +32,8 @@
   import LineChart from '@/util/LineChart.js'
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/index.css';
-  import {mapState, mapActions} from 'vuex'
+  import {mapState, mapActions} from 'vuex';
+
   export default {
     components: {
       LineChart,
@@ -43,7 +44,7 @@
         dataLendMonth: {},
         dataAmountLendMonth: {},
         chart1: 'Número de Préstamos por Mes - 2019',
-        chart2: 'Monto por Préstamos por Mes - 2019',
+        chart2: 'Monto Total por Mes - 2019',
         value1: '2019',
         value2: '2019',
       }
@@ -100,11 +101,11 @@
       getDataAmountLendMonth(){
         this.dynamicDataAmountLendMonth(this.value2);
         this.fillDataAmountLendMonth();
-        this.chart2 = 'Monto por Préstamos por Mes - ' + this.value2;
+        this.chart2 = 'Monto Total por Mes - ' + this.value2;
       },
       back(){
         this.$router.push('/home');
-      }
+      },
     }
   }
 </script>
