@@ -49,12 +49,12 @@
       }
     },
     computed:{
-      ...mapState(['listCntLend',' listAmountLend'])
+      ...mapState(['listCntLend', 'listAmountLend'])
     },
     mounted(){
       // Chart 1
       this.dynamicDataLendMonth('2019');
-      this.fillDataLendMonth();
+      this.fillDataLendMonth();          
 
       // Chart 2
       this.dynamicDataAmountLendMonth('2019');

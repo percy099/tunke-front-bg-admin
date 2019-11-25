@@ -38,18 +38,6 @@ export default new Vuex.Store({
     cntAccOct: 0,
     cntAccNov: 0,
     cntAccDec: 0,
-    cntAccJanLen: 0,
-    cntAccFebLen: 0,
-    cntAccMarLen: 0,
-    cntAccAprLen: 0,
-    cntAccMayLen: 0,
-    cntAccJunLen: 0,
-    cntAccJulLen: 0,
-    cntAccAugLen: 0,
-    cntAccSepLen: 0,
-    cntAccOctLen: 0,
-    cntAccNovLen: 0,
-    cntAccDecLen: 0,
     quantityAmountSolesJan: 0,
     quantityAmountSolesFeb: 0,
     quantityAmountSolesMar: 0,
@@ -147,12 +135,13 @@ export default new Vuex.Store({
       totalShares: -1,
       amount : -1,
       interestRate: -1,
-      idCampaign: -1,
       idClient: -1,
       idSalesRecord: -1,
       idShareType: -1,
       idAccount: -1,
+      idLead: -1,
       share: -1,
+      commission: -1,
       active: -1,
       campaignName: '',
       accountNumber: '',
@@ -160,8 +149,7 @@ export default new Vuex.Store({
       fullName: '',
       documentNumber: '',
       documentType: '',
-      requestDate: '',
-      commission: -1,
+      requestDate: '',      
     },
     salesRecordCreate :{
       activeAccount : false,
@@ -310,33 +298,21 @@ export default new Vuex.Store({
       }
     },
     fillLendings(state,lendings_data){
-      console.log(lendings_data.length);
       state.lendings=[];
-      state.cntAccJanLen = 0;
-      state.cntAccFebLen = 0;
-      state.cntAccMarLen = 0;
-      state.cntAccAprLen = 0;
-      state.cntAccMayLen = 0;
-      state.cntAccJunLen = 0;
-      state.cntAccJulLen = 0;
-      state.cntAccAugLen = 0;
-      state.cntAccSepLen = 0;
-      state.cntAccOctLen = 0;
-      state.cntAccNovLen = 0;
-      state.cntAccDecLen = 0;
       for (let i=0; i< lendings_data.length;i++){
         if(lendings_data[i].active){       
           state.lendings.push({
             idLoan : lendings_data[i].idLoan,
             totalShares : lendings_data[i].totalShares,
             amount : lendings_data[i].amount,
-            interestRate : lendings_data[i].interestRate,
-            idCampaign : lendings_data[i].idCampaign,
+            interestRate : lendings_data[i].interestRate,            
             idClient : lendings_data[i].idClient,
             idSalesRecord : lendings_data[i].idSalesRecord,
             idShareType : lendings_data[i].idShareType,
             idAccount : lendings_data[i].idAccount,
-            share: lendings_data[i].share,
+            idLead : lendings_data[i].idLead,
+            share : lendings_data[i].share,
+            commission : lendings_data[i].commission,
             active : lendings_data[i].active,
             campaignName : lendings_data[i].campaignName ,
             accountNumber : lendings_data[i].accountNumber,
@@ -345,35 +321,7 @@ export default new Vuex.Store({
             documentNumber : lendings_data[i].documentNumber,
             documentType : lendings_data[i].documentType,
             requestDate : lendings_data[i].requestDate,
-            commission : lendings_data[i].commission
           });
-        }
-        var str=lendings_data[i].requestDate; //'12-12-2019'4
-        var res=str.substring(3,5);
-        if(res=='12'){          
-          state.cntAccDecLen = state.cntAccDecLen + 1;
-        }else if(res=='11'){        
-          state.cntAccNovLen = state.cntAccNovLen + 1;
-        }else if(res=='10'){        
-          state.cntAccOctLen = state.cntAccOctLen + 1;
-        }else if(res=='09'){          
-          state.cntAccSepLen = state.cntAccSepLen + 1;
-        }else if(res=='08'){          
-          state.cntAccAugLen = state.cntAccAugLen + 1;
-        }else if(res=='07'){          
-          state.cntAccJulLen = state.cntAccJulLen + 1;
-        }else if(res=='06'){        
-          state.cntAccJunLen = state.cntAccJunLen + 1;
-        }else if(res=='05'){        
-          state.cntAccMayLen = state.cntAccMayLen + 1;
-        }else if(res=='04'){        
-          state.cntAccAprLen = state.cntAccAprLen + 1;
-        }else if(res=='03'){        
-          state.cntAccMarLen = state.cntAccMarLen + 1;
-        }else if(res=='02'){        
-          state.cntAccFebLen = state.cntAccFebLen + 1;
-        }else if(res=='01'){        
-          state.cntAccJanLen = state.cntAccJanLen + 1;
         }
       }
     },
@@ -463,7 +411,7 @@ export default new Vuex.Store({
     fillTransactionDollar(state,transactionDollar_data){
       state.transactionsDollar=[]; 
           let str=transaction.datetime; //'2019-11-16'
-          console.log("transacciones soles: " + transaction.amount);
+          //console.log("transacciones soles: " + transaction.amount);
           let res=str.substring(5,7);
           if(res=='12'){
             state.quantityAmountSolesDec = state.quantityAmountSolesDec + transaction.amount;
@@ -516,7 +464,7 @@ export default new Vuex.Store({
             currency : transaction.currency
           });
           let str=transaction.datetime; //'2019-11-16'
-          console.log("transacciones dólares: " + transaction.amount);
+          //console.log("transacciones dólares: " + transaction.amount);
           let res=str.substring(5,7);
           if(res=='12'){
             state.quantityAmountDollarDec = state.quantityAmountDollarDec + transaction.amount;
@@ -644,15 +592,15 @@ export default new Vuex.Store({
     },
     fillDataAmountLendMonth(state, year){
       state.listAmountLend = [0,0,0,0,0,0,0,0,0,0,0,0];
-      let aux = state.lendings;
+      let aux = state.lendings;      
       for (let i = 0; i < aux.length; i++){
         let str = aux[i].requestDate;
         let mm = str.substring(3,5);
         let yy = str.substring(6,10);
-        if (mm == '12' && yy == year){
+        if (mm == '12' && yy == year){          
           state.listAmountLend[11] += aux[i].amount;
         }else if (mm == '11' && yy == year){
-          state.listAmountLend[10] += aux[i].amount;
+          state.listAmountLend[10] += aux[i].amount;          
         }else if (mm == '10' && yy == year){
           state.listAmountLend[9] += aux[i].amount;
         }else if (mm == '09' && yy == year){
@@ -673,8 +621,6 @@ export default new Vuex.Store({
           state.listAmountLend[1] += aux[i].amount;
         }else if (mm == '01' && yy == year){
           state.listAmountLend[0] += aux[i].amount;
-        }else{
-          state.listAmountLend = [0,0,0,0,0,0,0,0,0,0,0,0];
         }
       }
     },
@@ -1104,12 +1050,13 @@ export default new Vuex.Store({
       state.lendingCreate.totalShares = '';
       state.lendingCreate.amount = '';
       state.lendingCreate.interestRate = '';
-      state.lendingCreate.idCampaign = -1;
       state.lendingCreate.idClient = -1;
       state.lendingCreate.idSalesRecord = -1;
       state.lendingCreate.idShareType= -1;
       state.lendingCreate.idAccount = -1;
+      state.lendingCreate.idLead = -1;
       state.lendingCreate.share = '';
+      state.lendingCreate.commission = '';
       state.lendingCreate.active = '';
       state.lendingCreate.campaignName = '';
       state.lendingCreate.accountNumber = '';
@@ -1117,8 +1064,7 @@ export default new Vuex.Store({
       state.lendingCreate.fullName = '';
       state.lendingCreate.documentNumber = '';
       state.lendingCreate.documentType = '';
-      state.lendingCreate.requestDate = '';
-      state.lendingCreate.commission = '';
+      state.lendingCreate.requestDate = '';      
     },
     fillAccByCli(state,accountsData){
       state.accountsByClient = [];
@@ -1196,7 +1142,9 @@ export default new Vuex.Store({
       state.lendingCreate.idSalesRecord = state.lendings[index].idSalesRecord;
       state.lendingCreate.idShareType = state.lendings[index].idShareType;
       state.lendingCreate.idAccount = state.lendings[index].idAccount;
+      state.lendingCreate.idLead = state.lendings[index].idLead;
       state.lendingCreate.share = state.lendings[index].share;
+      state.lendingCreate.commission = state.lendings[index].commission;
       state.lendingCreate.active = state.lendings[index].active;
       state.lendingCreate.campaignName = state.lendings[index].campaignName;
       state.lendingCreate.accountNumber = state.lendings[index].accountNumber;
@@ -1204,8 +1152,7 @@ export default new Vuex.Store({
       state.lendingCreate.fullName = state.lendings[index].fullName;
       state.lendingCreate.documentNumber = state.lendings[index].documentNumber;
       state.lendingCreate.documentType = state.lendings[index].documentType;
-      state.lendingCreate.requestDate = state.lendings[index].requestDate;
-      state.lendingCreate.commission = state.lendings[index].commission;
+      state.lendingCreate.requestDate = state.lendings[index].requestDate;      
     },
     setLeadInd(state, index){
       state.leadCreate.idLead = state.leadsByCampaign[index].idLead;
