@@ -5,19 +5,19 @@
       <div class="col-md-6">
         <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>
         <div class="Chart">
           <h3 class="text-center" >{{ chart1 }}</h3>
-          <line-chart :chart-data="dataNumMonth"></line-chart>
+          <line-chart :chart-data="dataLendMonth"></line-chart>
         </div>
       </div>
       <div class="col-md-6">
         <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAmountLendMonth()">Aceptar</button>
         <div class="Chart">
           <h3 class="text-center">{{ chart2 }}</h3>
-          <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
+          <line-chart :chart-data="dataAmountLendMonth"></line-chart>
         </div>
       </div>
     </div>
@@ -40,72 +40,67 @@
     },
     data () {
       return {
-        dataNumMonth: {},
-        dataAccountTypeMonth: {},
-        chart1: 'Número de Cuentas por Mes - 2019',
-        chart2: 'Tipo de Cuentas por Mes - 2019',
+        dataLendMonth: {},
+        dataAmountLendMonth: {},
+        chart1: 'Número de Préstamos por Mes - 2019',
+        chart2: 'Monto por Préstamos por Mes - 2019',
         value1: '2019',
         value2: '2019',
       }
     },
     computed:{
-      ...mapState(['cntAccJan','cntAccFeb','cntAccMar','cntAccApr','cntAccMay','cntAccJun','cntAccJul','cntAccAug','cntAccSep','cntAccOct','cntAccNov','cntAccDec',
-                   'listCntDollar','listCntSoles'])
+      ...mapState(['listCntLend',' listAmountLend'])
     },
     mounted(){
-      this.fillDataNumMonth();
-      this.fillDataAccountTypeMonth();
+      // Chart 1
+      this.dynamicDataLendMonth('2019');
+      this.fillDataLendMonth();
+
+      // Chart 2
+      this.dynamicDataAmountLendMonth('2019');
+      this.fillDataAmountLendMonth();
     },
     methods:{
-      ...mapActions(['prueba','dynamicDataAccountTypeMonth']),
-      fillDataNumMonth(){
-        this.dataNumMonth={
+      ...mapActions(['dynamicDataLendMonth', 'dynamicDataAmountLendMonth']),    
+      fillDataLendMonth(){
+        this.dataLendMonth={
           labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           datasets: [
             {
               fill: false,
               showLine: true,
-              label: 'Número de Cuentas',              
+              label: 'Número de Préstamos',              
               backgroundColor: '#f87979',
               borderColor: '#f87979',
-              data: [this.cntAccJan, this.cntAccFeb, this.cntAccMar, this.cntAccApr, this.cntAccMay, this.cntAccJun,
-              this.cntAccJul, this.cntAccAug, this.cntAccSep, this.cntAccOct, this.cntAccNov, this.cntAccDec]
+              data: this.listCntLend,
             },
           ]
         }
-      },
-      fillDataAccountTypeMonth(){
-        this.dataAccountTypeMonth={
+      },  
+      fillDataAmountLendMonth(){
+        this.dataAmountLendMonth={
           labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           datasets: [
             {
               fill: false,
               showLine: true,
-              label: 'Soles',
+              label: 'Monto por Préstamo',              
               backgroundColor: '#f87979',
               borderColor: '#f87979',
-              data: this.listCntSoles,
+              data: this.listAmountLend,
             },
-            {
-              fill: false,
-              showLine: true,
-              label: 'Dólares',
-              backgroundColor: '#000000',
-              borderColor: '#000000',
-              data: this.listCntDollar,
-            }
           ]
         }
-      },      
-      getDataNumMonth(){
-        this.prueba(this.value1);
-        this.fillDataNumMonth();
-        this.chart1 = 'Número de Cuentas por Mes - ' + this.value1;
+      },   
+      getDataLendMonth(){
+        this.dynamicDataLendMonth(this.value1);
+        this.fillDataLendMonth();
+        this.chart1 = 'Número de Préstamos por Mes - ' + this.value1;
       },
-      getDataAccountTypeMonth(){
-        this.dynamicDataAccountTypeMonth(this.value2);
-        this.fillDataAccountTypeMonth();
-        this.chart2 = 'Tipo de Cuentas por Mes - ' + this.value2;
+      getDataAmountLendMonth(){
+        this.dynamicDataAmountLendMonth(this.value2);
+        this.fillDataAmountLendMonth();
+        this.chart2 = 'Monto por Préstamos por Mes - ' + this.value2;
       },
       back(){
         this.$router.push('/home');

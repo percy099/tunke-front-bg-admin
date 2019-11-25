@@ -13,15 +13,19 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
-    listCntDollar: [1,1,1,1,1,1,1,1,1,1,1,1],
+    /*Ronaldo*/
+    listCntDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
     listCntSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listCntLend: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listAmountLend: [0,0,0,0,0,0,0,0,0,0,0,0],
+    /*Ronaldo*/
     parameterSetting:{
       maxTokenSends: '',
       maxDiaryMovements : '',
       legalAge : '',
       maxAccountsNumber : '',
       commissionPercentage:'',
-    },
+    },    
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,
@@ -600,6 +604,81 @@ export default new Vuex.Store({
         }
       }
     },
+    /*Ronaldo*/
+    // Lending Charts
+    fillDataLendingMonth(state, year){
+      state.listCntLend = [0,0,0,0,0,0,0,0,0,0,0,0];
+      let aux = state.lendings;      
+      for (let i = 0; i < aux.length; i++){
+        let str = aux[i].requestDate;
+        let mm = str.substring(3,5);
+        let yy = str.substring(6,10);
+        if (mm == '12' && yy == year){
+          state.listCntLend[11]++;
+        }else if(mm == '11' && yy == year){
+          state.listCntLend[10]++;
+        }else if(mm == '10' && yy == year){
+          state.listCntLend[9]++;
+        }else if(mm == '09' && yy == year){
+          state.listCntLend[8]++;
+        }else if(mm == '08' && yy == year){
+          state.listCntLend[7]++;
+        }else if(mm == '07' && yy == year){
+          state.listCntLend[6]++;
+        }else if(mm == '06' && yy == year){
+          state.listCntLend[5]++;
+        }else if(mm == '05' && yy == year){
+          state.listCntLend[4]++;
+        }else if(mm == '04' && yy == year){
+          state.listCntLend[3]++;
+        }else if(mm == '03' && yy == year){
+          state.listCntLend[2]++;
+        }else if(mm == '02' && yy == year){
+          state.listCntLend[1]++;
+        }else if(mm == '01' && yy == year){
+          state.listCntLend[0]++;
+        }else{
+          state.listCntLend = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+      }
+    },
+    fillDataAmountLendMonth(state, year){
+      state.listAmountLend = [0,0,0,0,0,0,0,0,0,0,0,0];
+      let aux = state.lendings;
+      for (let i = 0; i < aux.length; i++){
+        let str = aux[i].requestDate;
+        let mm = str.substring(3,5);
+        let yy = str.substring(6,10);
+        if (mm == '12' && yy == year){
+          state.listAmountLend[11] += aux[i].amount;
+        }else if (mm == '11' && yy == year){
+          state.listAmountLend[10] += aux[i].amount;
+        }else if (mm == '10' && yy == year){
+          state.listAmountLend[9] += aux[i].amount;
+        }else if (mm == '09' && yy == year){
+          state.listAmountLend[8] += aux[i].amount;
+        }else if (mm == '08' && yy == year){
+          state.listAmountLend[7] += aux[i].amount;
+        }else if (mm == '07' && yy == year){
+          state.listAmountLend[6] += aux[i].amount;
+        }else if (mm == '06' && yy == year){
+          state.listAmountLend[5] += aux[i].amount;
+        }else if (mm == '05' && yy == year){
+          state.listAmountLend[4] += aux[i].amount;
+        }else if (mm == '04' && yy == year){
+          state.listAmountLend[3] += aux[i].amount;
+        }else if (mm == '03' && yy == year){
+          state.listAmountLend[2] += aux[i].amount;
+        }else if (mm == '02' && yy == year){
+          state.listAmountLend[1] += aux[i].amount;
+        }else if (mm == '01' && yy == year){
+          state.listAmountLend[0] += aux[i].amount;
+        }else{
+          state.listAmountLend = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+      }
+    },
+    /*Ronaldo*/
     /*-------*/
     fillDataAccountTypeMonth(state, year){
       state.listCntDollar=[0,0,0,0,0,0,0,0,0,0,0,0];
@@ -1357,7 +1436,14 @@ export default new Vuex.Store({
       dynamicDataAccountTypeMonth(context, year){
         context.commit('fillDataAccountTypeMonth', year);
       },
-      /*-------*/
+      // Lending Charts
+      dynamicDataLendMonth(context, year){
+        context.commit('fillDataLendingMonth', year);
+      },
+      dynamicDataAmountLendMonth(context, year){
+        context.commit('fillDataAmountLendMonth', year);
+      },
+      /*Ronaldo*/
       fillParameterSettings(context,parameters){
         context.commit('setParameters',parameters);
       },
