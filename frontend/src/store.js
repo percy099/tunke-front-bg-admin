@@ -18,6 +18,7 @@ export default new Vuex.Store({
     listCntSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
     listCntLend: [0,0,0,0,0,0,0,0,0,0,0,0],
     listAmountLend: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listBalanceAccount: [0,0,0,0,0,0,0,0,0,0,0,0],
     /*Ronaldo*/
     parameterSetting:{
       maxTokenSends: '',
@@ -624,7 +625,41 @@ export default new Vuex.Store({
         }
       }
     },
-    /*Ronaldo*/
+    // Account Charts
+    fillDataBalanceMonth(state, year){
+      state.listBalanceAccount = [0,0,0,0,0,0,0,0,0,0,0,0];
+      let aux = state.accounts;
+      for (let i = 0; i < aux.length; i++){
+        let str = aux[i].openingDate;
+        let mm = str.substring(3,5);
+        let yy = str.substring(6,10);
+        if (mm == '12' && yy == year){          
+          state.listBalanceAccount[11] += aux[i].balance;
+        }else if (mm == '11' && yy == year){
+          state.listBalanceAccount[10] += aux[i].balance;          
+        }else if (mm == '10' && yy == year){
+          state.listBalanceAccount[9] += aux[i].balance;
+        }else if (mm == '09' && yy == year){
+          state.listBalanceAccount[8] += aux[i].balance;
+        }else if (mm == '08' && yy == year){
+          state.listBalanceAccount[7] += aux[i].balance;
+        }else if (mm == '07' && yy == year){
+          state.listBalanceAccount[6] += aux[i].balance;
+        }else if (mm == '06' && yy == year){
+          state.listBalanceAccount[5] += aux[i].balance;
+        }else if (mm == '05' && yy == year){
+          state.listBalanceAccount[4] += aux[i].balance;
+        }else if (mm == '04' && yy == year){
+          state.listBalanceAccount[3] += aux[i].balance;
+        }else if (mm == '03' && yy == year){
+          state.listBalanceAccount[2] += aux[i].balance;
+        }else if (mm == '02' && yy == year){
+          state.listBalanceAccount[1] += aux[i].balance;
+        }else if (mm == '01' && yy == year){
+          state.listBalanceAccount[0] += aux[i].balance;
+        }
+      }
+    },
     /*-------*/
     fillDataAccountTypeMonth(state, year){
       state.listCntDollar=[0,0,0,0,0,0,0,0,0,0,0,0];
@@ -1377,11 +1412,18 @@ export default new Vuex.Store({
         context.commit('fillPersonCreate',person_data);
       },
       /*Ronaldo*/
+      // Account Charts
+      // Chart 1
       prueba(context, year){
         context.commit('fillDataAccountDataBarChart', year);
       },
+      // Chart 2
       dynamicDataAccountTypeMonth(context, year){
         context.commit('fillDataAccountTypeMonth', year);
+      },
+      // Chart 3
+      dynamicDataBalanceMonth(context, year){
+        context.commit('fillDataBalanceMonth', year);
       },
       // Lending Charts
       dynamicDataLendMonth(context, year){

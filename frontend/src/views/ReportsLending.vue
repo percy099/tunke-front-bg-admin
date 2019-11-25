@@ -85,7 +85,7 @@
             {
               fill: false,
               showLine: true,
-              label: 'Monto por Préstamo',              
+              label: 'Monto Total de Préstamos',              
               backgroundColor: '#f87979',
               borderColor: '#f87979',
               data: this.listAmountLend,
