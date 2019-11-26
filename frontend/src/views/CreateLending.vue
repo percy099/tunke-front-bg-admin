@@ -40,7 +40,7 @@
                         <br><input v-model="clientCreate.birthdate"  type="date" style="height:2.3em; width:21em;" disabled>
                     </div>
                     <h6 class="mt-2">Nro. Documento</h6>
-                    <input v-model="clientCreate.documentNumber" type="text" class="form-control" disabled>
+                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Correo electrónico</h6>
                     <input v-model="clientCreate.email1"  type="text" class="form-control mb-5" disabled>
                 </div>
@@ -73,7 +73,7 @@
                     <input v-if="selectCampaign == 1" placeholder="Soles" type="text" class="form-control" disabled>
                     <input v-if="selectCampaign == 2" placeholder="Dólares" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Total</h6>
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control" 
                     v-model.trim="$v.amount.$model" :class="{
                     'is-invalid' : $v.amount.$error, 'is-valid':!$v.amount.$invalid }">
                     <div class="valid-feedback">Monto Válido!</div>
@@ -207,8 +207,10 @@ export default {
     computed :{
         ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate']),
         calculateShare : function (){
-            let amount = this.lendingCreate.amount;
-            let term = this.lendingCreate.totalShares;
+            //let amount = this.lendingCreate.amount;
+            let amount = this.amount;
+            //let term = this.lendingCreate.totalShares;
+            let term = this.totalShares;
             let tea = this.lendingCreate.interestRate;
             let tem =Math.pow(1+(tea/100),1/12)-1;
             let commission = 0.25;
@@ -216,15 +218,16 @@ export default {
             let share =shareNumber.toFixed(2);
             this.lendingCreate.share=share;
 
-            if(!this.lendingCreate.amount || !this.lendingCreate.totalShares) return 0;
+            //if(!this.lendingCreate.amount || !this.lendingCreate.totalShares) return 0;
+            if(!this.amount || !this.totalShares) return 0;
             else 
             return this.lendingCreate.share;
         },
         calculateCommission: function (){
-            let amount = this.lendingCreate.amount;
+            //let amount = this.lendingCreate.amount;
+            let amount = this.amount;
             let commission = 0.25;
             let comissionAmount = amount*commission/100;
-            //Which commission?
             this.lendingCreate.commission=comissionAmount;
             return this.lendingCreate.commission;
         }
@@ -295,8 +298,11 @@ export default {
                             }else{
                                 this.completePersonCreate(res.data);
                                 this.completeLendingCreate(res.data);
+                                this.clientCreate.documentNumber=res.data.documentNumber;
+                                this.clientCreate.email1=res.data.email1;
+                                this.clientCreate.cellphone1=res.data.cellphone1;
                                 adminDA.getAccountsByClient(this.lendingCreate.idClient,this.token).then((res)=>{
-                                    //console.log('Leonella');
+                                    console.log("paso cuentas");
                                     let accountsData = res.data;
                                     accountsData = accountsData.accounts;
                                     //this.fillAccountsByClient(accountsData);
@@ -315,6 +321,8 @@ export default {
                             }
                         break;
                         case 2:
+                            this.cleanLendingCreate();
+                            this.cleanClientCreate();
                             Swal.fire({
                                 title : 'Error',
                                 type : 'error',
@@ -323,6 +331,8 @@ export default {
                             this.enableButton = false;
                         break;
                         case 3:
+                            this.cleanLendingCreate();
+                            this.cleanClientCreate();
                             Swal.fire({
                                 title : 'Error',
                                 type : 'error',
@@ -341,31 +351,10 @@ export default {
                         text: 'No se encontraron registros del cliente con DNI ' + this.dniClient
                     })
                 })
-                /*
-                adminDA.getCampaignByID(this.token).then((res)=>{
-                    console.log('Leo');
-                    this.completeLendingCreateCampaign(res.data)
-                }).catch(error =>{  
-                    this.enableButton = false;
-                    this.cleanLendingCreate();
-                    Swal.fire({
-                        title: 'Error',
-                        type: 'error',
-                        text: 'No se encontraron campañas activas'
-                    })
-                })
-                */
             }
         },
         
         saveLending(){
-            if(this.selectCampaign == 1){
-                this.selectAccount = this.selectAccountSoles;
-            } else {
-                this.selectAccount = this.selectAccountDolar;
-            }
-            console.log(this.selectAccount);
-            /*
             //Usas estos 3 valores para completar la creación del lending
             console.log(this.selectAccount);  //Id de la cuenta escogida
             console.log(this.selectCampaign);  //Id de la campaña escogida, solo estos valores necesitas para el back
@@ -377,10 +366,10 @@ export default {
                 this.selectAccount = this.selectAccountDolar;
             }
 
-            this.$v.totalShare.$touch();
+            this.$v.totalShares.$touch();
             this.$v.amount.$touch();
 
-            if (this.$v.totalShare.$invalid || this.$v.amount.$invalid || selectAccount == 0 || selectAccount == undefined) {
+            if (this.$v.totalShares.$invalid || this.$v.amount.$invalid || this.selectAccount == 0 || this.selectAccount == undefined) {
             } else {
                 adminDA.createLending(this.lendingCreate.idClient,this.totalShares,this.amount,12,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
                     Swal.fire({
@@ -388,28 +377,15 @@ export default {
                         title: 'Enhorabuena',
                         text: 'Préstamo creado satisfactoriamente'
                     })
+                    this.$router.push('/crudLending');
                 }).catch(error =>{
                     Swal.fire({
                         title : 'Error',
                         type : 'error',
-                        text : 'Error al crear al préstamo'
+                        text : 'Error al crear el préstamo'
                     })
                 })
             }
-            
-            console.log('idClient: ' + this.lendingCreate.idClient);
-            console.log('totalShares: ' +this.lendingCreate.totalShares);
-            console.log('Monto: ' +this.lendingCreate.amount);
-            //console.log('interestRate: ' +this.lendingCreate.interestRate);
-            console.log('tipo cuota: ' + this.selectShare);
-            console.log('amount: ' + this.selectAccount);
-            console.log('cuota: ' + this.lendingCreate.share);
-            console.log('comision: ' + this.lendingCreate.commission)
-
-            //Need to capture the idShareType and idAccount values
-
-            */
-            
         }
     },
     mounted(){

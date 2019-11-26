@@ -46,7 +46,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <button class="btn mr-3" id="butt" @click=$router.go(-1)>Volver</button>
+            <button class="btn mr-3" id="butt" @click="openWindow('home')">Volver</button>
         </div>
     </div>
 </div>
@@ -55,6 +55,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import router from '@/router.js'
 import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
@@ -64,7 +65,10 @@ import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators
 export default {
     computed:{
         ...mapState(['lendings','token','clientCreate'])
-	},
+    },
+    beforeMount(){
+              
+    },
 	mounted(){
 		$('#mydatatable').DataTable({
             "language" : {
@@ -88,9 +92,28 @@ export default {
                 }
             }
         });
+        this.fetchLendings();
     },
     methods :{
-        ...mapActions(['setLendingIndex','completePersonCreate']),
+        ...mapActions(['setLendingIndex','completePersonCreate','completeLendings']),
+         openWindow(window){
+            switch(window){
+                case 'home':
+                    router.push('/home');
+                break;
+            }
+        },
+        fetchLendings(){
+            userDA.getAllLendings(this.token).then((res) =>{
+            this.completeLendings(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo los préstamos'
+                })
+            })
+        },
         createLending(){
             this.$router.push('/createLending');
             this.cleanLendingCreate();

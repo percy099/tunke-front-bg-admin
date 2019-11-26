@@ -416,6 +416,7 @@ export default new Vuex.Store({
         }
       }
     },
+    
     fillTransaction(state,transaction_data){
       state.transactions=[]; 
       for(let transaction of transaction_data){
@@ -453,11 +454,6 @@ export default new Vuex.Store({
             bankAccountNumber : transaction.bankAccountNumber,
             currency : transaction.currency
           });
-        }  
-      }
-    },
-    fillTransactionDollar(state,transactionDollar_data){
-      state.transactionsDollar=[]; 
           let str=transaction.datetime; //'2019-11-16'
           console.log("transacciones soles: " + transaction.amount);
           let res=str.substring(5,7);
@@ -486,7 +482,9 @@ export default new Vuex.Store({
           }else if(res=='01'){
             state.quantityAmountSolesJan = state.quantityAmountSolesJan + transaction.amount;
           }
-        },
+        }
+      }
+    },
     fillTransactionDollar(state,transactionDollar_data){
       state.transactionsDollar=[];
       state.quantityAmountDollarJan = 0;
