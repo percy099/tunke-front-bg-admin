@@ -40,7 +40,7 @@
                         <br><input v-model="clientCreate.birthdate"  type="date" style="height:2.3em; width:21em;" disabled>
                     </div>
                     <h6 class="mt-2">Nro. Documento</h6>
-                    <input v-model="clientCreate.documentNumber" type="text" class="form-control" disabled>
+                    <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Correo electrónico</h6>
                     <input v-model="clientCreate.email1"  type="text" class="form-control mb-5" disabled>
                 </div>
@@ -73,7 +73,16 @@
                     <input v-if="selectCampaign == 1" placeholder="Soles" type="text" class="form-control" disabled>
                     <input v-if="selectCampaign == 2" placeholder="Dólares" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Total</h6>
-                    <input v-model="lendingCreate.amount" type="text" class="form-control"> 
+                    <input type="text" class="form-control" 
+                    v-model.trim="$v.amount.$model" :class="{
+                    'is-invalid' : $v.amount.$error, 'is-valid':!$v.amount.$invalid }">
+                    <div class="valid-feedback">Monto Válido!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.amount.minValue">Debe ser de al menos {{
+                        $v.amount.$params.minValue.min}} </span>
+                        <span v-if="!$v.amount.numeric">Debe contener solo números. </span>
+                        <span v-if="!$v.amount.required">Cuotas Requerido. </span>
+                    </div>
                     <h6 class="mt-3">Tipo de Cuota</h6>
                     <select v-model="selectShare" style="height:2.3em; width:21em;">
                         <option v-for="optionShare in optionsShare" v-bind:value="optionShare.value">
@@ -95,18 +104,33 @@
                         </option>
                     </select>
                     <h6 class="mt-3">Número de cuenta</h6>
-                    <select v-if="selectCampaign == 1" v-model="selectAccount" id="right2" style="height:2.3em;">
+                    <select v-if="selectCampaign == 1" v-model="selectAccountSoles" id="right2" style="height:2.3em;">
                         <option v-for="accountsByClients in solesAccounts" v-bind:value="accountsByClients.idAccount">
                             {{accountsByClients.accountNumber}}
                         </option>
                     </select>  
-                    <select v-if="selectCampaign == 2" v-model="selectAccount" id="right2" style="height:2.3em;">
+                    <div v-if="selectCampaign == 1" class="invalid-feedback">
+                        <span v-if="selectAccountSoles == 0 || selectAccountSoles == undefined">Debe seleccionar una cuenta </span>
+                    </div>
+                    <select v-if="selectCampaign == 2" v-model="selectAccountDolar" id="right2" style="height:2.3em;">
                         <option v-for="accountsByClients in dolarAccounts" v-bind:value="accountsByClients.idAccount">
                             {{accountsByClients.accountNumber}}
                         </option>
                     </select>  
+                    <div v-if="selectCampaign == 2" class="invalid-feedback">
+                        <span v-if="selectAccountDolar == 0 || selectAccountDolar == undefined">Debe seleccionar una cuenta </span>
+                    </div>
                     <h6 class="mt-3">Número de cuotas</h6>
-                    <input v-model="lendingCreate.totalShares" type="text" id="right2" class="form-control">
+                    <input type="text" id="right2" class="form-control"
+                    v-model.trim="$v.totalShares.$model" :class="{
+                    'is-invalid' : $v.totalShares.$error, 'is-valid':!$v.totalShares.$invalid }">
+                    <div class="valid-feedback">Monto Válido!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.totalShares.minValue">Debe ser de al menos {{
+                        $v.totalShares.$params.minValue.min}} </span>
+                        <span v-if="!$v.totalShares.numeric">Debe contener solo números. </span>
+                        <span v-if="!$v.totalShares.required">Cuotas Requerido. </span>
+                    </div>
                     <h6 class="mt-3">Cuota</h6>
                     <input v-model="calculateShare" type="text" id="right2" class="form-control" disabled>
                     <h6 class="mt-3">Comisión</h6>
@@ -133,7 +157,7 @@ import * as userDA from '@/dataAccess/userDA.js'
 import * as adminDA from '@/dataAccess/adminDA.js'
 import Swal from 'sweetalert2'
 import ClientAccounts from "@/views/ClientAccounts.vue"
-import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, numeric, minValue, maxValue} from 'vuelidate/lib/validators'
 
 
 export default {
@@ -143,8 +167,12 @@ export default {
     data(){
         return {dniClient : '',
                 enableButton : false,
-                selectAccount : 1,
+                selectAccountDolar : 0,
+                selectAccountSoles : 0,
+                selectAccount : 0,
                 selectCampaign : 1,
+                totalShares : 0,
+                amount : 0,
                 selectShare: 1,
                 selectCurrency: 1,
                 optionsCampaign: [
@@ -164,13 +192,25 @@ export default {
             minLength: minLength(8),
             maxLength: maxLength(8),
             numeric
+        },
+        totalShares: {
+            required,
+            numeric,
+            minValue: minValue(1)
+        },
+        amount: {
+            required,
+            numeric,
+            minValue: minValue(1)
         }
     },
     computed :{
         ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate']),
         calculateShare : function (){
-            let amount = this.lendingCreate.amount;
-            let term = this.lendingCreate.totalShares;
+            //let amount = this.lendingCreate.amount;
+            let amount = this.amount;
+            //let term = this.lendingCreate.totalShares;
+            let term = this.totalShares;
             let tea = this.lendingCreate.interestRate;
             let tem =Math.pow(1+(tea/100),1/12)-1;
             let commission = 0.25;
@@ -178,15 +218,16 @@ export default {
             let share =shareNumber.toFixed(2);
             this.lendingCreate.share=share;
 
-            if(!this.lendingCreate.amount || !this.lendingCreate.totalShares) return 0;
+            //if(!this.lendingCreate.amount || !this.lendingCreate.totalShares) return 0;
+            if(!this.amount || !this.totalShares) return 0;
             else 
             return this.lendingCreate.share;
         },
         calculateCommission: function (){
-            let amount = this.lendingCreate.amount;
+            //let amount = this.lendingCreate.amount;
+            let amount = this.amount;
             let commission = 0.25;
             let comissionAmount = amount*commission/100;
-            //Which commission?
             this.lendingCreate.commission=comissionAmount;
             return this.lendingCreate.commission;
         }
@@ -239,8 +280,8 @@ export default {
             document.getElementById(btn).classList.add('active');
         },
         getClient(){
-            this.$v.$touch();
-            if (this.$v.$invalid) {
+            this.$v.dniClient.$touch();
+            if (this.$v.dniClient.$invalid) {
             } else {
                 userDA.getPersonData(this.dniClient).then((res) =>{
                     switch(res.data.type){
@@ -257,8 +298,11 @@ export default {
                             }else{
                                 this.completePersonCreate(res.data);
                                 this.completeLendingCreate(res.data);
+                                this.clientCreate.documentNumber=res.data.documentNumber;
+                                this.clientCreate.email1=res.data.email1;
+                                this.clientCreate.cellphone1=res.data.cellphone1;
                                 adminDA.getAccountsByClient(this.lendingCreate.idClient,this.token).then((res)=>{
-                                    //console.log('Leonella');
+                                    console.log("paso cuentas");
                                     let accountsData = res.data;
                                     accountsData = accountsData.accounts;
                                     //this.fillAccountsByClient(accountsData);
@@ -277,6 +321,8 @@ export default {
                             }
                         break;
                         case 2:
+                            this.cleanLendingCreate();
+                            this.cleanClientCreate();
                             Swal.fire({
                                 title : 'Error',
                                 type : 'error',
@@ -285,6 +331,8 @@ export default {
                             this.enableButton = false;
                         break;
                         case 3:
+                            this.cleanLendingCreate();
+                            this.cleanClientCreate();
                             Swal.fire({
                                 title : 'Error',
                                 type : 'error',
@@ -303,20 +351,6 @@ export default {
                         text: 'No se encontraron registros del cliente con DNI ' + this.dniClient
                     })
                 })
-                /*
-                adminDA.getCampaignByID(this.token).then((res)=>{
-                    console.log('Leo');
-                    this.completeLendingCreateCampaign(res.data)
-                }).catch(error =>{  
-                    this.enableButton = false;
-                    this.cleanLendingCreate();
-                    Swal.fire({
-                        title: 'Error',
-                        type: 'error',
-                        text: 'No se encontraron campañas activas'
-                    })
-                })
-                */
             }
         },
         
@@ -325,32 +359,33 @@ export default {
             console.log(this.selectAccount);  //Id de la cuenta escogida
             console.log(this.selectCampaign);  //Id de la campaña escogida, solo estos valores necesitas para el back
             console.log(this.selectShare);  //Id del tipo de la cuota
-            
-            console.log('idClient: ' + this.lendingCreate.idClient);
-            console.log('totalShares: ' +this.lendingCreate.totalShares);
-            console.log('Monto: ' +this.lendingCreate.amount);
-            //console.log('interestRate: ' +this.lendingCreate.interestRate);
-            console.log('tipo cuota: ' + this.selectShare);
-            console.log('amount: ' + this.selectAccount);
-            console.log('cuota: ' + this.lendingCreate.share);
-            console.log('comision: ' + this.lendingCreate.commission)
 
-            //Need to capture the idShareType and idAccount values
-            
-            adminDA.createLending(this.lendingCreate.idClient,this.lendingCreate.totalShares,this.lendingCreate.amount,12,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
-                Swal.fire({
-                    type: 'success',
-                    title: 'Enhorabuena',
-                    text: 'Préstamo creado satisfactoriamente'
+            if(this.selectCampaign == 1){
+                this.selectAccount = this.selectAccountSoles;
+            } else {
+                this.selectAccount = this.selectAccountDolar;
+            }
+
+            this.$v.totalShares.$touch();
+            this.$v.amount.$touch();
+
+            if (this.$v.totalShares.$invalid || this.$v.amount.$invalid || this.selectAccount == 0 || this.selectAccount == undefined) {
+            } else {
+                adminDA.createLending(this.lendingCreate.idClient,this.totalShares,this.amount,12,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Enhorabuena',
+                        text: 'Préstamo creado satisfactoriamente'
+                    })
+                    this.$router.push('/crudLending');
+                }).catch(error =>{
+                    Swal.fire({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al crear el préstamo'
+                    })
                 })
-            }).catch(error =>{
-                Swal.fire({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al crear al préstamo'
-                })
-            })
-            
+            }
         }
     },
     mounted(){

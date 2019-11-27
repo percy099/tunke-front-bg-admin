@@ -26,6 +26,8 @@ import ParametersConfiguration from './views/ParametersConfiguration.vue'
 import CRUDAccountStatus from './views/CRUDAccountStatus.vue'
 import ViewDetailSoles from './views/ViewDetailSoles.vue'
 import ViewDetailDollar from './views/ViewDetailDollar.vue'
+import leadCreate from './views/leadCreate.vue'
+import viewLeads from './views/viewLeads.vue'
 
 Vue.use(Router)
 
@@ -162,6 +164,16 @@ export default new Router({
       path : '/ViewDetailDollar',
       name : 'viewDetailDollar',
       component : ViewDetailDollar
+    },
+    {
+      path : '/leadCreate',
+      name : 'leadCreate',
+      component : leadCreate
+    },
+    {
+      path : '/viewLeads',
+      name : 'viewLeads',
+      component : viewLeads
     }
   ]
 })

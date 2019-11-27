@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
+import VueGoogleApi from 'vue-google-api'
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
@@ -13,6 +14,13 @@ import VuePromiseBtn from 'vue-promise-btn'
 import 'vue-promise-btn/dist/vue-promise-btn.css'
  
 Vue.use(VuePromiseBtn) // or with global options Vue.use(VuePromiseBtn, {})
+const config = {
+  apiKey: 'xI-ZVnKUdlPG1C6xU_k1B-by',
+  clientId: '274413991865-8nkl0uofvj08dkksqjeuv7pupmnqu2qv.apps.googleusercontent.com',
+  
+}
+Vue.use(VueGoogleApi, config)
+
 
 new Vue({
   router,
