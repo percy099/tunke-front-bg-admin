@@ -1,90 +1,144 @@
 <template>
-    <div class="container">
+  <div class="container">    
+    <h1 class="text-center">Reporte de Préstamos</h1>
+    <div class="row">      
+      <div class="col-md-6">        
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>          
         <div class="Chart">
-          <h1 style="text-align:center;">Número de Préstamos por mes - 2019</h1>
-          <bar-lending/>          
-        </div>  
-        <div class="Chart">
-          <h1 style="text-align:center;">Número de Préstamos por mes - 2019</h1>
-          <line-lending/>
+          <h3 class="text-center" >{{ chart1 }}</h3>
+          <line-chart :chart-data="dataLendMonth"></line-chart>
         </div>
+      </div>
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAmountLendMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center">{{ chart2 }}</h3>
+          <line-chart :chart-data="dataAmountLendMonth"></line-chart>
+        </div>
+      </div>
     </div>
+    <div class="row">
+      <button class="btn" @click="back()">Volver</button>
+    </div>    
+  </div>
 </template>
 
-
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as adminDA from '@/dataAccess/adminDA.js'
-import Swal from 'sweetalert2'
+  /* Ronaldo */
+  import LineChart from '@/util/LineChart.js'
+  import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/index.css';
+  import {mapState, mapActions} from 'vuex';
 
-/* Ronaldo */
-import BarLending from '@/util/BarLending'
-import LineLending from '@/util/LineLending'
-export default {
+  export default {
     components: {
-        BarLending,
-        LineLending
+      LineChart,
+      DatePicker
     },
     data () {
       return {
-        dataPoints: null,
-        height: 20
+        dataLendMonth: {},
+        dataAmountLendMonth: {},
+        chart1: 'Número de Préstamos por Mes - 2019',
+        chart2: 'Monto Total por Mes - 2019',
+        value1: '2019',
+        value2: '2019',
       }
     },
-    mounted () {
-      setInterval(() => {
-        this.fillData()
-      }, 2000)
+    computed:{
+      ...mapState(['listCntLend', 'listAmountLend'])
     },
-    methods: {
-      increaseHeight () {
-        this.height += 10
-      },
-      getRandomInt () {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      },
-      fillData () {
-        this.dataPoints = {
-          labels: ['January' + this.getRandomInt(), 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    mounted(){
+      // Chart 1
+      this.dynamicDataLendMonth('2019');
+      this.fillDataLendMonth();          
+
+      // Chart 2
+      this.dynamicDataAmountLendMonth('2019');
+      this.fillDataAmountLendMonth();
+    },
+    methods:{
+      ...mapActions(['dynamicDataLendMonth', 'dynamicDataAmountLendMonth']),    
+      fillDataLendMonth(){
+        this.dataLendMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           datasets: [
             {
-              label: 'Data One',
+              fill: false,
+              showLine: true,
+              label: 'Número de Préstamos',              
               backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-            }
+              borderColor: '#f87979',
+              data: this.listCntLend,
+            },
           ]
         }
-      }
-    },
-    computed: {
-      myStyles () {
-        return {
-          height: `${this.height}px`,
-          position: 'relative'
+      },  
+      fillDataAmountLendMonth(){
+        this.dataAmountLendMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: [
+            {
+              fill: false,
+              showLine: true,
+              label: 'Monto Total de Préstamos',              
+              backgroundColor: '#f87979',
+              borderColor: '#f87979',
+              data: this.listAmountLend,
+            },
+          ]
         }
-      }
+      },   
+      getDataLendMonth(){
+        this.dynamicDataLendMonth(this.value1);
+        this.fillDataLendMonth();
+        this.chart1 = 'Número de Préstamos por Mes - ' + this.value1;
+      },
+      getDataAmountLendMonth(){
+        this.dynamicDataAmountLendMonth(this.value2);
+        this.fillDataAmountLendMonth();
+        this.chart2 = 'Monto Total por Mes - ' + this.value2;
+      },
+      back(){
+        this.$router.push('/home');
+      },
     }
-}
+  }
 </script>
 
 <style scoped>
   .container {
-    max-width: 800px;
-    margin: 0 auto;
+    font-family: 'Montserrat';
+    max-width: 1200px;
+    margin: auto;
   }
   h1 {
-    font-family: 'Helvetica', Arial;
-    color: #464646;
+    font-family: 'Montserrat';
+    font-size: 7vh;
     text-transform: uppercase;
     border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 15px;
-    font-size: 28px;
-    margin-top: 0;
+    margin-top: 5vh;
   }
   .Chart {
+    font-family: 'Montserrat';
     padding: 20px;
     box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, .4);
     border-radius: 20px;
     margin: 50px 0;
+  }
+  h3 {
+    border-bottom: 1px solid #f1f1f1;
+  }
+  button {
+    font-family: 'Montserrat';
+    background-color: rgba(0,203,138,0.66);
+    position: relative;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-bottom: 2vh;     
   }
 </style>
