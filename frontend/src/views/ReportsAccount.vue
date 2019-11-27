@@ -3,23 +3,46 @@
     <h1 class="text-center">Reporte de Cuentas</h1>
     <div class="row">      
       <div class="col-md-6">
-        <label class="mr-1">Seleccione año: </label>
+        <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
         <div class="Chart">
-          <h3 class="text-center" >Número de Cuentas por Mes {{value1}}</h3>
+          <h3 class="text-center" >{{ chart1 }}</h3>
           <line-chart :chart-data="dataNumMonth"></line-chart>
         </div>
       </div>
       <div class="col-md-6">
-        <label class="mr-1">Seleccione año: </label>
+        <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
         <div class="Chart">
-          <h3 class="text-center">Tipo de Cuentas por Mes {{value2}}</h3>
+          <h3 class="text-center">{{ chart2 }}</h3>
           <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
         </div>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value3" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataBalanceMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center" >{{ chart3 }}</h3>
+          <line-chart :chart-data="dataBalanceMonth"></line-chart>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center">{{ chart2 }}</h3>
+          <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
+        </div>
+      </div>      
+    </div>
+    <div class="row">
+      <button class="btn" @click="back()">Volver</button>
     </div>    
   </div>
 </template>
@@ -39,27 +62,39 @@
       return {
         dataNumMonth: {},
         dataAccountTypeMonth: {},
+        dataBalanceMonth: {},
+        chart1: 'Número de Cuentas por Mes - 2019',
+        chart2: 'Tipo de Cuentas por Mes - 2019',
+        chart3: 'Balance Total por Mes - 2019',
         value1: '2019',
         value2: '2019',
+        value3: '2019',
       }
     },
     computed:{
       ...mapState(['cntAccJan','cntAccFeb','cntAccMar','cntAccApr','cntAccMay','cntAccJun','cntAccJul','cntAccAug','cntAccSep','cntAccOct','cntAccNov','cntAccDec',
-                   'listCntDollar','listCntSoles'])
+                   'listCntDollar','listCntSoles','listBalanceAccount'])
     },
     mounted(){
       this.fillDataNumMonth();
       this.fillDataAccountTypeMonth();
+
+      // Chart 3
+      this.dynamicDataBalanceMonth('2019');
+      this.fillDataBalanceMonth();
     },
     methods:{
-      ...mapActions(['prueba','dynamicDataAccountTypeMonth']),
+      ...mapActions(['prueba','dynamicDataAccountTypeMonth','dynamicDataBalanceMonth']),
       fillDataNumMonth(){
         this.dataNumMonth={
           labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           datasets: [
             {
-              label: 'Número de Cuentas',
+              fill: false,
+              showLine: true,
+              label: 'Número de Cuentas',              
               backgroundColor: '#f87979',
+              borderColor: '#f87979',
               data: [this.cntAccJan, this.cntAccFeb, this.cntAccMar, this.cntAccApr, this.cntAccMay, this.cntAccJun,
               this.cntAccJul, this.cntAccAug, this.cntAccSep, this.cntAccOct, this.cntAccNov, this.cntAccDec]
             },
@@ -88,14 +123,42 @@
             }
           ]
         }
-      },      
+      },   
+      fillDataBalanceMonth(){
+        this.dataBalanceMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: [
+            {
+              fill: false,
+              showLine: true,
+              label: 'Balance Total de Cuentas',              
+              backgroundColor: '#f87979',
+              borderColor: '#f87979',
+              data: this.listBalanceAccount,
+            },
+          ]
+        }        
+      },   
+      // Chart 1
       getDataNumMonth(){
         this.prueba(this.value1);
         this.fillDataNumMonth();
+        this.chart1 = 'Número de Cuentas por Mes - ' + this.value1;
       },
+      // Chart 2
       getDataAccountTypeMonth(){
         this.dynamicDataAccountTypeMonth(this.value2);
         this.fillDataAccountTypeMonth();
+        this.chart2 = 'Tipo de Cuentas por Mes - ' + this.value2;
+      },
+      // Chart 3
+      getDataBalanceMonth(){
+        this.dynamicDataBalanceMonth(this.value3);
+        this.fillDataBalanceMonth();
+        this.chart3 = 'Balance Total por Mes - ' + this.value3;
+      },
+      back(){
+        this.$router.push('/home');
       }
     }
   }
@@ -124,12 +187,12 @@
   h3 {
     border-bottom: 1px solid #f1f1f1;
   }
-  button{
+  button {
     font-family: 'Montserrat';
     background-color: rgba(0,203,138,0.66);
     position: relative;
     margin-left: auto;
     margin-right: auto; 
     margin-bottom: 2vh;     
-  }    
+  }
 </style>
