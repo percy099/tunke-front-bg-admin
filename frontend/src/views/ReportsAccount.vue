@@ -1,134 +1,194 @@
 <template>
-    <div class="container">
-      <!--<label class="mr-1">Seleccione año: </label>-->
-      <!--<date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>-->
-      <!--<label class="ml-2 mr-1">Seleccione año fin:</label>-->
-      <!--<date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>-->
-      <!--<button class="ml-3" v-promise-btn @click="getData">Aceptar</button> -->
-      <div class="Chart">
-        <h1 style="text-align:center;">Número de Cuentas por mes - {{ value1 }}</h1>
-        <bar-account/>          
-      </div>  
-      <div class="Chart">
-        <h1 style="text-align:center;">Número de Cuentas por mes - {{ value1 }}</h1>
-        <line-account/>
+  <div class="container">    
+    <h1 class="text-center">Reporte de Cuentas</h1>
+    <div class="row">      
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataNumMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center" >{{ chart1 }}</h3>
+          <line-chart :chart-data="dataNumMonth"></line-chart>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center">{{ chart2 }}</h3>
+          <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
+        </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value3" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataBalanceMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center" >{{ chart3 }}</h3>
+          <line-chart :chart-data="dataBalanceMonth"></line-chart>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value2" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataAccountTypeMonth()">Aceptar</button>
+        <div class="Chart">
+          <h3 class="text-center">{{ chart2 }}</h3>
+          <line-chart :chart-data="dataAccountTypeMonth"></line-chart>
+        </div>
+      </div>      
+    </div>
+    <div class="row">
+      <button class="btn" @click="back()">Volver</button>
+    </div>    
+  </div>
 </template>
 
-
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as adminDA from '@/dataAccess/adminDA.js'
-import Swal from 'sweetalert2'
-
-/* Ronaldo */
-import BarAccount from '@/util/BarAccount';
-import LineAccount from '@/util/LineAccount';
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
-import * as userDA from '@/dataAccess/userDA.js';
-export default {
+  /* Ronaldo */
+  import LineChart from '@/util/LineChart.js'
+  import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/index.css';
+  import {mapState, mapActions} from 'vuex'
+  export default {
     components: {
-        BarAccount,
-        LineAccount,
-        DatePicker
+      LineChart,
+      DatePicker
     },
     data () {
       return {
-        dataPoints: null,
-        height: 20,
+        dataNumMonth: {},
+        dataAccountTypeMonth: {},
+        dataBalanceMonth: {},
+        chart1: 'Número de Cuentas por Mes - 2019',
+        chart2: 'Tipo de Cuentas por Mes - 2019',
+        chart3: 'Balance Total por Mes - 2019',
         value1: '2019',
-        value2: ''
+        value2: '2019',
+        value3: '2019',
       }
     },
-    mounted () {
-      setInterval(() => {
-        this.fillData()
-      }, 2000)
+    computed:{
+      ...mapState(['cntAccJan','cntAccFeb','cntAccMar','cntAccApr','cntAccMay','cntAccJun','cntAccJul','cntAccAug','cntAccSep','cntAccOct','cntAccNov','cntAccDec',
+                   'listCntDollar','listCntSoles','listBalanceAccount'])
     },
-    /*beforeUpdate(){
-      console.log(this.token);
-      this.prueba(this.value1);
-    },*/
-    methods: {
-      ...mapActions(['prueba']),
-      getData(){      
-        console.log(this.token);
-        this.prueba(this.value1);
-        /*userDA.getAllAccounts(this.token).then((res) =>{
-            let year='';
-            year=value1;
-            console.log(year);
-            this.prueba(res.data,value1);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las cuentas'
-            })
-        });  */
-        /*let val;
-        if(this.value1==''){
-          val='2019';
-        }else{
-          val=this.value1;
-        }        
-        console.log(val);   
-        context.commit('fillDataAccount'); */ 
-      },
-      increaseHeight () {
-        this.height += 10
-      },
-      getRandomInt () {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      },
-      fillData () {
-        this.dataPoints = {
-          labels: ['January' + this.getRandomInt(), 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    mounted(){
+      this.fillDataNumMonth();
+      this.fillDataAccountTypeMonth();
+
+      // Chart 3
+      this.dynamicDataBalanceMonth('2019');
+      this.fillDataBalanceMonth();
+    },
+    methods:{
+      ...mapActions(['prueba','dynamicDataAccountTypeMonth','dynamicDataBalanceMonth']),
+      fillDataNumMonth(){
+        this.dataNumMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           datasets: [
             {
-              label: 'Data One',
+              fill: false,
+              showLine: true,
+              label: 'Número de Cuentas',              
               backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
+              borderColor: '#f87979',
+              data: [this.cntAccJan, this.cntAccFeb, this.cntAccMar, this.cntAccApr, this.cntAccMay, this.cntAccJun,
+              this.cntAccJul, this.cntAccAug, this.cntAccSep, this.cntAccOct, this.cntAccNov, this.cntAccDec]
+            },
+          ]
+        }
+      },
+      fillDataAccountTypeMonth(){
+        this.dataAccountTypeMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: [
+            {
+              fill: false,
+              showLine: true,
+              label: 'Soles',
+              backgroundColor: '#f87979',
+              borderColor: '#f87979',
+              data: this.listCntSoles,
+            },
+            {
+              fill: false,
+              showLine: true,
+              label: 'Dólares',
+              backgroundColor: '#000000',
+              borderColor: '#000000',
+              data: this.listCntDollar,
             }
           ]
         }
-      }
-    },
-    computed: {
-      myStyles () {
-        return {
-          height: `${this.height}px`,
-          position: 'relative'
-        }
+      },   
+      fillDataBalanceMonth(){
+        this.dataBalanceMonth={
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: [
+            {
+              fill: false,
+              showLine: true,
+              label: 'Balance Total de Cuentas',              
+              backgroundColor: '#f87979',
+              borderColor: '#f87979',
+              data: this.listBalanceAccount,
+            },
+          ]
+        }        
+      },   
+      // Chart 1
+      getDataNumMonth(){
+        this.prueba(this.value1);
+        this.fillDataNumMonth();
+        this.chart1 = 'Número de Cuentas por Mes - ' + this.value1;
       },
-      ...mapState(['token'])
+      // Chart 2
+      getDataAccountTypeMonth(){
+        this.dynamicDataAccountTypeMonth(this.value2);
+        this.fillDataAccountTypeMonth();
+        this.chart2 = 'Tipo de Cuentas por Mes - ' + this.value2;
+      },
+      // Chart 3
+      getDataBalanceMonth(){
+        this.dynamicDataBalanceMonth(this.value3);
+        this.fillDataBalanceMonth();
+        this.chart3 = 'Balance Total por Mes - ' + this.value3;
+      },
+      back(){
+        this.$router.push('/home');
+      }
     }
-}
+  }
 </script>
 
 <style scoped>
   .container {
-    max-width: 800px;
-    margin: 0 auto;
+    font-family: 'Montserrat';
+    max-width: 1200px;
+    margin: auto;
   }
   h1 {
-    font-family: 'Helvetica', Arial;
-    color: #464646;
+    font-family: 'Montserrat';
+    font-size: 7vh;
     text-transform: uppercase;
     border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 15px;
-    font-size: 28px;
-    margin-top: 0;
+    margin-top: 5vh;
   }
   .Chart {
+    font-family: 'Montserrat';
     padding: 20px;
     box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, .4);
     border-radius: 20px;
     margin: 50px 0;
   }
-  button{
+  h3 {
+    border-bottom: 1px solid #f1f1f1;
+  }
+  button {
+    font-family: 'Montserrat';
     background-color: rgba(0,203,138,0.66);
     position: relative;
     margin-left: auto;

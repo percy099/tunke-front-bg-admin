@@ -30,7 +30,9 @@
         <div>
           <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
         </div>
-        <div id="google-signin-btn"></div>
+        <div>
+         <google-signin-btn label="Acceder" customClass="my-button" @click="signIn" class="mb-2 mt-2"></google-signin-btn>
+        </div>
         <a href="#">¿Olvidaste tu contraseña?</a>       
       </form>
       
@@ -48,6 +50,7 @@
     import * as UserDA from '@/dataAccess/userDA.js'
     import axios from 'axios';
     import { required, email } from 'vuelidate/lib/validators';
+    import VueGoogleApi from 'vue-google-api'
     
     $(document).ready(function() {
     $("#show_hide_password b").on('click', function(event) {
@@ -90,6 +93,42 @@
       },
       methods:{
           ...mapActions(['setToken','setAdmin']),
+          signIn(){
+            
+            this.$gapi.currentUser().then(user => {
+              if (user) {
+                this.$gapi.signOut().then(() => {
+                  console.log('User disconnected.')
+                })
+              } else {
+                this.$gapi.signIn().then(user => {
+                  let userEmail=user.email;
+                  console.log('Signed in as %s', userEmail);
+                  UserDA.doLoginGoogle(userEmail).then((res) =>{
+                    let response_login = res.data;
+                    this.setToken(response_login.token);
+                    let admin ={
+                      name : response_login.name,
+                      code : response_login.code
+                    }
+                    this.setAdmin(admin);
+                    this.$router.push('/home');
+                  }).catch(error =>{
+                    Swal.fire({
+                      title: 'Error',
+                      type: 'error',
+                      text: 'Cuenta Gmail no registrada'
+                    })
+                  })
+                })
+                .catch(err => {
+                  console.error('Not signed in: %s', err.error)
+                });
+                //console.log('No user is connected.')
+              }
+             })
+            
+          },
           login(){
               this.$v.$touch();
               if (this.$v.$invalid) {
@@ -111,34 +150,7 @@
               })
             })
             }
-          },
-          
-          onSignIn (user) {
-              //show data 
-              const profile = user.getBasicProfile()
-              console.log(profile)
-              console.log('ID: ' + profile.getId()); 
-              console.log('Full name: ' + profile.getName());
-              console.log('Image URL: ' + profile.getImageUrl());
-              console.log('Email: ' + profile.getEmail()); //send to back
-
-              UserDA.doLoginGoogle(profile.getEmail()).then((res) =>{
-                let response_login = res.data;
-                this.setToken(response_login.token);
-                let admin ={
-                  name : response_login.name,
-                  code : response_login.code
-                }
-                this.setAdmin(admin);
-                this.$router.push('/home');
-              }).catch(error =>{
-                Swal.fire({
-                  title: 'Error',
-                  type: 'error',
-                  text: 'Cuenta Gmail no registrada'
-                })
-              })
-            }
+          }
     },
     updated(){
       this.user.username = this.userr;
