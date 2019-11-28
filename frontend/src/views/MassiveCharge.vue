@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-4"></div>
             <div class="col-8">
-                <input class="mt-5" @change="uploadFile" type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx"> <br>
+                <input class="mt-5" @change="uploadFile" type="file" id="fileUploader" name="fileUploader"> <br>
                 <button class="btn text-white p-2 mt-3 ml-4" :disabled='isDisabled' @click="chargeFile">Subir archivo</button>
             </div>
         </div>
@@ -29,7 +29,8 @@ export default {
     data(){
         return {
             newBlackListClients : [],
-            enableButton : false
+            enableButton : false,
+            f : ''
         };
     },
     computed:{
@@ -41,8 +42,9 @@ export default {
     methods:{
         uploadFile(e){
             var files = e.target.files;
-            var f = files[0];
-            var reader = new FileReader();
+            this.f = files[0];
+            this.enableButton = true;
+            /*var reader = new FileReader();
             let a = this.enableButton;
             var vm = this;
             reader.onload = function(e){
@@ -55,10 +57,11 @@ export default {
                 vm.newBlackListClients = XLSX.utils.sheet_to_json(worksheet);
             }
             reader.readAsArrayBuffer(f);
-            this.enableButton = true;
+            this.enableButton = true;*/
       },
       chargeFile(){
-          adminDA.chargeBlackList(this.token,this.newBlackListClients).then((res)=>{
+          adminDA.chargeBlackList(this.token,this.f).then((res)=>{
+              console.log(res);
               Swal.fire({
                   type : 'success',
                   text : 'Clientes cargados correctamente'
