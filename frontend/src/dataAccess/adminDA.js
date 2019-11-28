@@ -191,7 +191,7 @@ export function getCampaignByID(token){
 }
 
 
-export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,cur,token){
+export function createCampaign(name,month,startDate,endDate/*,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate*/,cur,token){
     let url = process.env.VUE_APP_API_URL + 'api/campaigns/'
     
     var body ={
@@ -199,11 +199,11 @@ export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumL
         "month" : month,
         "startDate" : startDate,
         "endDate" : endDate,
-        "minimumLoan" : minimumLoan,
+        /*"minimumLoan" : minimumLoan,
         "maximumLoan" : maximumLoan,
         "minimumPeriod" : minimumPeriod,
         "maximumPeriod" : maximumPeriod,
-        "interestRate" : interestRate,
+        "interestRate" : interestRate,*/
         "idCurrency" : cur,
     }
 
@@ -215,16 +215,16 @@ export function createCampaign(name,month,startDate,endDate,minimumLoan,maximumL
         });
 }
 
-export function editCampaign(idCampaign,name,minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,token){
+export function editCampaign(idCampaign,name,/*minimumLoan,maximumLoan,minimumPeriod,maximumPeriod,interestRate,*/token){
     let url = process.env.VUE_APP_API_URL + 'api/campaign/' + idCampaign
     
     var body ={
         "name" : name,
-        "minimumLoan" : minimumLoan,
+        /*"minimumLoan" : minimumLoan,
         "maximumLoan" : maximumLoan,
         "minimumPeriod" : minimumPeriod,
         "maximumPeriod" : maximumPeriod,
-        "interestRate" : interestRate
+        "interestRate" : interestRate*/
     }
 
     return axios.post(url,body,{
