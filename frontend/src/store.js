@@ -18,7 +18,10 @@ export default new Vuex.Store({
     listCntSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
     listCntLend: [0,0,0,0,0,0,0,0,0,0,0,0],
     listAmountLend: [0,0,0,0,0,0,0,0,0,0,0,0],
-    listBalanceAccount: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listBalanceAccountSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listBalanceAccountDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listDataNumMonth: [0,0,0,0,0,0,0,0,0,0,0,0],
+    accountsBoth: [],
     /*Ronaldo*/
     parameterSetting:{
       maxTokenSends: '',
@@ -27,18 +30,6 @@ export default new Vuex.Store({
       maxAccountsNumber : '',
       commissionPercentage:'',
     },    
-    cntAccJan: 0,
-    cntAccFeb: 0,
-    cntAccMar: 0,
-    cntAccApr: 0,
-    cntAccMay: 0,
-    cntAccJun: 0,
-    cntAccJul: 0,
-    cntAccAug: 0,
-    cntAccSep: 0,
-    cntAccOct: 0,
-    cntAccNov: 0,
-    cntAccDec: 0,
     quantityAmountSolesJan: 0,
     quantityAmountSolesFeb: 0,
     quantityAmountSolesMar: 0,
@@ -624,45 +615,46 @@ export default new Vuex.Store({
       }
     },
     // Account Charts
-    fillDataBalanceMonth(state, year){
-      state.listBalanceAccount = [0,0,0,0,0,0,0,0,0,0,0,0];
-      let aux = state.accounts;
+    // Chart 1
+    fillDataNumMonth(state, year){
+      state.listDataNumMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+      let aux = state.accountsBoth;
       for (let i = 0; i < aux.length; i++){
         let str = aux[i].openingDate;
         let mm = str.substring(3,5);
         let yy = str.substring(6,10);
-        if (mm == '12' && yy == year){          
-          state.listBalanceAccount[11] += aux[i].balance;
+        if (mm == '12' && yy == year){
+          state.listDataNumMonth[11]++;
         }else if (mm == '11' && yy == year){
-          state.listBalanceAccount[10] += aux[i].balance;          
+          state.listDataNumMonth[10]++;
         }else if (mm == '10' && yy == year){
-          state.listBalanceAccount[9] += aux[i].balance;
+          state.listDataNumMonth[9]++;
         }else if (mm == '09' && yy == year){
-          state.listBalanceAccount[8] += aux[i].balance;
+          state.listDataNumMonth[8]++;
         }else if (mm == '08' && yy == year){
-          state.listBalanceAccount[7] += aux[i].balance;
+          state.listDataNumMonth[7]++;
         }else if (mm == '07' && yy == year){
-          state.listBalanceAccount[6] += aux[i].balance;
+          state.listDataNumMonth[6]++;
         }else if (mm == '06' && yy == year){
-          state.listBalanceAccount[5] += aux[i].balance;
+          state.listDataNumMonth[5]++;
         }else if (mm == '05' && yy == year){
-          state.listBalanceAccount[4] += aux[i].balance;
+          state.listDataNumMonth[4]++;
         }else if (mm == '04' && yy == year){
-          state.listBalanceAccount[3] += aux[i].balance;
+          state.listDataNumMonth[3]++;
         }else if (mm == '03' && yy == year){
-          state.listBalanceAccount[2] += aux[i].balance;
+          state.listDataNumMonth[2]++;
         }else if (mm == '02' && yy == year){
-          state.listBalanceAccount[1] += aux[i].balance;
+          state.listDataNumMonth[1]++;
         }else if (mm == '01' && yy == year){
-          state.listBalanceAccount[0] += aux[i].balance;
+          state.listDataNumMonth[0]++;
         }
       }
-    },
-    /*-------*/
+    },    
+    // Chart 2
     fillDataAccountTypeMonth(state, year){
       state.listCntDollar=[0,0,0,0,0,0,0,0,0,0,0,0];
       state.listCntSoles=[0,0,0,0,0,0,0,0,0,0,0,0];
-      let aux=state.accounts;
+      let aux=state.accountsBoth;
       for(let i = 0; i < aux.length; i++){
         let str=aux[i].openingDate; //'12-12-2019'
         let res=str.substring(3,5);
@@ -741,86 +733,99 @@ export default new Vuex.Store({
           }
         }
       }
-    },
-    /*Ronaldo*/
-    fillDataAccountDataBarChart(state, year){
-      let aux=state.accounts;
-        
-      state.cntAccJan = 0;
-      state.cntAccFeb = 0;
-      state.cntAccMar = 0;
-      state.cntAccApr = 0;
-      state.cntAccMay = 0;
-      state.cntAccJun = 0;
-      state.cntAccJul = 0;
-      state.cntAccAug = 0;
-      state.cntAccSep = 0;
-      state.cntAccOct = 0;
-      state.cntAccNov = 0;
-      
-      state.cntAccDec = 0;      
-      for(let i = 0; i < aux.length; i++){
-        let str=aux[i].openingDate; //'12-12-2019'
-        let res=str.substring(3,5);
-        let yy=str.substring(6,10);
-        
-        if(res=='12' && yy==year){
-                    
-          state.cntAccDec = state.cntAccDec + 1;
-        }else if(res=='11' && yy==year){
-          
-          state.cntAccNov = state.cntAccNov + 1;
-        }else if(res=='10' && yy==year){
-          
-          state.cntAccOct = state.cntAccOct + 1;
-        }else if(res=='09' && yy==year){
-          
-          state.cntAccSep = state.cntAccSep + 1;
-        }else if(res=='08' && yy==year){
-          
-          state.cntAccAug = state.cntAccAug + 1;
-        }else if(res=='07' && yy==year){
-          
-          state.cntAccJul = state.cntAccJul + 1;
-        }else if(res=='06' && yy==year){
-          
-          state.cntAccJun = state.cntAccJun + 1;
-        }else if(res=='05' && yy==year){
-          
-          state.cntAccMay = state.cntAccMay + 1;
-        }else if(res=='04' && yy==year){
-          
-          state.cntAccApr = state.cntAccApr + 1;
-        }else if(res=='03' && yy==year){
-          
-          state.cntAccMar = state.cntAccMar + 1;
-        }else if(res=='02' && yy==year){
-          
-          state.cntAccFeb = state.cntAccFeb + 1;
-        }else if(res=='01' && yy==year){
-          
-          state.cntAccJan = state.cntAccJan + 1;
+    },      
+    // Chart 3
+    // Cambiar lógica
+    fillDataBalanceMonth(state, year){
+      state.listBalanceAccountSoles = [0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listBalanceAccountDollar = [0,0,0,0,0,0,0,0,0,0,0,0];
+      let aux = state.accounts;
+      for (let i = 0; i < aux.length; i++){
+        let str = aux[i].openingDate;
+        let idCurrency = aux[i].idCurrency;
+        let mm = str.substring(3,5);
+        let yy = parseInt(str.substring(6,10));
+        let yearInt = parseInt(year);
+        if (mm == '12' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[11] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[11] += aux[i].balance;
+          }         
+        }else if (mm == '11' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[10] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[10] += aux[i].balance;
+          }         
+        }else if (mm == '10' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[9] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[9] += aux[i].balance;
+          } 
+        }else if (mm == '09' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[8] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[8] += aux[i].balance;
+          } 
+        }else if (mm == '08' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[7] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[7] += aux[i].balance;
+          } 
+        }else if (mm == '07' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[6] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[6] += aux[i].balance;
+          } 
+        }else if (mm == '06' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[5] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[5] += aux[i].balance;
+          } 
+        }else if (mm == '05' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[4] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[4] += aux[i].balance;
+          } 
+        }else if (mm == '04' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[3] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[3] += aux[i].balance;
+          } 
+        }else if (mm == '03' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[2] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[2] += aux[i].balance;
+          } 
+        }else if (mm == '02' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[1] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[1] += aux[i].balance;
+          } 
+        }else if (mm == '01' && yy <= yearInt){
+          if(idCurrency == 1){
+            state.listBalanceAccountSoles[0] += aux[i].balance;
+          } else if (idCurrency == 2){
+            state.listBalanceAccountDollar[0] += aux[i].balance;
+          } 
         }
       }
-    },    
-
+    },
+    /*Ronaldo*/
     fillAccounts(state, account_data){
       let aux=account_data.accounts;
       state.accounts=[];
-      state.listCntDollar=[0,0,0,0,0,0,0,0,0,0,0,0];
-      state.listCntSoles=[0,0,0,0,0,0,0,0,0,0,0,0];
-      state.cntAccJan = 0;
-      state.cntAccFeb = 0;
-      state.cntAccMar = 0;
-      state.cntAccApr = 0;
-      state.cntAccMay = 0;
-      state.cntAccJun = 0;
-      state.cntAccJul = 0;
-      state.cntAccAug = 0;
-      state.cntAccSep = 0;
-      state.cntAccOct = 0;
-      state.cntAccNov = 0;
-      state.cntAccDec = 0;
+      state.accountsBoth=[];
       for(let i = 0; i < aux.length; i++){
         if(aux[i].active){
           state.accounts.push({
@@ -843,92 +848,51 @@ export default new Vuex.Store({
             currencySymbol : aux[i].currencySymbol,
             currencyCode : aux[i].currencyCode,
             typeName : aux[i].typeName
+          });
+          state.accountsBoth.push({
+            firstName : aux[i].firstName,
+            middleName : aux[i].middleName,
+            fatherLastname : aux[i].fatherLastname,
+            motherLastname : aux[i].motherLastname,
+            active : aux[i].active,
+            idAccount : aux[i].idAccount,
+            accountNumber : aux[i].accountNumber,
+            balance : aux[i].balance,
+            openingDate : aux[i].openingDate,
+            closingDate : aux[i].closingDate,
+            cardNumber : aux[i].cardNumber,
+            idAccountType : aux[i].idAccountType,
+            idProduct : aux[i].idProduct,
+            idCurrency : aux[i].idCurrency,
+            idClient : aux[i].idClient,
+            currencyName : aux[i].currencyName,
+            currencySymbol : aux[i].currencySymbol,
+            currencyCode : aux[i].currencyCode,
+            typeName : aux[i].typeName
           })
+        }else{
+          state.accountsBoth.push({
+            firstName : aux[i].firstName,
+            middleName : aux[i].middleName,
+            fatherLastname : aux[i].fatherLastname,
+            motherLastname : aux[i].motherLastname,
+            active : aux[i].active,
+            idAccount : aux[i].idAccount,
+            accountNumber : aux[i].accountNumber,
+            balance : aux[i].balance,
+            openingDate : aux[i].openingDate,
+            closingDate : aux[i].closingDate,
+            cardNumber : aux[i].cardNumber,
+            idAccountType : aux[i].idAccountType,
+            idProduct : aux[i].idProduct,
+            idCurrency : aux[i].idCurrency,
+            idClient : aux[i].idClient,
+            currencyName : aux[i].currencyName,
+            currencySymbol : aux[i].currencySymbol,
+            currencyCode : aux[i].currencyCode,
+            typeName : aux[i].typeName            
+          });
         }
-        /*Ronaldo*/        
-        let str=aux[i].openingDate; //'12-12-2019'
-        let res=str.substring(3,5);
-        if(res=='12'){                   
-          state.cntAccDec = state.cntAccDec + 1;          
-        }else if(res=='11'){          
-          state.cntAccNov = state.cntAccNov + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[10]++;            
-          }else{
-            state.listCntSoles[10]++;
-          }         
-        }else if(res=='10'){          
-          state.cntAccOct = state.cntAccOct + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[9]++;            
-          }else{
-            state.listCntSoles[9]++;
-          }
-        }else if(res=='09'){          
-          state.cntAccSep = state.cntAccSep + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[8]++;            
-          }else{
-            state.listCntSoles[8]++;
-          }
-        }else if(res=='08'){          
-          state.cntAccAug = state.cntAccAug + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[7]++;            
-          }else{
-            state.listCntSoles[7]++;
-          }
-        }else if(res=='07'){          
-          state.cntAccJul = state.cntAccJul + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[6]++;            
-          }else{
-            state.listCntSoles[6]++;
-          }
-        }else if(res=='06'){          
-          state.cntAccJun = state.cntAccJun + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[5]++;            
-          }else{
-            state.listCntSoles[5]++;
-          }
-        }else if(res=='05'){          
-          state.cntAccMay = state.cntAccMay + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[4]++;            
-          }else{
-            state.listCntSoles[4]++;
-          }
-        }else if(res=='04'){          
-          state.cntAccApr = state.cntAccApr + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[3]++;            
-          }else{
-            state.listCntSoles[3]++;
-          }
-        }else if(res=='03'){          
-          state.cntAccMar = state.cntAccMar + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[2]++;            
-          }else{
-            state.listCntSoles[2]++;
-          }
-        }else if(res=='02'){
-          state.cntAccFeb = state.cntAccFeb + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[1]++;            
-          }else{
-            state.listCntSoles[1]++;
-          }
-        }else if(res=='01'){          
-          state.cntAccJan = state.cntAccJan + 1;
-          if(aux[i].idCurrency==2){          
-            state.listCntDollar[0]++;            
-          }else{
-            state.listCntSoles[0]++;
-          }
-        }
-      /*-------*/
       }
     },
     fillClientsBlackList(state, clientsBlackList_data){
@@ -1412,8 +1376,8 @@ export default new Vuex.Store({
       /*Ronaldo*/
       // Account Charts
       // Chart 1
-      prueba(context, year){
-        context.commit('fillDataAccountDataBarChart', year);
+      dynamicDataNumMonth(context, year){
+        context.commit('fillDataNumMonth', year);
       },
       // Chart 2
       dynamicDataAccountTypeMonth(context, year){

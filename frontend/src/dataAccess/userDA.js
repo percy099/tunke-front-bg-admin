@@ -121,3 +121,12 @@ export function getAllTransactions(token){
         }
     });
 }
+
+export function getByPeriod(mm, yy){
+    let url = process.env.VUE_APP_API_URL + 'api/accounts/getByPeriod/';
+    var body ={
+        "month" : mm,
+        "year" : yy,
+    }
+    return axios.post(url,body);
+}
