@@ -238,15 +238,21 @@ export function editCampaign(idCampaign,name,minimumLoan,maximumLoan,minimumPeri
         });
 }
 
-export function chargeBlackList(token,body){
+export function chargeBlackList(token,file){
     let url = process.env.VUE_APP_API_URL + 'api/blackLists/'
-
-    return axios.post(url,body,{
-        auth:{
-            username: token,
-            password: ''
+    let formData = new FormData();
+    formData.append('file', file);
+    return axios.post(url,formData,
+        {
+            headers: {
+                'Content-Type' : 'multipart/form-data'
+            },
+            auth:{
+                username : token,
+                password : ''
+            }
         }
-    });
+        );
 }
 
 export function chargeCampaigns(token,body){
