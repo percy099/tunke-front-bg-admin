@@ -239,7 +239,6 @@ export function chargeBlackList(token,file){
     let url = process.env.VUE_APP_API_URL + 'api/blackLists/'
     let formData = new FormData();
     formData.append('file', file);
-    console.log(file);
     return axios.post(url,formData,
         {
             headers: {
