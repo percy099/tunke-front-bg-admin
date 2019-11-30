@@ -266,7 +266,35 @@ export function getClientByID(idClient,token){
         }
     });
 }
+export function doRequestParameters(token){
+    let url = process.env.VUE_APP_API_URL + 'api/parameterSettings/';
 
+    return axios.get(url,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function editParameters(maxTokenSends,maxDiaryMovements,legalAge,maxAccountsNumber,commissionPercentage,token){
+    let url = process.env.VUE_APP_API_URL + 'api/parameterSettings/';
+
+    var body ={
+        "maxTokenSends" : maxTokenSends,
+        "maxDiaryMovements" : maxDiaryMovements,
+        "legalAge" : legalAge,
+        "maxAccountsNumber" : maxAccountsNumber,
+        "commissionPercentage" : commissionPercentage,
+    }
+
+    return axios.put(url,body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
 export function createBlacklist(token,dni,reason){
     let url = process.env.VUE_APP_API_URL + 'api/blackList/';
 
