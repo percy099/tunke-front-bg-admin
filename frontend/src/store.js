@@ -112,15 +112,15 @@ export default new Vuex.Store({
       month : '',
       startDate : '',
       endDate : '',
-      minimumLoan : -1,
-      maximumLoan : -1,
-      minimumPeriod : -1,
-      maximumPeriod : -1,
-      interestRate : -1,
+      //minimumLoan : -1,
+      //maximumLoan : -1,
+      //minimumPeriod : -1,
+      //maximumPeriod : -1,
+      //interestRate : -1,
       idCurrency : -1,
       active : '',
-      loanRange : '',
-      periodRange : '',
+      //loanRange : '',
+      //periodRange : '',
 
     },
     lendingCreate :{
@@ -219,11 +219,11 @@ export default new Vuex.Store({
           endDate:'',
           idCampaign:'',
           idCurrency: '',
-          interestRate: '',
-          maximumLoan: '',
-          maximumPeriod: '',
-          minimumLoan: '',
-          minimumPeriod: '',
+          //interestRate: '',
+          //maximumLoan: '',
+          //maximumPeriod: '',
+          //minimumLoan: '',
+          //minimumPeriod: '',
           month: '',
           name: '',
           startDate: ''
@@ -329,11 +329,11 @@ export default new Vuex.Store({
             month : campaign.month,
             startDate : campaign.startDate,
             endDate : campaign.endDate,
-            minimumLoan : campaign.minimumLoan,
-            maximumLoan : campaign.maximumLoan,
-            minimumPeriod : campaign.minimumPeriod,
-            maximumPeriod : campaign.maximumPeriod,
-            interestRate : campaign.interestRate,
+            //minimumLoan : campaign.minimumLoan,
+            //maximumLoan : campaign.maximumLoan,
+            //minimumPeriod : campaign.minimumPeriod,
+            //maximumPeriod : campaign.maximumPeriod,
+            //interestRate : campaign.interestRate,
             idCurrency : campaign.idCurrency,
             active : campaign.active
           });
@@ -941,7 +941,7 @@ export default new Vuex.Store({
     fillLendingCreateCampaign(state,campaign_data){
       state.lendingCreate.idCampaign = campaign_data.idCampaign;
       state.lendingCreate.campaignName = campaign_data.name;
-      state.lendingCreate.interestRate = campaign_data.interestRate;
+      //state.lendingCreate.interestRate = campaign_data.interestRate;
       if(campaign_data.idCurrency==1){
         state.lendingCreate.currency='Soles'
       }else 
@@ -964,11 +964,11 @@ export default new Vuex.Store({
       state.campaignCreate.month = campaign_data.month;
       state.campaignCreate.startDate = campaign_data.startDate;
       state.campaignCreate.endDate = campaign_data.endDate;
-      state.campaignCreate.minimumLoan = campaign_data.minimumLoan;
-      state.campaignCreate.maximumLoan = campaign_data.maximumLoan;
-      state.campaignCreate.minimumPeriod = campaign_data.minimumPeriod;
-      state.campaignCreate.maximumPeriod = campaign_data.maximumPeriod;
-      state.campaignCreate.interestRate = campaign_data.interestRate;
+      //state.campaignCreate.minimumLoan = campaign_data.minimumLoan;
+      //state.campaignCreate.maximumLoan = campaign_data.maximumLoan;
+      //state.campaignCreate.minimumPeriod = campaign_data.minimumPeriod;
+      //state.campaignCreate.maximumPeriod = campaign_data.maximumPeriod;
+      //state.campaignCreate.interestRate = campaign_data.interestRate;
       state.campaignCreate.idCurrency = campaign_data.idCurrency;
       state.campaignCreate.active = campaign_data.active;
     },
@@ -1033,15 +1033,15 @@ export default new Vuex.Store({
       state.campaignCreate.month = '';
       state.campaignCreate.startDate = '';
       state.campaignCreate.endDate = '';
-      state.campaignCreate.minimumLoan = '';
-      state.campaignCreate.maximumLoan = '';
-      state.campaignCreate.minimumPeriod = '';
-      state.campaignCreate.maximumPeriod = '';
-      state.campaignCreate.interestRate = '';
+      //state.campaignCreate.minimumLoan = '';
+      //state.campaignCreate.maximumLoan = '';
+      //state.campaignCreate.minimumPeriod = '';
+      //state.campaignCreate.maximumPeriod = '';
+      //state.campaignCreate.interestRate = '';
       state.campaignCreate.idCurrency = -1;
       state.campaignCreate.active = '';
-      state.campaignCreate.loanRange = '';
-      state.campaignCreate.periodRange = '';
+      //state.campaignCreate.loanRange = '';
+      //state.campaignCreate.periodRange = '';
     },
     cleanLendCre(state) {
       state.lendingCreate.idLoan = -1;
@@ -1114,23 +1114,23 @@ export default new Vuex.Store({
       state.campaignCreate.month = state.campaigns[index].month;
       state.campaignCreate.startDate = state.campaigns[index].startDate;
       state.campaignCreate.endDate = state.campaigns[index].endDate;
-      state.campaignCreate.minimumLoan = state.campaigns[index].minimumLoan;
-      state.campaignCreate.maximumLoan = state.campaigns[index].maximumLoan;
-      state.campaignCreate.minimumPeriod = state.campaigns[index].minimumPeriod;
-      state.campaignCreate.maximumPeriod = state.campaigns[index].maximumPeriod;
-      state.campaignCreate.interestRate = state.campaigns[index].interestRate;
+      //state.campaignCreate.minimumLoan = state.campaigns[index].minimumLoan;
+      //state.campaignCreate.maximumLoan = state.campaigns[index].maximumLoan;
+      //state.campaignCreate.minimumPeriod = state.campaigns[index].minimumPeriod;
+      //state.campaignCreate.maximumPeriod = state.campaigns[index].maximumPeriod;
+      //state.campaignCreate.interestRate = state.campaigns[index].interestRate;
       state.campaignCreate.idCurrency = state.campaigns[index].idCurrency;
       if(state.campaigns[index].active == 1){
         state.campaignCreate.active = 'Activo'
       }
-      /*Que percy me mande la moneda*/
+      /*Que percy me mande la moneda
       if(state.campaigns[index].idCurrency == 1){
         state.campaignCreate.loanRange = "De " + state.campaignCreate.minimumLoan + " a " + state.campaignCreate.maximumLoan + " soles";
       } else {
         state.campaignCreate.loanRange = "De " + state.campaignCreate.minimumLoan + " a " + state.campaignCreate.maximumLoan + " dólares";
       }
       state.campaignCreate.periodRange = "De " + state.campaignCreate.minimumPeriod + " a " + state.campaignCreate.maximumPeriod + " meses";
-      //console.log(state.campaignCreate.startDate);
+      //console.log(state.campaignCreate.startDate);*/
     },
     setLendingInd(state, index){
       state.selectedLendingIndex = index;

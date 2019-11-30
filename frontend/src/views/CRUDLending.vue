@@ -63,11 +63,13 @@ import ClientAccounts from "@/views/ClientAccounts.vue"
 import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 
 export default {
+    data(){
+        return {
+            allLendings: []
+        };
+    },
     computed:{
         ...mapState(['lendings','token','clientCreate'])
-    },
-    beforeMount(){
-              
     },
 	mounted(){
 		$('#mydatatable').DataTable({
@@ -103,9 +105,14 @@ export default {
                 break;
             }
         },
-        fetchLendings(){
+        fetchLendings: function(){
             userDA.getAllLendings(this.token).then((res) =>{
-            this.completeLendings(res.data);
+                console.log("update");
+                console.log(res.data);
+                let response_create = res.data;
+                this.completeLendings(res.data);
+                this.allLendings=[];
+                //for (let i=0; i<response_create.accounts.length;i++){
             }).catch(error =>{
                 Swal.fire({
                     title: 'Error',
