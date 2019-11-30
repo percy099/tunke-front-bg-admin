@@ -28,7 +28,7 @@
            <b href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></b>
         </div>
         <div>
-          <button type="submit" class="mb-4 mt-3 text-white btn">Iniciar Sesión</button>
+          <button type="submit" class="mt-2 text-white btn">Iniciar Sesión</button>
         </div>
         <div>
          <google-signin-btn label="Acceder" customClass="my-button" @click="signIn" class="mb-2 mt-2"></google-signin-btn>

@@ -90,8 +90,19 @@
                         </option>
                     </select>
                     <h6 class="mt-3">Tasa de interés</h6>
-                    <!--<input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>-->
-                    <input placeholder="12 %" type="text" class="form-control mb-5" disabled>
+                    <!--<input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
+                    <input v-model="interestRateLending"  type="text" class="form-control mb-5">-->
+
+                    <input type="text" id="right2" class="form-control"
+                    v-model.trim="$v.interestRateLending.$model" :class="{
+                    'is-invalid' : $v.interestRateLending.$error, 'is-valid':!$v.interestRateLending.$invalid }">
+                    <div class="valid-feedback">Tasa de interés válida!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.interestRateLending.minValue">Debe ser de al menos {{
+                        $v.interestRateLending.$params.minValue.min}} </span>
+                        <span v-if="!$v.interestRateLending.numeric">Debe contener solo números. </span>
+                        <span v-if="!$v.interestRateLending.required">Tasa de interés requerida. </span>
+                    </div>
                     
                 </div>
                 <div class="col-6 groupRightPersonal">
@@ -175,6 +186,7 @@ export default {
                 amount : 0,
                 selectShare: 1,
                 selectCurrency: 1,
+                interestRateLending: 0,
                 optionsCampaign: [
                 { text: 'Campaña Ventanilla Soles', value: 1 },
                 { text: 'Campaña Ventanilla Dólares', value: 2 }],
@@ -202,35 +214,67 @@ export default {
             required,
             numeric,
             minValue: minValue(1)
-        }
+        },
+        interestRateLending: {
+            required,
+            numeric,
+            minValue: minValue(1)
+        },
     },
     computed :{
-        ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate']),
+        ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate','parameterSetting']),
         calculateShare : function (){
             //let amount = this.lendingCreate.amount;
             let amount = this.amount;
             //let term = this.lendingCreate.totalShares;
-            let term = this.totalShares;
-            let tea = this.lendingCreate.interestRate;
+            let term = parseInt(this.totalShares);
+            let tea = this.interestRateLending;
+            let numberExtra = 0;
             let tem =Math.pow(1+(tea/100),1/12)-1;
+            console.log("tem: " +tem);
             let commission = 0.25;
-            let shareNumber = amount*((1/term)+(tem/100)+(commission/100));
-            let share =shareNumber.toFixed(2);
-            this.lendingCreate.share=share;
+            
+            //Cuota extraordinaria
+            let moment = require('moment');
+            let month=moment();
+            let countExtraMonths=0;
+            for (let i=0;i<term;i++){
+              let dateAdded=this.addDays(month,30);  
+              month=moment(dateAdded).format("MM");
+              if (month=='07' || month=='12'){
+                  countExtraMonths=countExtraMonths+1;
+              }
+              month=dateAdded;
+            }
+             console.log("fecha: "+countExtraMonths);
 
-            //if(!this.lendingCreate.amount || !this.lendingCreate.totalShares) return 0;
-            if(!this.amount || !this.totalShares) return 0;
+             if(this.selectShare==2){
+                 numberExtra=countExtraMonths;
+             }else if (this.selectShare==1){
+                 numberExtra=0;
+             }
+            //console.log("numero extra: " +numberExtra);
+            let shareBase =(amount*(Math.pow(1+tem,term+numberExtra)*tem)) / (Math.pow(1+tem,term+numberExtra)-1);
+            //console.log("cuota base: " +shareBase );
+            //Cuota final
+            let shareNumber =shareBase+ (amount*commission/100);
+            let share =shareNumber.toFixed(2);
+            //Se mostrara la cuota base
+            this.lendingCreate.share=shareBase.toFixed(2);
+            
+            if(!this.amount || !this.totalShares || !this.interestRateLending) return 0;
             else 
             return this.lendingCreate.share;
         },
         calculateCommission: function (){
             //let amount = this.lendingCreate.amount;
             let amount = this.amount;
-            let commission = 0.25;
+            let commission = parseFloat(this.parameterSetting.commissionPercentage);
             let comissionAmount = amount*commission/100;
             this.lendingCreate.commission=comissionAmount;
             return this.lendingCreate.commission;
         }
+        
     },
     methods:{
         ...mapActions (['completeLendingCreate','cleanLendingCreate','completePersonCreate','completeLendingCreateCampaign','cleanClientCreate']),
@@ -251,6 +295,12 @@ export default {
                     })
                 }
             }
+        },
+        addDays:function (dateIn_, n) {
+            let moment = require('moment');
+            let days = parseInt(n);
+            let result = moment(dateIn_).add(days, 'days');
+            return result;
         },
          openData :function(dataType) {
             // Declare all variables
@@ -368,10 +418,12 @@ export default {
 
             this.$v.totalShares.$touch();
             this.$v.amount.$touch();
-
-            if (this.$v.totalShares.$invalid || this.$v.amount.$invalid || this.selectAccount == 0 || this.selectAccount == undefined) {
+            this.$v.interestRateLending.$touch();
+            this.lendingCreate.interestRate =this.interestRateLending;
+            console.log(this.lendingCreate.interestRate);
+            if (this.$v.totalShares.$invalid || this.$v.amount.$invalid || this.selectAccount == 0 || this.selectAccount == undefined || this.$v.interestRateLending.$invalid) {
             } else {
-                adminDA.createLending(this.lendingCreate.idClient,this.totalShares,this.amount,12,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
+                adminDA.createLending(this.lendingCreate.idClient,this.totalShares,this.amount,this.lendingCreate.interestRate,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
                     Swal.fire({
                         type: 'success',
                         title: 'Enhorabuena',
