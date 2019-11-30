@@ -3,9 +3,11 @@
     <h1 class="text-center">Reporte de Préstamos</h1>
     <div class="row">      
       <div class="col-md-6">        
-        <label class="mr-1 ml-5">Seleccione año: </label>
-        <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
-        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>          
+        <label class="mr-1 ml-4">Seleccione año: </label>
+        <date-picker class="mt-5" style= "width: 11vh;" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Año"></date-picker>
+        <!-- <label class="mr-1 ml-3">Seleccione mes: </label> -->
+        <!-- <date-picker class="mt-5" style= "width: 11vh;" v-model="value1_1" value-type="format" type="month" format="MM" placeholder="Mes"></date-picker> -->
+        <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>           
         <div class="Chart">
           <h3 class="text-center" >{{ chart1 }}</h3>
           <line-chart :chart-data="dataLendMonth"></line-chart>
@@ -33,7 +35,7 @@
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/index.css';
   import {mapState, mapActions} from 'vuex';
-
+  import Swal from 'sweetalert2';    
   export default {
     components: {
       LineChart,
@@ -43,14 +45,15 @@
       return {
         dataLendMonth: {},
         dataAmountLendMonth: {},
-        chart1: 'Número de Préstamos por Mes - 2019',
-        chart2: 'Monto Total por Mes - 2019',
+        chart1: 'N° de Préstamos Efectuadas en el Año 2019',
+        chart2: 'Monto Total de Préstamos en el Año 2019',
         value1: '2019',
+        value1_1: '',
         value2: '2019',
       }
     },
     computed:{
-      ...mapState(['listCntLend', 'listAmountLend'])
+      ...mapState(['listCntLend', 'listAmountLendSoles','listAmountLendDollar'])
     },
     mounted(){
       // Chart 1
@@ -85,23 +88,47 @@
             {
               fill: false,
               showLine: true,
-              label: 'Monto Total de Préstamos',              
+              label: 'Soles',              
               backgroundColor: '#f87979',
               borderColor: '#f87979',
-              data: this.listAmountLend,
+              data: this.listAmountLendSoles,
             },
+            {
+              fill: false,
+              showLine: true,
+              label: 'Dólares',              
+              backgroundColor: '#000000',
+              borderColor: '#000000',
+              data: this.listAmountLendDollar,
+            },            
           ]
         }
       },   
       getDataLendMonth(){
+        if(this.value1 == null){
+          Swal.fire({
+            title: 'Sugerencia',
+            type: 'info',
+            text: 'Debe seleccionar el año'
+          });
+          return;
+        }            
         this.dynamicDataLendMonth(this.value1);
         this.fillDataLendMonth();
-        this.chart1 = 'Número de Préstamos por Mes - ' + this.value1;
+        this.chart1 = 'N° de Préstamos Efectuadas en el Año ' + this.value1;
       },
       getDataAmountLendMonth(){
+        if(this.value2 == null){
+          Swal.fire({
+            title: 'Sugerencia',
+            type: 'info',
+            text: 'Debe seleccionar el año'
+          });
+          return;
+        }    
         this.dynamicDataAmountLendMonth(this.value2);
         this.fillDataAmountLendMonth();
-        this.chart2 = 'Monto Total por Mes - ' + this.value2;
+        this.chart2 = 'Monto Total de Préstamos en el Año ' + this.value2;
       },
       back(){
         this.$router.push('/home');
