@@ -13,9 +13,7 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
-<<<<<<< HEAD
     prueba: false,
-=======
     /*Ronaldo*/
     listCntDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
     listCntSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -30,7 +28,6 @@ export default new Vuex.Store({
       maxAccountsNumber : '',
       commissionPercentage:'',
     },    
->>>>>>> bf8c9f43d8cef5cbb0cc931f404053997ec40d56
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,

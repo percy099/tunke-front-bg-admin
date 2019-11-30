@@ -89,41 +89,87 @@
                 <div v-if="editLead == 1" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
                     <input v-model="campaignCreate.name" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Mínimo Campaña</h6>
-                    <input v-model="campaignCreate.minimumLoan" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Mínimo Cliente</h6> 
-                    <input type="text" class="form-control mb-3"
-                    v-model.trim="$v.minimum.$model" :class="{
-                    'is-invalid' : $v.minimum.$error, 'is-valid':!$v.minimum.$invalid }">
-                    <div class="valid-feedback">Monto Válido!</div>
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.minimum.minValue">Debe ser de al menos {{
-                        $v.minimum.$params.minValue.min}} </span>
-                        <span v-if="!$v.minimum.maxValue">Debe ser a lo mucho de {{
-                        $v.minimum.$params.maxValue.max}} </span>
-                        <span v-if="!$v.minimum.numeric">Debe contener solo números. </span>
-                        <span v-if="!$v.minimum.required">Monto Requerido. </span>
+                    <div>
+                        <h6 class="mt-3">Monto Mínimo Cliente</h6> 
+                        <input type="text" class="form-control"
+                        v-model.trim="$v.minimum.$model" :class="{
+                        'is-invalid' : $v.minimum.$error, 'is-valid':!$v.minimum.$invalid }">
+                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.minimum.minValue">Debe ser de al menos {{
+                            $v.minimum.$params.minValue.min}} </span>
+                            <span v-if="!$v.minimum.maxValue">Debe ser a lo mucho de {{
+                            $v.minimum.$params.maxValue.max}} </span>
+                            <span v-if="!$v.minimum.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.minimum.required">Monto Requerido. </span>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="mt-3">Periodo Mínimo</h6> 
+                        <input type="text" class="form-control mb-3"
+                        v-model.trim="$v.minPeriod.$model" :class="{
+                        'is-invalid' : $v.minPeriod.$error, 'is-valid':!$v.minPeriod.$invalid }">
+                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.minPeriod.minValue">Debe ser de al menos {{
+                            $v.minPeriod.$params.minValue.min}} </span>
+                            <span v-if="!$v.minPeriod.maxValue">Debe ser a lo mucho de {{
+                            $v.minPeriod.$params.maxValue.max}} </span>
+                            <span v-if="!$v.minPeriod.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.minPeriod.required">Monto Requerido. </span>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="mt-3">Tasa de interés</h6> 
+                        <input type="text" class="form-control mb-3"
+                        v-model.trim="$v.rate.$model" :class="{
+                        'is-invalid' : $v.rate.$error, 'is-valid':!$v.rate.$invalid }">
+                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.rate.minValue">Debe ser de al menos {{
+                            $v.rate.$params.minValue.min}} </span>
+                            <span v-if="!$v.rate.maxValue">Debe ser a lo mucho de {{
+                            $v.rate.$params.maxValue.max}} </span>
+                            <span v-if="!$v.rate.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.rate.required">Monto Requerido. </span>
+                        </div>
                     </div>
                 </div>
                 <div v-if="editLead == 1" class="col-6 groupRightPersonal">
                     <h6>Moneda</h6>
                     <input v-if="campaignCreate.idCurrency == 1" placeholder="Soles" type="text" class="form-control" disabled>
                     <input v-if="campaignCreate.idCurrency == 2" placeholder="Dólares" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Máximo Campaña</h6>
-                    <input v-model="campaignCreate.maximumLoan" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Máximo Cliente</h6>
-                    <input type="text" class="form-control mb-3"
-                    v-model.trim="$v.maximum.$model" :class="{
-                    'is-invalid' : $v.maximum.$error, 'is-valid':!$v.maximum.$invalid }">
-                    <div class="valid-feedback">Monto Válido!</div>
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.maximum.minValue">Debe ser de al menos {{
-                        $v.maximum.$params.minValue.min}} </span>
-                        <span v-if="!$v.maximum.maxValue">Debe ser a lo mucho de {{
-                        $v.maximum.$params.maxValue.max}} </span>
-                        <span v-if="!$v.maximum.numeric">Debe contener solo números. </span>
-                        <span v-if="!$v.maximum.required">Monto Requerido. </span>
+                    <div>
+                        <h6 class="mt-3">Monto Máximo Cliente</h6>
+                        <input type="text" class="form-control"
+                        v-model.trim="$v.maximum.$model" :class="{
+                        'is-invalid' : $v.maximum.$error, 'is-valid':!$v.maximum.$invalid }">
+                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.maximum.minValue">Debe ser de al menos {{
+                            $v.maximum.$params.minValue.min}} </span>
+                            <span v-if="!$v.maximum.maxValue">Debe ser a lo mucho de {{
+                            $v.maximum.$params.maxValue.max}} </span>
+                            <span v-if="!$v.maximum.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.maximum.required">Monto Requerido. </span>
+                        </div>
                     </div>
+                    <div>
+                        <h6 class="mt-3">Periodo Máximo</h6>
+                        <input type="text" class="form-control mb-3"
+                        v-model.trim="$v.maxPeriod.$model" :class="{
+                        'is-invalid' : $v.maxPeriod.$error, 'is-valid':!$v.maxPeriod.$invalid }">
+                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.maxPeriod.minValue">Debe ser de al menos {{
+                            $v.maxPeriod.$params.minValue.min}} </span>
+                            <span v-if="!$v.maxPeriod.maxValue">Debe ser a lo mucho de {{
+                            $v.maxPeriod.$params.maxValue.max}} </span>
+                            <span v-if="!$v.maxPeriod.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.maxPeriod.required">Monto Requerido. </span>
+                        </div>
+                    </div>
+                    
                 </div>
                 <div v-if="editLead == 0" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
@@ -176,7 +222,10 @@ export default {
                 maximum : '',
                 minimum : '',
                 maxCamp : '',
-                minCamp : ''
+                minCamp : '',
+                maxPeriod : '',
+                minPeriod : '',
+                rate : ''
                 };
     },
     validations() {
@@ -190,15 +239,33 @@ export default {
             maximum: {
                 required,
                 minValue: minValue(parseInt(this.minimum) + 1),
-                maxValue: maxValue(this.maxCamp),
+                maxValue: maxValue(10000000),
                 numeric
             },
             minimum: {
                 required,
-                minValue: minValue(this.minCamp),
-                maxValue: maxValue(this.maxCamp - 1),
+                minValue: minValue(1),
+                maxValue: maxValue(1000000),
                 numeric
             },
+            maxPeriod: {
+                required,
+                minValue: minValue(1),
+                maxValue: maxValue(10000),
+                numeric
+            },
+            minPeriod: {
+                required,
+                minValue: minValue(1),
+                maxValue: maxValue(10000),
+                numeric
+            },
+            rate: {
+                required,
+                minValue: minValue(1),
+                maxValue: maxValue(10000),
+                numeric
+            }
         }
     },
     computed :{
@@ -290,7 +357,7 @@ export default {
             this.$v.$touch();
             if (this.$v.$invalid) {
             } else {
-                adminDA.createLead(this.clientCreate.idClient,this.campaignCreate.idCampaign,this.maximum, this.minimum, this.token).then((res) =>{
+                adminDA.createLead(this.clientCreate.idClient,this.campaignCreate.idCampaign,this.maximum, this.minimum, this.maxPeriod, this.minPeriod, this.rate, this.token).then((res) =>{
                     Swal.fire({
                         type: 'success',
                         title: 'Enhorabuena',
