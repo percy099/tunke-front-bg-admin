@@ -128,9 +128,10 @@ export default {
         }
     },
     computed :{
-        ...mapState (['token','campaignCreate','editCampaign']),
+        ...mapState (['token','campaignCreate','editCampaign','prueba']),
     },
     methods:{
+        ...mapActions (['setPrueba']),
        /* ...mapActions(['']),*/
          openData :function(dataType) {
             // Declare all variables
@@ -197,9 +198,9 @@ export default {
             maxDay[9] = "31";
             maxDay[10] = "30";
             maxDay[11] = "31";
-            maxDay[12] = "29"; /* Año bisiesto */
+            maxDay[12] = "29"; 
             
-            if(parseInt(this.dateAux.substring(0,4)) % 4 == 0 && parseInt(monthAux) == 2){ /* Febrero en año bisiesto */
+            if(parseInt(this.dateAux.substring(0,4)) % 4 == 0 && parseInt(monthAux) == 2){
                 if(flag){
                     this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-0' + monthAux + '-' + maxDay[12];
                 } else {
@@ -230,6 +231,7 @@ export default {
                 })
             })
             
+            
         },
         
         editCampaign(){
@@ -253,6 +255,16 @@ export default {
     mounted(){
         document.getElementById('Campaign').style.display = "block";
         document.getElementById('btnCampaign').classList.add('active');
+        console.log()
     },
+    updated(){
+        if(this.campaignCreate.name == "" || this.campaignCreate.maximumLoan == "" || this.campaignCreate.minimumLoan == ""){
+            this.setPrueba(false)
+            console.log(this.prueba)
+        } else {
+            this.setPrueba(true)
+            console.log(this.prueba)
+        }
+    }
 }
 </script>

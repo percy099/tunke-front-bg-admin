@@ -13,6 +13,7 @@ export default new Vuex.Store({
       code : "",
       name : ""
     },
+    prueba: false,
     cntAccJan: 0,
     cntAccFeb: 0,
     cntAccMar: 0,
@@ -972,6 +973,9 @@ export default new Vuex.Store({
         1: Crear Lead
       */
       state.editLead = flag;
+    },
+    setPr(state, flag){
+      state.prueba = flag;
     }
   },
   actions: {      
@@ -1078,6 +1082,9 @@ export default new Vuex.Store({
       },
       setLeadIndex(context, index){
         context.commit('setLeadInd', index);
+      },
+      setPrueba(context, flag){
+        context.commit('setPr', flag);
       }
   }
 })
