@@ -18,7 +18,8 @@ export default new Vuex.Store({
     listCntDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
     listCntSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
     listCntLend: [0,0,0,0,0,0,0,0,0,0,0,0],
-    listAmountLend: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listAmountLendSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listAmountLendDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
     listBalanceAccountSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
     listBalanceAccountDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
     listDataNumMonth: [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -309,12 +310,13 @@ export default new Vuex.Store({
             active : lendings_data[i].active,
             campaignName : lendings_data[i].campaignName ,
             accountNumber : lendings_data[i].accountNumber,
-            currency : lendings_data[i].currency,
+            currency : lendings_data[i].currency,            
             fullName : lendings_data[i].fullName,
             documentNumber : lendings_data[i].documentNumber,
             documentType : lendings_data[i].documentType,
             requestDate : lendings_data[i].requestDate,
           });
+          //console.log(lendings_data[i].currency);
         }
       }
     },
@@ -582,36 +584,85 @@ export default new Vuex.Store({
       }
     },
     fillDataAmountLendMonth(state, year){
-      state.listAmountLend = [0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listAmountLendSoles = [0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listAmountLendDollar = [0,0,0,0,0,0,0,0,0,0,0,0];
       let aux = state.lendings;      
       for (let i = 0; i < aux.length; i++){
         let str = aux[i].requestDate;
         let mm = str.substring(3,5);
-        let yy = str.substring(6,10);
-        if (mm == '12' && yy == year){          
-          state.listAmountLend[11] += aux[i].amount;
+        let yy = str.substring(6,10);        
+        if (mm == '12' && yy == year){         
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[11] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[11] += aux[i].amount;
+          }
         }else if (mm == '11' && yy == year){
-          state.listAmountLend[10] += aux[i].amount;          
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[10] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[10] += aux[i].amount;
+          }        
         }else if (mm == '10' && yy == year){
-          state.listAmountLend[9] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[9] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[9] += aux[i].amount;
+          }
         }else if (mm == '09' && yy == year){
-          state.listAmountLend[8] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[8] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[8] += aux[i].amount;
+          }
         }else if (mm == '08' && yy == year){
-          state.listAmountLend[7] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[7] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[7] += aux[i].amount;
+          }
         }else if (mm == '07' && yy == year){
-          state.listAmountLend[6] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[6] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[6] += aux[i].amount;
+          }
         }else if (mm == '06' && yy == year){
-          state.listAmountLend[5] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[5] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[5] += aux[i].amount;
+          }
         }else if (mm == '05' && yy == year){
-          state.listAmountLend[4] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[4] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[4] += aux[i].amount;
+          }
         }else if (mm == '04' && yy == year){
-          state.listAmountLend[3] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[3] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[3] += aux[i].amount;
+          }
         }else if (mm == '03' && yy == year){
-          state.listAmountLend[2] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[2] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[2] += aux[i].amount;
+          }
         }else if (mm == '02' && yy == year){
-          state.listAmountLend[1] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[1] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[1] += aux[i].amount;
+          }
         }else if (mm == '01' && yy == year){
-          state.listAmountLend[0] += aux[i].amount;
+          if (aux[i].currency == 'Soles'){
+            state.listAmountLendSoles[0] += aux[i].amount;
+          }else{
+            state.listAmountLendDollar[0] += aux[i].amount;
+          }
         }
       }
     },
