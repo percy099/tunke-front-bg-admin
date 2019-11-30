@@ -1125,6 +1125,9 @@ export default new Vuex.Store({
           idLead: leadsData[i].idLead,
           minimumLoan: leadsData[i].minimumLoan,
           maximumLoan: leadsData[i].maximumLoan,
+          minimumPeriod : leadsData[i].minimumPeriod,
+          maximumPeriod : leadsData[i].maximumPeriod,
+          interestRate : leadsData[i].interestRate,
           active: leadsData[i].active,
           idCampaign: leadsData[i].idCampaign,
           idClient: leadsData[i].idClient,
@@ -1192,6 +1195,9 @@ export default new Vuex.Store({
       state.leadCreate.idLead = state.leadsByCampaign[index].idLead;
       state.leadCreate.minimumLoan = state.leadsByCampaign[index].minimumLoan;
       state.leadCreate.maximumLoan = state.leadsByCampaign[index].maximumLoan;
+      state.leadCreate.minimumPeriod = state.leadsByCampaign[index].minimumPeriod;
+      state.leadCreate.maximumPeriod = state.leadsByCampaign[index].maximumPeriod;
+      state.leadCreate.interestRate = state.leadsByCampaign[index].interestRate;
       state.leadCreate.active = state.leadsByCampaign[index].active;
       state.leadCreate.idCampaign = state.leadsByCampaign[index].idCampaign;
       state.leadCreate.idClient = state.leadsByCampaign[index].idClient;

@@ -174,19 +174,21 @@
                 <div v-if="editLead == 0" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
                     <input v-model="campaignCreate.name" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Mínimo Campaña</h6>
-                    <input v-model="campaignCreate.minimumLoan" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Mínimo Cliente</h6> 
+                    <h6 class="mt-3">Monto Mínimo</h6> 
                     <input v-model="leadCreate.minimumLoan" type="text" class="form-control mb-3" disabled>
+                    <h6 class="mt-3">Periodo Mínimo</h6> 
+                    <input v-model="leadCreate.minimumPeriod" type="text" class="form-control mb-3" disabled>
+                    <h6 class="mt-3">Tasa de interés</h6> 
+                    <input v-model="leadCreate.interestRate" type="text" class="form-control mb-3" disabled>
                 </div>
                 <div v-if="editLead == 0" class="col-6 groupRightPersonal">
                     <h6>Moneda</h6>
                     <input v-if="campaignCreate.idCurrency == 1" placeholder="Soles" type="text" class="form-control" disabled>
                     <input v-if="campaignCreate.idCurrency == 2" placeholder="Dólares" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Máximo Campaña</h6>
-                    <input v-model="campaignCreate.maximumLoan" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Máximo Cliente</h6>
+                    <h6 class="mt-3">Monto Máximo</h6>
                     <input v-model="leadCreate.maximumLoan" type="text" class="form-control mb-3" disabled>
+                    <h6 class="mt-3">Periodo Máximo</h6>
+                    <input v-model="leadCreate.maximumPeriod" type="text" class="form-control mb-3" disabled>
                 </div>
             </div>
         </div>
