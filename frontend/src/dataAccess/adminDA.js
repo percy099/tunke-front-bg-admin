@@ -65,13 +65,16 @@ export function getLeadsByCampaign(idCampaign, token){
     });
 }
 
-export function createLead(idClient, idCampaign, max, min, token){
+export function createLead(idClient, idCampaign, max, min, maxP, minP, rate, token){
     let url = process.env.VUE_APP_API_URL + 'api/leads/'
     var body = {
         "idClient" : idClient,
         "idCampaign" : idCampaign,
         "minimumLoan" : min,
-        "maximumLoan" : max
+        "maximumLoan" : max,
+        "minimumPeriod" : minP,
+        "maximumPeriod" : maxP,
+        "interestRate" : rate
     }
 
     return axios.post(url, body, {
