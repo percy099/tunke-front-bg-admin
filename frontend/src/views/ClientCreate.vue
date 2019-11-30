@@ -193,13 +193,14 @@ export default {
         }
     },
     computed :{
-        ...mapState (['clientCreate','token','editClient','selectedClientIndex']),
+        
+        ...mapState (['clientCreate','token','editClient','selectedClientIndex','prueba']),
         isDisabled: function(){
     	    return !this.enableButton;
         }
     },
     methods:{
-        ...mapActions (['completePersonCreate','cleanClientCreate','fillAccountsByClient']),
+        ...mapActions (['completePersonCreate','cleanClientCreate','fillAccountsByClient','setPrueba']),
          openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -361,6 +362,15 @@ export default {
         this.email2 = this.clientCreate.email2;
         this.phone1 = this.clientCreate.cellphone1;
         this.phone2 = this.clientCreate.cellphone2;
+    },
+    updated(){
+        if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid){
+            this.setPrueba(false)
+            console.log(this.prueba)
+        } else {
+            this.setPrueba(true)
+            console.log(this.prueba)
+        }
     }
 }
 </script>

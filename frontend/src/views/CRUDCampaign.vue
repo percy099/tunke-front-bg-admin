@@ -17,11 +17,10 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
+                        <th>Mes</th>
                         <th>Fecha inicio</th>
 						<th>Fecha fin</th>
-                        <th>Plazo mín</th>
-                        <th>Plazo máx</th>
-                        <th>Tasa de interés</th>
+                        <th>Tipo de moneda</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -29,12 +28,11 @@
                     <tr v-for="(campaign,index) in campaigns" v-bind:key="index"><!--TODO-->
 						<td>{{index + 1}}</td>
                         <td>{{campaign.name}}</td>
-                        <!--<td>{{campaign.month}}</td>-->
+                        <td>{{campaign.month}}</td>
 						<td class="space_2">{{campaign.startDate}}</td>
                         <td class="space_2">{{campaign.endDate}}</td>
-                        <td class="space">{{campaign.minimumPeriod}}</td>
-                        <td class="space">{{campaign.maximumPeriod}}</td>
-                        <td class="space">{{campaign.interestRate}}%</td>
+                        <td v-if = "campaign.idCurrency==1">Soles</td>
+                        <td v-if = "campaign.idCurrency==2">Dólares</td>
                         <td class="space_2">
                             <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Visualizar">&#xE880;</i></a>
                             <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
