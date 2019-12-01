@@ -357,7 +357,14 @@ export default {
         
         saveLead(){
             this.$v.$touch();
-            if (this.$v.$invalid) {
+            if (this.$v.$invalid || this.maxPeriod - this.minPeriod < 6) {
+                if(this.maxPeriod - this.minPeriod < 6){
+                    Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'Diferencia entre periodo máximo y mínimo debe ser mayor o igual a 6'
+                    })
+                }
             } else {
                 adminDA.createLead(this.clientCreate.idClient,this.campaignCreate.idCampaign,this.maximum, this.minimum, this.maxPeriod, this.minPeriod, this.rate, this.token).then((res) =>{
                     Swal.fire({

@@ -19,7 +19,7 @@
                         <th>Nombre Cliente</th>
                         <th>Numero Cuenta</th>
 						<th>Balance</th>
-                        <th>Día de Apertura</th>
+                        <th>Tipo</th>
                         <th>Moneda</th>
                         <th>Acción</th>
                     </tr>
@@ -30,7 +30,7 @@
                         <td>{{account.firstName + ' ' + account.fatherLastname}}</td>
                         <td>{{account.accountNumber}}</td>
 						<td>{{account.currencySymbol + ' ' + account.balance}}</td>
-                        <td>{{account.openingDate}}</td>
+                        <td>{{account.typeName}}</td>
                         <td>{{account.currencyName}}</td>
                         <td>
                             <a @click="deleteAccount(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>

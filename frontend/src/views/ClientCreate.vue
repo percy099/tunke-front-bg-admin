@@ -95,7 +95,7 @@
                     <div>
                         <input type="text" class="form-control" :disabled='isDisabled'
                         v-model.trim="$v.phone1.$model" :class="{
-                        'is-invalid' : $v.phone1.$error, 'is-valid':!$v.phone1.$invalid }">
+                        'is-invalid' : $v.phone1.$error || zero == true, 'is-valid':!$v.phone1.$invalid && zero != true}">
                         <div class="valid-feedback">Teléfono Válido</div>
                         <div class="invalid-feedback">
                             <span v-if="!$v.phone1.required">Télefono Principal Requerido. </span>
@@ -104,13 +104,14 @@
                             <span v-if="!$v.phone1.maxLength">Debe ser de {{
                             $v.phone1.$params.maxLength.max}} dígitos. </span>
                             <span v-if="!$v.phone1.numeric">Debe contener solo números. </span>
+                            <span v-if="zero == true"> No debe empezar de 0</span>
                         </div>
                     </div>
                     <h6 class="mt-3">Teléfono secundario</h6>
                     <div class="mb-5" style="box-sizing: border-box;">
                         <input type="text" class="form-control" :disabled='isDisabled'
                         v-model.trim="$v.phone2.$model" :class="{
-                        'is-invalid' : $v.phone2.$error, 'is-valid':!$v.phone2.$invalid && phone2 != ''}">
+                        'is-invalid' : $v.phone2.$error || zero2 == true, 'is-valid':!$v.phone2.$invalid && phone2 != '' && zero2 != true}">
                         <div class="valid-feedback">Teléfono Válido!</div>
                         <div class="invalid-feedback">
                             <span v-if="!$v.phone2.minLength">Debe ser de al menos {{
@@ -118,6 +119,7 @@
                             <span v-if="!$v.phone2.maxLength">Debe ser a lo mucho de {{
                             $v.phone2.$params.maxLength.max}} letters. </span>
                             <span v-if="!$v.phone2.numeric">Debe contener solo números. </span>
+                            <span v-if="zero2 == true"> No debe empezar de 0</span>
                         </div>
                     </div>
                 </div>
@@ -164,7 +166,9 @@ export default {
                 email2 : '',
                 phone1 : '',
                 phone2 : '',
-                enableButton : false};
+                enableButton : false,
+                zero : false,
+                zero2 : false};
     },
     validations: {
         dniPerson: {
@@ -277,7 +281,7 @@ export default {
             this.$v.email2.$touch();
             this.$v.phone1.$touch();
             this.$v.phone2.$touch();
-            if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid){
+            if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid || this.zero == true || this.zero2 == true){
                 this.openData('Contact');
             } else {
                 this.clientCreate.email1 = this.email1;
@@ -304,7 +308,7 @@ export default {
             this.$v.email2.$touch();
             this.$v.phone1.$touch();
             this.$v.phone2.$touch();
-            if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid){
+            if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid || this.zero == true || this.zero2 == true){
                 console.log('No pasó');
                 console.log(this.email1);
                 
@@ -364,12 +368,18 @@ export default {
         this.phone2 = this.clientCreate.cellphone2;
     },
     updated(){
-        if(this.$v.email1.$invalid || this.$v.email2.$invalid || this.$v.phone1.$invalid || this.$v.phone2.$invalid){
-            this.setPrueba(false)
-            console.log(this.prueba)
+        if(this.phone1.substring(0,1) === '0'){
+            this.zero = true;
+            console.log(this.zero);
         } else {
-            this.setPrueba(true)
-            console.log(this.prueba)
+            this.zero = false;
+            console.log(this.zero);
+        }
+
+        if(this.phone2.substring(0,1) === '0'){
+            this.zero2 = true;
+        } else {
+            this.zero2 = false;
         }
     }
 }

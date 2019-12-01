@@ -60,14 +60,27 @@
         <div id="Account" class="tabcontent">
             <div class="row mt-4">
                 <div class="col-6">
-                    <span class="mr-sm-6">
-                        <input type="radio" @click="dolar = 2" name="option1" value="option2"> Dólares
-                    </span>
+                    <h6 class="ml-3 mb-4">Tipo de Moneda</h6>
+                    <div class="ml-5">
+                        <span class="mr-sm-6">
+                            <input type="radio" @click="dolar = 2" name="option1" value="option2"> Dólares
+                        </span>
+                        <span class="mr-sm-6 ml-5">
+                            <input type="radio" @click="dolar = 1" name="option1" value="option2"> Soles
+                        </span>
+                    </div>
+                    <div class="mt-3">
+                    </div>
                 </div>
                 <div class="col-6">
-                    <span class="mr-sm-6">
-                        <input type="radio" @click="dolar = 1" name="option1" value="option2"> Soles
-                    </span>
+                    <h6 class="ml-3 mb-3">Tipo de Cuenta</h6>
+                    <div>
+                        <select v-model="selectType" style="height:2.3em; width:21em;" class="mb-4 ml-5">
+                            <option v-for="optionType in optionsType" v-bind:value="optionType.value">
+                                {{ optionType.text }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,7 +104,13 @@ export default {
         return {
             dniPerson : '',
             enableButton : false,
-            dolar : 0
+            dolar : 0,
+            optionsType: [
+                { text: 'Simple', value: 1 },
+                { text: 'Sueldo', value: 2 },
+                { text: 'Fantasy', value: 3}
+            ],
+            selectType: 1
         };
     },
     validations: {
@@ -184,7 +203,9 @@ export default {
         },
         saveAccount(){
             if(this.person.totalAccounts+1<=this.parameterSetting.maxAccountsNumber){
-                adminDA.doCreateAccount(this.accountCreate.idPerson, this.dolar, 2).then((res) =>{
+                console.log(this.selectType);
+                
+                adminDA.doCreateAccount(this.accountCreate.idPerson, this.dolar, 2, this.selectType).then((res) =>{
                     let response_create = res.data;
                     console.log("response open account",response_create);
                     this.$emit('close');
@@ -207,7 +228,9 @@ export default {
                     text: 'Estimado cliente, usted ya cuenta con muchas cuentas abiertas en Tunke.'
                 })
             }
-        },
+            
+            
+        }
 
     },
     mounted(){
