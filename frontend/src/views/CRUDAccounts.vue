@@ -19,7 +19,7 @@
                         <th>Nombre Cliente</th>
                         <th>Numero Cuenta</th>
 						<th>Balance</th>
-                        <th>Día de Apertura</th>
+                        <th>Tipo</th>
                         <th>Moneda</th>
                         <th>Acción</th>
                     </tr>
@@ -30,7 +30,7 @@
                         <td>{{account.firstName + ' ' + account.fatherLastname}}</td>
                         <td>{{account.accountNumber}}</td>
 						<td>{{account.currencySymbol + ' ' + account.balance}}</td>
-                        <td>{{account.openingDate}}</td>
+                        <td>{{account.typeName}}</td>
                         <td>{{account.currencyName}}</td>
                         <td>
                             <a @click="deleteAccount(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
@@ -50,6 +50,7 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import * as adminDA from '@/dataAccess/adminDA.js'
+import * as userDA from '@/dataAccess/userDA.js'
 import Swal from 'sweetalert2'
 
 export default {
@@ -57,7 +58,19 @@ export default {
         ...mapState(['accounts','token'])
     },
     methods :{
-        ...mapActions(['cleanAccountCreate']),
+        ...mapActions(['cleanAccountCreate','completeAccounts']),
+        updatedAllAccounts: function() {
+            userDA.getAllAccounts(this.token).then((res) =>{
+                console.log("update accounts");
+                this.completeAccounts(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las cuentas'
+                })
+            });
+        },
         createAccount(){
             this.cleanAccountCreate();
             this.$router.push('/accountCreate');
@@ -74,6 +87,7 @@ export default {
             }).then((result) =>{
                 if(result.value){
                     adminDA.deleteAccount(this.accounts[index].idAccount,this.token).then((res)=>{
+                        this.updatedAllAccounts();
                         Swal.fire({
                             text: 'Cuenta eliminada correctamente',
                             type: 'success'
@@ -112,6 +126,7 @@ export default {
                 }
             }
         });
+        this.updatedAllAccounts();
 	}
 }
 </script>

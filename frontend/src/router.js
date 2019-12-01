@@ -28,6 +28,8 @@ import ViewDetailSoles from './views/ViewDetailSoles.vue'
 import ViewDetailDollar from './views/ViewDetailDollar.vue'
 import leadCreate from './views/leadCreate.vue'
 import viewLeads from './views/viewLeads.vue'
+import MassiveChargeLeads from './views/MassiveChargeLeads.vue'
+import leadOptions from './views/leadOptions.vue'
 
 Vue.use(Router)
 
@@ -174,6 +176,16 @@ export default new Router({
       path : '/viewLeads',
       name : 'viewLeads',
       component : viewLeads
+    },
+    {
+      path : '/massiveChargeLeads',
+      name : 'massiveChargeLeads',
+      component : MassiveChargeLeads
+    },
+    {
+      path : '/leadOptions',
+      name : 'leadOptions',
+      component : leadOptions
     }
   ]
 })

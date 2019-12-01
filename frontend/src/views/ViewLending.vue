@@ -16,30 +16,33 @@
                     <!--<h6>Nombre Cliente</h6>
                     <input v-model="lendingCreate.fullName" type="text" class="form-control" disabled>-->
                     <h6 class="mt-3">Fecha Préstamo</h6>
-                    <input v-model="lendingCreate.requestDate" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Tipo de moneda</h6>
-                    <input v-model="lendingCreate.currency" type="text" class="form-control" disabled> 
+                    <input v-model="lendingCreate.requestDate"  type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Campaña</h6>
+                    <input v-model="lendingCreate.campaignName"  type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Número de cuenta</h6>
+                    <input v-model="lendingCreate.accountNumber"  type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Total</h6>
-                    <input v-model="lendingCreate.amount" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Tipo de Cuota</h6>
-                    <input v-if = "lendingCreate.idShareType==1" placeholder="Ordinario" type="text" class="form-control" disabled>
-                     <input v-if = "lendingCreate.idShareType==2"  placeholder="Extraordinario"  type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Tasa de interés</h6>
-                    <input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
+                    <input v-model="lendingCreate.amount"  type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Cuota</h6>
+                    <input v-model="lendingCreate.share"  type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Comisión</h6>
+                    <input v-model="lendingCreate.commission"  type="text" class="form-control mb-5" disabled>
                 </div>
                 <div class="col-6 groupRightPersonal">
                     <!--<h6>Nro. Documento</h6>
                     <input v-model="lendingCreate.documentNumber" type="text" class="form-control" disabled>-->
-                    <h6 class="mt-3">Campaña</h6>
-                    <input v-model="lendingCreate.campaignName" id="right2" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Número de cuenta</h6>
-                    <input v-model="lendingCreate.accountNumber" id="right2" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Número de cuotas</h6>
+                    <h6 class="mt-3">Estado</h6>
+                    <input v-if = "lendingCreate.idRecordStatus==1" id="right2" placeholder="Aprobado" type="text" class="form-control" disabled>
+                    <input v-if = "lendingCreate.idRecordStatus==2"  id="right2" placeholder="Desaprobado"  type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Tipo de moneda</h6>
+                    <input v-model="lendingCreate.currency" id="right2" type="text" class="form-control" disabled> 
+                    <h6 class="mt-3">Tipo de Cuota</h6>
+                    <input v-if = "lendingCreate.idShareType==1"  id="right2" placeholder="Ordinario" type="text" class="form-control" disabled>
+                     <input v-if = "lendingCreate.idShareType==2" id="right2" placeholder="Extraordinario"  type="text" class="form-control" disabled>
+                     <h6 class="mt-3">Número de cuotas (mensual)</h6>
                     <input v-model="lendingCreate.totalShares" id="right2" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Cuota</h6>
-                    <input v-model="lendingCreate.share" id="right2" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Comisión</h6>
-                    <input v-model="lendingCreate.commission" id="right2" type="text" class="form-control mb-5" disabled>
+                    <h6 class="mt-3">Tasa de interés (%)</h6>
+                    <input v-model="lendingCreate.interestRate" id="right2" type="text" class="form-control mb-5" disabled>
                 </div>
             </div>
         </div>
@@ -78,7 +81,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <button class="btn mr-3" @click=$router.go(-1)>Volver</button>
+            <button class="btn mr-5" @click=$router.go(-1)>Volver</button>
+            <button class="btn mr-3" v-if = "lendingCreate.idRecordStatus==1" @click="sendPaymentCalendar">Enviar Calendario</button>
         </div>
     </div>
 </template>
@@ -137,6 +141,21 @@ export default {
             // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(dataType).style.display = "block";
             document.getElementById(btn).classList.add('active');
+        },
+        sendPaymentCalendar(){
+            console.log("id prestamo" + this.lendingCreate.idLoan);
+            adminDA.generateCalendar(this.lendingCreate.idLoan,this.token).then((res) =>{
+                Swal.fire({
+                            text: 'Calendario de pago enviado correctamente',
+                            type: 'success'
+                        })
+            }).catch(error =>{  
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'No se pudo enviar el calendario de pago'
+                })
+            });
         },
     },
     mounted(){

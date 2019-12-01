@@ -8,6 +8,11 @@
     height: 65px;
 }
 
+button:disabled,
+button[disabled]{
+    opacity: 0.3;
+}
+
 .container{
     font-family: 'Montserrat';
 }

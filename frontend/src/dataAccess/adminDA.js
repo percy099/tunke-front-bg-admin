@@ -85,12 +85,17 @@ export function createLead(idClient, idCampaign, max, min, maxP, minP, rate, tok
     });
 }
 
-export function doCreateAccount(idPer,cur,origin){
+export function doCreateAccount(idPer,cur,origin, type){
     let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
     var body ={
         "idPerson" : idPer,
         "currency" : cur,
-        "origin" : origin
+        "origin" : origin,
+        "accountType" : type,
+        "response1" : '',
+        "response2" : '',
+        "response3" : '',
+        "response4" : ''
     }
     
     return axios.post(url,body);
@@ -259,6 +264,23 @@ export function chargeBlackList(token,file){
         );
 }
 
+export function chargeLeads(token, file){
+    let url = process.env.VUE_APP_API_URL + 'api/leads/'
+    let formData = new FormData();
+    formData.append('file', file);
+    return axios.post(url,formData,
+        {
+            headers: {
+                'Content-Type' : 'multipart/form-data'
+            },
+            auth:{
+                username : token,
+                password : ''
+            }
+        }
+        );
+}
+
 export function chargeCampaigns(token,body){
     let url = process.env.VUE_APP_API_URL + 'api/campaignCharge/'
 
@@ -314,6 +336,20 @@ export function createBlacklist(token,dni,reason){
     var body = {
         "dni" : dni,
         "reason" : reason
+    }
+    return axios.post(url, body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}
+
+export function generateCalendar(idLoan, token){
+    let url = process.env.VUE_APP_API_URL + 'api/loans/generateCalendar/';
+
+    var body = {
+        "idLoan" : idLoan
     }
     return axios.post(url, body,{
         auth:{
