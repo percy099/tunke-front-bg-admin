@@ -71,7 +71,7 @@ export default {
         ...mapState (['bankAccounts','token','transactions','transactionsSoles','transactionsDollar'])
     },
     methods:{
-      ...mapActions ([]),
+      ...mapActions (['completeTransactions','completeTransactionsDollar','completeTransactionsSoles','completeBankAccount']),
         openData :function(dataType) {
           // Declare all variables
           var i, tabcontent, tablinks, btn,buttons;
@@ -95,17 +95,43 @@ export default {
           // Show the current tab, and add an "active" class to the button that opened the tab
           document.getElementById(dataType).style.display = "block";
           document.getElementById(btn).classList.add('active');
-      },
-      
-      viewDetailSoles(){
-          this.$router.push('/viewDetailSoles');
-      },
-      viewDetailDollar(){
-          this.$router.push('/viewDetailDollar');
-      }
+        },
+        updatedTransactions: function() {
+            userDA.getAllTransactions(this.token).then((res) =>{
+                console.log("update transactions");
+                    this.completeTransactions(res.data);
+                    this.completeTransactionsDollar(res.data);
+                    this.completeTransactionsSoles(res.data);
+                }).catch(error =>{
+                    Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las transacciones en Soles del banco'
+                    })
+                });
+        },
+        updatedBankAccount: function() {
+            userDA.getAllBankAccount(this.token).then((res) =>{
+             this.completeBankAccount(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las cuentas del banco'
+                })
+            });
+        },
+        viewDetailSoles(){
+            this.$router.push('/viewDetailSoles');
+        },
+        viewDetailDollar(){
+            this.$router.push('/viewDetailDollar');
+        }
     },
     mounted(){
         document.getElementById('BankAccount').style.display = "block";
+        this.updatedTransactions();
+        this.updatedBankAccount();
     }
 }
 </script>

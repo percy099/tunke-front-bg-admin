@@ -89,20 +89,22 @@
                             {{ optionShare.text }}
                         </option>
                     </select>
-                    <h6 class="mt-3">Tasa de interés</h6>
+                    <h6 class="mt-3">Tasa de interés (%)</h6>
                     <!--<input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
                     <input v-model="interestRateLending"  type="text" class="form-control mb-5">-->
 
                     <input type="text" id="right2" class="form-control"
-                    v-model.trim="$v.interestRateLending.$model" :class="{
-                    'is-invalid' : $v.interestRateLending.$error, 'is-valid':!$v.interestRateLending.$invalid }">
+                    v-model.trim="$v.interestRateLending.$model" :class="{ 
+                        'is-invalid' : $v.interestRateLending.$error, 'is-valid':!$v.interestRateLending.$invalid }">
                     <div class="valid-feedback">Tasa de interés válida!</div>
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.interestRateLending.minValue">Debe ser de al menos {{
-                        $v.interestRateLending.$params.minValue.min}} </span>
-                        <span v-if="!$v.interestRateLending.numeric">Debe contener solo números. </span>
-                        <span v-if="!$v.interestRateLending.required">Tasa de interés requerida. </span>
-                    </div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.interestRateLending.minValue">Debe ser de al menos {{
+                            $v.interestRateLending.$params.minValue.min}} </span>
+                            <span v-if="!$v.interestRateLending.maxValue">Debe ser a lo mucho de {{
+                            $v.interestRateLending.$params.maxValue.max}} </span>
+                            <span v-if="!$v.interestRateLending.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.interestRateLending.required">Tasa de interés Requerido. </span>
+                        </div>
                     
                 </div>
                 <div class="col-6 groupRightPersonal">
@@ -131,7 +133,7 @@
                     <div v-if="selectCampaign == 2" class="invalid-feedback">
                         <span v-if="selectAccountDolar == 0 || selectAccountDolar == undefined">Debe seleccionar una cuenta </span>
                     </div>
-                    <h6 class="mt-3">Número de cuotas</h6>
+                    <h6 class="mt-3">Número de cuotas (mensual)</h6>
                     <input type="text" id="right2" class="form-control"
                     v-model.trim="$v.totalShares.$model" :class="{
                     'is-invalid' : $v.totalShares.$error, 'is-valid':!$v.totalShares.$invalid }">
@@ -218,7 +220,8 @@ export default {
         interestRateLending: {
             required,
             numeric,
-            minValue: minValue(1)
+            minValue: minValue(1),
+            maxValue: maxValue(10000)
         },
     },
     computed :{

@@ -45,6 +45,7 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import * as adminDA from '@/dataAccess/adminDA.js'
+import * as userDA from '@/dataAccess/userDA.js'
 import Swal from 'sweetalert2'
 
 export default {
@@ -52,7 +53,19 @@ export default {
         ...mapState(['salesRecords','token','salesRecordCreate'])
     },
     methods :{
-        ...mapActions(['setSalesRecordIndex']),
+        ...mapActions(['setSalesRecordIndex','completeSalesRecords']),
+        updatedSalesRecord: function() {
+            userDA.getAllSalesRecord(this.token).then((res) =>{
+                console.log("update SalesRecords");
+                this.completeSalesRecords(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo los expedientes de Venta'
+                })
+            });
+        },
         viewSalesRecord(index){
             this.$router.push('/viewSaleRecord');
             this.setSalesRecordIndex(index);
@@ -75,6 +88,7 @@ export default {
                     }
                     console.log(this.salesRecordCreate.idSalesRecord)
                     adminDA.doEditSalesRecord(this.salesRecordCreate.idSalesRecord,parseInt(value), this.token).then((res)=>{
+                        this.updatedSalesRecord();
                         Swal.fire({
                             type: 'success',
                             title: 'Enhorabuena',
@@ -114,6 +128,7 @@ export default {
                 }
             }
         });
+        this.updatedSalesRecord();
 	}
 }
 </script>
