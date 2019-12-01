@@ -3,19 +3,24 @@
         <h2 class = "mb-4 mt-4">Creación de Préstamo</h2>
         <div class="custom-cont">
             <div>
-                <input placeholder="DNI" id="dniCreate" 
-                type="text" class="form-control d-inline" maxlength="8"
+                <input  :placeholder='name' id="dniCreate" 
+                type="text" class="form-control d-inline" :disabled='isDisabled2' :maxlength="maxLNumber" :minlength="minLNumber"
                 v-model.trim="$v.dniClient.$model" :class="{
                 'is-invalid' : $v.dniClient.$error, 'is-valid' : !$v.dniClient.$invalid }">
-                <div class="valid-feedback">Dni Válido</div>
+                <div v-if="selectedTypeDoc.value == 1" class="valid-feedback">Dni Válido</div>
+                <div v-if="selectedTypeDoc.value == 2" class="valid-feedback">Carnet de Extranjería Válido</div>
                 <div class="invalid-feedback">
-                    <span v-if="!$v.dniClient.required">Dni Requerido. </span>
+                    <span v-if="!$v.dniClient.required && selectedTypeDoc.value == 1">Dni Requerido. </span>
+                    <span v-if="!$v.dniClient.required && selectedTypeDoc.value == 2">Carnet de Extranjería Requerido. </span>
                     <span v-if="!$v.dniClient.minLength">Debe ser de al menos de {{
-                        $v.dniClient.$params.minLength.min}} dígitos.</span>
+                        $v.dniClient.$params.minLength.min}} dígitos </span>
                     <span v-if="!$v.dniClient.maxLength">Debe ser de al menos de {{
-                        $v.dniPerso.$params.maxLength.max}} dígitos.</span>
+                        $v.dniClient.$params.maxLength.max}} dígitos </span>
                     <span v-if="!$v.dniClient.numeric">Debe contener solo números. </span>
                 </div>
+            </div>
+            <div>  
+                <v-select class="ml-3" placeholder=" Tipo de documento" v-model="selectedTypeDoc" :required="!selectedTypeDoc" :options="optionsDoc"  label="text"/>
             </div>
             <div>
                 <button @click="getClient()" class="btn ml-3" id="btnEditAccounts">Buscar Cliente</button>
@@ -72,16 +77,18 @@
                     <h6 class="mt-3">Tipo de moneda</h6>
                     <input v-if="selectCampaign == 1" placeholder="Soles" type="text" class="form-control" disabled>
                     <input v-if="selectCampaign == 2" placeholder="Dólares" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Monto Total</h6>
-                    <input type="text" class="form-control" 
-                    v-model.trim="$v.amount.$model" :class="{
-                    'is-invalid' : $v.amount.$error, 'is-valid':!$v.amount.$invalid }">
-                    <div class="valid-feedback">Monto Válido!</div>
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.amount.minValue">Debe ser de al menos {{
-                        $v.amount.$params.minValue.min}} </span>
-                        <span v-if="!$v.amount.numeric">Debe contener solo números. </span>
-                        <span v-if="!$v.amount.required">Cuotas Requerido. </span>
+                    <div>
+                        <h6 class="mt-3">Monto Total</h6>
+                        <input type="text" class="form-control" 
+                        v-model.trim="$v.amount.$model" :class="{
+                        'is-invalid' : $v.amount.$error, 'is-valid':!$v.amount.$invalid }">
+                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.amount.minValue">Debe ser de al menos {{
+                            $v.amount.$params.minValue.min}} </span>
+                            <span v-if="!$v.amount.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.amount.required">Cuotas Requerido. </span>
+                        </div>
                     </div>
                     <h6 class="mt-3">Tipo de Cuota</h6>
                     <select v-model="selectShare" style="height:2.3em; width:21em;">
@@ -89,19 +96,21 @@
                             {{ optionShare.text }}
                         </option>
                     </select>
-                    <h6 class="mt-3">Tasa de interés</h6>
-                    <!--<input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
-                    <input v-model="interestRateLending"  type="text" class="form-control mb-5">-->
+                    <div>
+                        <h6 class="mt-3">Tasa de interés</h6>
+                        <!--<input v-model="lendingCreate.interestRate" type="text" class="form-control mb-5" disabled>
+                        <input v-model="interestRateLending"  type="text" class="form-control mb-5">-->
 
-                    <input type="text" id="right2" class="form-control"
-                    v-model.trim="$v.interestRateLending.$model" :class="{
-                    'is-invalid' : $v.interestRateLending.$error, 'is-valid':!$v.interestRateLending.$invalid }">
-                    <div class="valid-feedback">Tasa de interés válida!</div>
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.interestRateLending.minValue">Debe ser de al menos {{
-                        $v.interestRateLending.$params.minValue.min}} </span>
-                        <span v-if="!$v.interestRateLending.numeric">Debe contener solo números. </span>
-                        <span v-if="!$v.interestRateLending.required">Tasa de interés requerida. </span>
+                        <input type="text" id="right2" class="form-control"
+                        v-model.trim="$v.interestRateLending.$model" :class="{
+                        'is-invalid' : $v.interestRateLending.$error, 'is-valid':!$v.interestRateLending.$invalid }">
+                        <div class="valid-feedback">Tasa de interés válida!</div>
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.interestRateLending.minValue">Debe ser de al menos {{
+                            $v.interestRateLending.$params.minValue.min}} </span>
+                            <span v-if="!$v.interestRateLending.numeric">Debe contener solo números. </span>
+                            <span v-if="!$v.interestRateLending.required">Tasa de interés requerida. </span>
+                        </div>
                     </div>
                     
                 </div>
@@ -195,31 +204,41 @@ export default {
                 { text: 'Extraordinaria', value: 2 }],
                 dolarAccounts : [],
                 solesAccounts : [],
-                myDate : new Date().toISOString().slice(0,10) 
+                myDate : new Date().toISOString().slice(0,10),
+                name : '',
+                minLNumber : 0,
+                maxLNumber : 0,
+                selectedTypeDoc : false,
+                optionsDoc: [
+                    { text: 'DNI', value: 1 },
+                    { text: 'Carnet de Extranjería', value: 2 }
+                ]
                 };
     },
-    validations: {
-        dniClient: {
-            required,
-            minLength: minLength(8),
-            maxLength: maxLength(8),
-            numeric
-        },
-        totalShares: {
-            required,
-            numeric,
-            minValue: minValue(1)
-        },
-        amount: {
-            required,
-            numeric,
-            minValue: minValue(1)
-        },
-        interestRateLending: {
-            required,
-            numeric,
-            minValue: minValue(1)
-        },
+    validations() {
+        return {
+            dniClient: {
+                required,
+                minLength: minLength(this.minLNumber),
+                maxLength: maxLength(this.maxLNumber),
+                numeric
+            },
+            totalShares: {
+                required,
+                numeric,
+                minValue: minValue(1)
+            },
+            amount: {
+                required,
+                numeric,
+                minValue: minValue(1)
+            },
+            interestRateLending: {
+                required,
+                numeric,
+                minValue: minValue(1)
+            }
+        }
     },
     computed :{
         ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate','parameterSetting']),
@@ -273,6 +292,12 @@ export default {
             let comissionAmount = amount*commission/100;
             this.lendingCreate.commission=comissionAmount;
             return this.lendingCreate.commission;
+        },
+        isDisabled2: function(){
+            if(this.selectedTypeDoc){
+                this.enableButton2 = true;
+            }
+    	      return !this.enableButton2;
         }
         
     },
@@ -445,6 +470,17 @@ export default {
         document.getElementById('btnClient').classList.add('active');
         this.cleanLendingCreate();
         this.cleanClientCreate();
+    },
+    updated(){
+         if(this.selectedTypeDoc && this.selectedTypeDoc.value==1){
+            this.name = "DNI"
+            this.minLNumber=8;
+            this.maxLNumber=8;
+        } if(this.selectedTypeDoc && this.selectedTypeDoc.value==2) {
+            this.name = "Carnet de extranjería"
+            this.minLNumber=12;
+            this.maxLNumber=12;
+        }
     }
 }
 </script>

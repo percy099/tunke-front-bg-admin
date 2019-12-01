@@ -3,19 +3,24 @@
         <h2 class = "mb-4 mt-4" v-if="!editClient">Creación de Cliente</h2>
         <div class="custom-cont" v-if="!editClient">
             <div>
-                <input placeholder="DNI" id="dniCreate" 
-                type="text" class="form-control d-inline" maxlength="8"
+                <input  :placeholder='name' id="dniCreate" 
+                type="text" class="form-control d-inline" :disabled='isDisabled2' :maxlength="maxLNumber" :minlength="minLNumber"
                 v-model.trim="$v.dniPerson.$model" :class="{
                 'is-invalid' : $v.dniPerson.$error, 'is-valid' : !$v.dniPerson.$invalid }">
-                <div class="valid-feedback">Dni Válido</div>
+                <div v-if="selectedTypeDoc.value == 1" class="valid-feedback">Dni Válido</div>
+                <div v-if="selectedTypeDoc.value == 2" class="valid-feedback">Carnet de Extranjería Válido</div>
                 <div class="invalid-feedback">
-                    <span v-if="!$v.dniPerson.required">Dni Requerido. </span>
+                    <span v-if="!$v.dniPerson.required && selectedTypeDoc.value == 1">Dni Requerido. </span>
+                    <span v-if="!$v.dniPerson.required && selectedTypeDoc.value == 2">Carnet de Extranjería Requerido. </span>
                     <span v-if="!$v.dniPerson.minLength">Debe ser de al menos de {{
                         $v.dniPerson.$params.minLength.min}} dígitos </span>
                     <span v-if="!$v.dniPerson.maxLength">Debe ser de al menos de {{
-                        $v.dniPerso.$params.maxLength.max}} dígitos </span>
+                        $v.dniPerson.$params.maxLength.max}} dígitos </span>
                     <span v-if="!$v.dniPerson.numeric">Debe contener solo números. </span>
                 </div>
+            </div>
+            <div>  
+                <v-select class="ml-3" placeholder=" Tipo de documento" v-model="selectedTypeDoc" :required="!selectedTypeDoc" :options="optionsDoc"  label="text"/>
             </div>
             <div>
                 <button @click="getPersonCreate()" class="btn ml-3" id="btnEditAccounts">Buscar Persona</button>
@@ -128,7 +133,7 @@
 
         <div id="Validation" class="tabcontent">
             <div class="row mt-4">
-                <div class="col-6 groupLeftPersonal">n
+                <div class="col-6 groupLeftPersonal">
                     <h6>Placa Vehículo 1</h6>
                     <input v-model="clientCreate.vehicle1Plate" type="text" class="form-control" disabled>
                     <h6 class="mt-5">Placa Vehículo 2</h6>
@@ -168,32 +173,43 @@ export default {
                 phone2 : '',
                 enableButton : false,
                 zero : false,
-                zero2 : false};
+                zero2 : false,
+                name : '',
+                minLNumber : 0,
+                maxLNumber : 0,
+                selectedTypeDoc : false,
+                optionsDoc: [
+                    { text: 'DNI', value: 1 },
+                    { text: 'Carnet de Extranjería', value: 2 }
+                ]
+                };
     },
-    validations: {
-        dniPerson: {
-            required,
-            minLength: minLength(8),
-            maxLength: maxLength(8),
-            numeric
-        },
-        phone1: {
-            required,
-            minLength: minLength(9),
-            maxLength: maxLength(9),
-            numeric
-        },
-        phone2: {
-            minLength: minLength(9),
-            maxLength: maxLength(9),
-            numeric
-        },
-        email1: {
-            required,
-            email
-        },
-        email2: {
-            email
+    validations() {
+        return{
+            dniPerson: {
+                required,
+                minLength: minLength(this.minLNumber),
+                maxLength: maxLength(this.maxLNumber),
+                numeric
+            },
+            phone1: {
+                required,
+                minLength: minLength(9),
+                maxLength: maxLength(9),
+                numeric
+            },
+            phone2: {
+                minLength: minLength(9),
+                maxLength: maxLength(9),
+                numeric
+            },
+            email1: {
+                required,
+                email
+            },
+            email2: {
+                email
+            }
         }
     },
     computed :{
@@ -201,6 +217,12 @@ export default {
         ...mapState (['clientCreate','token','editClient','selectedClientIndex','prueba']),
         isDisabled: function(){
     	    return !this.enableButton;
+        },
+        isDisabled2: function(){
+            if(this.selectedTypeDoc){
+                this.enableButton2 = true;
+            }
+    	      return !this.enableButton2;
         }
     },
     methods:{
@@ -380,6 +402,15 @@ export default {
             this.zero2 = true;
         } else {
             this.zero2 = false;
+        }
+        if(this.selectedTypeDoc && this.selectedTypeDoc.value==1){
+            this.name = "DNI"
+            this.minLNumber=8;
+            this.maxLNumber=8;
+        } if(this.selectedTypeDoc && this.selectedTypeDoc.value==2) {
+            this.name = "Carnet de extranjería"
+            this.minLNumber=12;
+            this.maxLNumber=12;
         }
     }
 }

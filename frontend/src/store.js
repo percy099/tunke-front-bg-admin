@@ -258,7 +258,8 @@ export default new Vuex.Store({
               nationality : persons_data[i].nationality,
               vehicle1Plate : persons_data[i].vehicle1Plate,
               vehicle2Plate : persons_data[i].vehicle2Plate,
-              flag : persons_data[i].flag
+              flag : persons_data[i].flag,
+              documentType : persons_data[i].documentType
             });
           }
           }

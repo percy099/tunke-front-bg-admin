@@ -18,8 +18,8 @@
                         <th>#</th>
                         <th>Nombre</th>
                         <th>Correo electrónico</th>
-						<th>Dirección</th>
-                        <th>Número de Documento</th>
+						<th style="width: 18%; text-align: center;">Tipo Documento</th>
+                        <th style="width: 18%; text-align: center;">Número de Documento</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -28,8 +28,8 @@
 						<td>{{index + 1}}</td>
                         <td>{{client.firstName + ' ' + client.fatherLastname}}</td>
                         <td>{{client.email1}}</td>
-						<td>{{client.address}}</td>
-                        <td>{{client.documentNumber}}</td>
+						<td style="text-align:center;">{{client.documentType}}</td>
+                        <td style="text-align:center;">{{client.documentNumber}}</td>
                         <td>
                             <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                             <a @click="deleteClient(index)" href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
