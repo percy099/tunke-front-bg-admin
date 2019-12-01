@@ -1,5 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container vld-parent">
+        <loading :active.sync="isLoading" 
+        :can-cancel="false" 
+        :is-full-page="false"></loading>
         <div class="row">
             <div class="col-6">
                 <h2 class="mt-5">Mantenimientos:</h2>
@@ -40,8 +43,15 @@
     import * as utilsDA from '@/dataAccess/utilsDA.js'
     import * as adminDA from '@/dataAccess/adminDA.js'
     import Swal from 'sweetalert2'
+    import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
+    data(){
+        return {
+            isLoading : false
+        }
+    },
     methods:{
         ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar','fillParameterSettings']),
         openWindow(window){
@@ -100,8 +110,103 @@ export default {
     },
     beforeMount(){
         this.setLoginEntry(true);
+        this.isLoading = true;
         userDA.getAllClients(this.token).then((res) =>{
             this.completeClients(res.data);
+            userDA.getAllAccounts(this.token).then((res2) =>{
+                this.completeAccounts(res2.data);
+                userDA.getAllCampaigns(this.token).then((res3) =>{
+                    this.completeCampaigns(res3.data);
+                    userDA.getAllLendings(this.token).then((res4) =>{
+                        this.completeLendings(res4.data);
+                        userDA.getAllSalesRecord(this.token).then((res5) =>{
+                            this.completeSalesRecords(res5.data);
+                            userDA.getAllClientsBlackList(this.token).then((res6) =>{
+                                this.completeClientsBlackList(res6.data);
+                                userDA.getAllBankAccount(this.token).then((res7) =>{
+                                    this.completeBankAccount(res7.data);                                  
+                                    userDA.getAllTransactions(this.token).then((res8) =>{
+                                        this.completeTransactions(res8.data);
+                                        userDA.getAllTransactions(this.token).then((res9) =>{
+                                            this.completeTransactionsDollar(res9.data);
+                                            userDA.getAllTransactions(this.token).then((res10) =>{
+                                                this.completeTransactionsSoles(res10.data);
+                                                adminDA.doRequestParameters(this.token).then((res11) =>{
+                                                    this.fillParameterSettings(res11.data);
+                                                    this.isLoading = false;
+                                                }).catch(error=>
+                                                {
+                                                    this.isLoading = false;
+                                                    Swal.fire({
+                                                    title: 'Error',
+                                                    type: 'error',
+                                                    text: 'Error en la captura de parámetros de configuración'
+                                                    })
+                                                });
+                                            }).catch(error =>{
+                                                Swal.fire({
+                                                    title: 'Error',
+                                                    type: 'error',
+                                                    text: 'Error obteniendo las transacciones en Soles del banco'
+                                                })
+                                            });
+                                        }).catch(error =>{
+                                            Swal.fire({
+                                                title: 'Error',
+                                                type: 'error',
+                                                text: 'Error obteniendo las transacciones en Dólares del banco'
+                                            })
+                                        });
+                                    }).catch(error =>{
+                                        Swal.fire({
+                                            title: 'Error',
+                                            type: 'error',
+                                            text: 'Error obteniendo las transacciones del banco'
+                                        })
+                                    });
+                                    
+                                }).catch(error =>{
+                                    Swal.fire({
+                                        title: 'Error',
+                                        type: 'error',
+                                        text: 'Error obteniendo las cuentas del banco'
+                                    })
+                                });
+                            }).catch(error =>{
+                                Swal.fire({
+                                    title: 'Error',
+                                    type: 'error',
+                                    text: 'Error obteniendo los clientes especiales'
+                                })
+                            });
+                        }).catch(error =>{
+                            Swal.fire({
+                                title: 'Error',
+                                type: 'error',
+                                text: 'Error obteniendo los expedientes de Venta'
+                            })
+                        });
+                    }).catch(error =>{
+                        Swal.fire({
+                            title: 'Error',
+                            type: 'error',
+                            text: 'Error obteniendo los préstamos'
+                        })
+                    });
+                }).catch(error =>{
+                    Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'Error obteniendo las campañas'
+                    })
+                });
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las cuentas'
+                })
+            });
         }).catch(error =>{
           Swal.fire({
             title: 'Error',
@@ -109,100 +214,9 @@ export default {
             text: 'Error obteniendo los clientes'
           })
         });
-        userDA.getAllAccounts(this.token).then((res) =>{
-            this.completeAccounts(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las cuentas'
-            })
-        });
-        userDA.getAllCampaigns(this.token).then((res) =>{
-            this.completeCampaigns(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las campañas'
-            })
-        });
-        userDA.getAllLendings(this.token).then((res) =>{
-            this.completeLendings(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo los préstamos'
-              })
-        });
-        userDA.getAllSalesRecord(this.token).then((res) =>{
-            this.completeSalesRecords(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo los expedientes de Venta'
-            })
-        });
-        userDA.getAllClientsBlackList(this.token).then((res) =>{
-            this.completeClientsBlackList(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo los clientes especiales'
-            })
-        });
-        userDA.getAllBankAccount(this.token).then((res) =>{
-            this.completeBankAccount(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las cuentas del banco'
-            })
-        });
-        userDA.getAllTransactions(this.token).then((res) =>{
-            this.completeTransactions(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las transacciones del banco'
-            })
-        });
-        userDA.getAllTransactions(this.token).then((res) =>{
-            this.completeTransactionsDollar(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las transacciones en Dólares del banco'
-            })
-        });
-        userDA.getAllTransactions(this.token).then((res) =>{
-            this.completeTransactionsSoles(res.data);
-        }).catch(error =>{
-            Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'Error obteniendo las transacciones en Soles del banco'
-            })
-        });
-        adminDA.doRequestParameters(this.token).then((res) =>{
-            let response_create = res.data;
-            this.fillParameterSettings(response_create);
-            console.log("PARAMETROS DE CONFIGURACION")
-            console.log(this.parameterSetting);
-        }).catch(error=>
-        {
-            Swal.fire({
-            title: 'Error',
-            type: 'error',
-            text: 'Error en la captura de parámetros de configuración'
-            })
-        });
-}
+    },
+    components:{
+        Loading
+    }
 }
 </script>
