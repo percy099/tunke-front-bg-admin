@@ -4,24 +4,24 @@
             <div class="col-6">
                 <h2 class="mt-5">Mantenimientos:</h2>
                 <div class="d-flex flex-column justify-content-center mt-2">
-                    <button @click="openWindow('client')" class="btn">Clientes</button>
-                    <button @click="openWindow('lending')" class="btn">Préstamos</button>
-                    <button @click="openWindow('campaign')" class="btn">Campañas</button>
-                    <button @click="openWindow('account')" class="btn">Cuentas de Ahorro</button>
-                    <button @click="openWindow('blackList')" class="btn">Clientes especiales</button>
-                    <button @click="openWindow('salesRecord')" class="btn">Expedientes de Venta</button> 
-                    <button @click="openWindow('accountStatus')" class="btn">Estado de cuenta</button> 
+                    <button @click="openWindow('client')" class="btn" :disabled='isDisabled13'>Clientes</button>
+                    <button @click="openWindow('lending')" class="btn" :disabled='isDisabled14'>Préstamos</button>
+                    <button @click="openWindow('campaign')" class="btn" :disabled='isDisabled13'>Campañas</button>
+                    <button @click="openWindow('account')" class="btn" :disabled='isDisabled14'>Cuentas de Ahorro</button>
+                    <button @click="openWindow('blackList')" class="btn" :disabled='isDisabled1'>Clientes especiales</button>
+                    <button @click="openWindow('salesRecord')" class="btn" :disabled='isDisabled14'>Expedientes de Venta</button> 
+                    <button @click="openWindow('accountStatus')" class="btn" :disabled='isDisabled1'>Estado de cuenta</button> 
                 </div>
             </div>
             <div class="col-6">
                 <h2 class="mt-5">Reportes:</h2>
                 <div class="d-flex flex-column justify-content-center mb-3 mt-2">
-                    <button @click="openWindow('reportsA')" class="btn">Reporte de Cuentas</button>
-                    <button @click="openWindow('reportsL')" class="btn">Reporte de Préstamos</button>
+                    <button  @click="openWindow('reportsA')" class="btn" :disabled='isDisabled123'>Reporte de Cuentas</button>
+                    <button  @click="openWindow('reportsL')" class="btn" :disabled='isDisabled123'>Reporte de Préstamos</button>
                 </div>
                 <h2 class="mt-4">Configuración:</h2>
                 <div class="d-flex flex-column justify-content-center">
-                    <button @click="openWindow('parConfig')" class="btn">Configuración de Parámetros</button>
+                    <button  @click="openWindow('parConfig')" class="btn" :disabled='isDisabled1'>Configuración de Parámetros</button>
                 </div>
             </div>
         </div>
@@ -80,7 +80,23 @@ export default {
         }
     },
     computed:{
-        ...mapState(['token','person','parameterSettings']),
+        ...mapState(['token','person','parameterSettings','user']),
+        isDisabled1(){
+            if(this.user.idProfile!=1) return true;
+            return false;
+        },
+        isDisabled13(){
+            if(this.user.idProfile==1 || this.user.idProfile==3) return false;
+            return true;
+        },
+        isDisabled14(){
+            if(this.user.idProfile==1 || this.user.idProfile==4) return false;
+            return true;
+        },
+        isDisabled123(){
+            if(this.user.idProfile==1 || this.user.idProfile==2 || this.user.idProfile==3) return false;
+            return true;
+        }
     },
     beforeMount(){
         this.setLoginEntry(true);

@@ -138,7 +138,9 @@
               this.setToken(response_login.token);
               let admin ={
                 name : response_login.name,
-                code : response_login.code
+                code : response_login.code,
+                idProfile : response_login.idProfile,
+                charge : response_login.charge
               }
               this.setAdmin(admin);
               this.$router.push('/home');
