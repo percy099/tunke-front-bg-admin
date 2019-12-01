@@ -25,6 +25,7 @@
     </div>
     <div class="row">
       <button class="btn" @click="back()">Volver</button>
+      <button class="btn" @click="exportPDF">Generar Reporte</button>
     </div>    
   </div>
 </template>
@@ -133,6 +134,9 @@
       back(){
         this.$router.push('/home');
       },
+      exportPDF:function(){
+        window.print();
+      }      
     }
   }
 </script>
@@ -162,7 +166,9 @@
   }
   button {
     font-family: 'Montserrat';
-    background-color: rgba(0,203,138,0.66);
+    background-color: #090d4d;
+    color: white;
+    font-weight: 600;    
     position: relative;
     margin-left: auto;
     margin-right: auto; 
