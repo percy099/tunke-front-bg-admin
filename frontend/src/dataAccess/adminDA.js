@@ -85,12 +85,17 @@ export function createLead(idClient, idCampaign, max, min, maxP, minP, rate, tok
     });
 }
 
-export function doCreateAccount(idPer,cur,origin){
+export function doCreateAccount(idPer,cur,origin, type){
     let url =  process.env.VUE_APP_API_URL_CLI + 'api/openAccount/';
     var body ={
         "idPerson" : idPer,
         "currency" : cur,
-        "origin" : origin
+        "origin" : origin,
+        "accountType" : type,
+        "response1" : '',
+        "response2" : '',
+        "response3" : '',
+        "response4" : ''
     }
     
     return axios.post(url,body);
@@ -244,6 +249,23 @@ export function editCampaign(idCampaign,name,month,startDate,endDate,/*minimumLo
 
 export function chargeBlackList(token,file){
     let url = process.env.VUE_APP_API_URL + 'api/blackLists/'
+    let formData = new FormData();
+    formData.append('file', file);
+    return axios.post(url,formData,
+        {
+            headers: {
+                'Content-Type' : 'multipart/form-data'
+            },
+            auth:{
+                username : token,
+                password : ''
+            }
+        }
+        );
+}
+
+export function chargeLeads(token, file){
+    let url = process.env.VUE_APP_API_URL + 'api/leads/'
     let formData = new FormData();
     formData.append('file', file);
     return axios.post(url,formData,

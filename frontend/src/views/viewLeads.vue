@@ -74,7 +74,7 @@ export default {
             this.setLeadIndex(index);
         },
         createLead(){
-            this.$router.push('/leadCreate');
+            this.$router.push('/leadOptions');
             this.setActionLead(1);
         },
     },
