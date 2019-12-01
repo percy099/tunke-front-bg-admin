@@ -11,7 +11,9 @@ export default new Vuex.Store({
       username: "gallardo.a@pucp.pe", 
       password: "Casa12345.",
       code : "",
-      name : ""
+      name : "",
+      idProfile : -1,
+      charge : ''
     },
     prueba: false,
     /*Ronaldo*/
@@ -970,6 +972,8 @@ export default new Vuex.Store({
     setAdm(state, admin){
       state.user.name = admin.name;
       state.user.code = admin.code;
+      state.user.idProfile = admin.idProfile;
+      state.user.charge = admin.charge;
     },
     setLogEntry(state, login_entry){
       state.login_entry = login_entry;
