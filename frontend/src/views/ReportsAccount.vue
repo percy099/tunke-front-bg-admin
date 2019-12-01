@@ -3,10 +3,12 @@
     <h1 class="text-center">Reporte de Cuentas</h1>
     <div class="row">      
       <div class="col-md-6">
-        <label class="mr-1 ml-4">Seleccione año: </label>
-        <date-picker class="mt-5" style= "width: 11vh;" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Año"></date-picker>
-        <label class="mr-1 ml-3">Seleccione mes: </label>
-        <date-picker class="mt-5" style= "width: 11vh;" v-model="value1_1" value-type="format" type="month" format="MM" placeholder="Mes"></date-picker>        
+        <!-- <label class="mr-1 ml-4">Seleccione año: </label> -->
+        <!-- <date-picker class="mt-5" style= "width: 11vh;" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Año"></date-picker> -->
+        <!-- label class="mr-1 ml-3">Seleccione mes: </label> -->
+        <!-- <date-picker class="mt-5" style= "width: 11vh;" v-model="value1_1" value-type="format" type="month" format="MM" placeholder="Mes"></date-picker> -->
+        <label class="mr-1 ml-5">Seleccione año: </label>
+        <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>        
         <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataNumMonth()">Aceptar</button>        
         <div class="Chart">
           <h3 class="text-center" >{{ chart1 }}</h3>
@@ -57,7 +59,9 @@
       return {
         dataNumMonth: {},
         dataNumWeek: {},
-        listMonthWeek: [],
+        listMonthWeek1: [],
+        listMonthWeek2: [],
+        listMonthWeek3: [],
         dataAccountTypeMonth: {},
         dataBalanceMonth: {},
         chart1: 'N° de Cuentas creadas en el Año 2019',
@@ -68,18 +72,22 @@
         value2: '2019',
         value3: '2019',
         lbls: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        dta: [],
+        dta1: [],
+        dta2: [],
+        dta3: [],
         mes: '',              
       }
     },
     computed:{
-      ...mapState(['listDataNumMonth','listCntDollar','listCntSoles','listBalanceAccountSoles','listBalanceAccountDollar'])
+      ...mapState(['listDataNumMonth1','listDataNumMonth2','listDataNumMonth3','listCntDollar','listCntSoles','listBalanceAccountSoles','listBalanceAccountDollar'])
     },      
     mounted(){      
       // Chart 1
       console.log('Llegue');
       this.dynamicDataNumMonth('2019');
-      this.dta = this.listDataNumMonth;
+      this.dta1 = this.listDataNumMonth1;
+      this.dta2 = this.listDataNumMonth2;
+      this.dta3 = this.listDataNumMonth3;
       this.fillDataNumMonth();
 
       // Chart 2
@@ -102,10 +110,26 @@
             {
               fill: false,
               showLine: true,
-              label: 'Número de Cuentas',              
+              label: 'Cuenta Simple',              
               backgroundColor: '#f87979',
               borderColor: '#f87979',
-              data: this.dta,
+              data: this.dta1,
+            },
+            {
+              fill: false,
+              showLine: true,
+              label: 'Cuenta Sueldo',
+              backgroundColor: '#444444',
+              borderColor: '#5DBCD2',
+              data: this.dta2,
+            },
+            {
+              fill: false,
+              showLine: true,
+              label: 'Cuenta Fantasy',
+              backgroundColor: '#000000',
+              borderColor: '#000000',
+              data: this.dta3,
             },
           ]
         }
@@ -122,12 +146,16 @@
         if(this.value1_1 == "" || this.value1_1 == null){
           this.lbls = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];  
           this.dynamicDataNumMonth(this.value1);
-          this.dta = this.listDataNumMonth; 
+          this.dta1 = this.listDataNumMonth1; 
+          this.dta2 = this.listDataNumMonth2;
+          this.dta3 = this.listDataNumMonth3;
           this.fillDataNumMonth();
           this.chart1 = 'N° de Cuentas creadas en el Año ' + this.value1;
         }else{          
           userDA.getByPeriod(this.value1_1, this.value1).then((res) => {
-            this.listMonthWeek = res.data.count;
+            this.listMonthWeek1 = res.data.count[0];
+            this.listMonthWeek2 = res.data.count[1];
+            this.listMonthWeek3 = res.data.count[2];
             switch (this.value1_1){
               case '12':
                 this.mes = 'Diciembre';
@@ -168,7 +196,9 @@
             }                               
             this.chart1 = 'N° de Cuentas creadas en ' + this.mes;
             this.lbls = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
-            this.dta = this.listMonthWeek;
+            this.dta1 = this.listMonthWeek1;
+            this.dta2 = this.listMonthWeek2;
+            this.dta3 = this.listMonthWeek3;
             this.fillDataNumMonth();            
           }).catch(error => {
             Swal.fire({

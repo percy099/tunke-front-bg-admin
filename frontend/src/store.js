@@ -22,7 +22,9 @@ export default new Vuex.Store({
     listAmountLendDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
     listBalanceAccountSoles: [0,0,0,0,0,0,0,0,0,0,0,0],
     listBalanceAccountDollar: [0,0,0,0,0,0,0,0,0,0,0,0],
-    listDataNumMonth: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listDataNumMonth1: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listDataNumMonth2: [0,0,0,0,0,0,0,0,0,0,0,0],
+    listDataNumMonth3: [0,0,0,0,0,0,0,0,0,0,0,0],
     accountsBoth: [],
     /*Ronaldo*/
     parameterSetting:{
@@ -669,36 +671,158 @@ export default new Vuex.Store({
     // Account Charts
     // Chart 1
     fillDataNumMonth(state, year){
-      state.listDataNumMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listDataNumMonth1 = [0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listDataNumMonth2 = [0,0,0,0,0,0,0,0,0,0,0,0];
+      state.listDataNumMonth3 = [0,0,0,0,0,0,0,0,0,0,0,0];
       let aux = state.accountsBoth;
       for (let i = 0; i < aux.length; i++){
         let str = aux[i].openingDate;
         let mm = str.substring(3,5);
         let yy = str.substring(6,10);
         if (mm == '12' && yy == year){
-          state.listDataNumMonth[11]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[11]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[11]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[11]++;
+              break;
+          }
         }else if (mm == '11' && yy == year){
-          state.listDataNumMonth[10]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[10]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[10]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[10]++;
+              break;
+          }
         }else if (mm == '10' && yy == year){
-          state.listDataNumMonth[9]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[9]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[9]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[9]++;
+              break;
+          }
         }else if (mm == '09' && yy == year){
-          state.listDataNumMonth[8]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[8]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[8]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[8]++;
+              break;
+          }
         }else if (mm == '08' && yy == year){
-          state.listDataNumMonth[7]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[7]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[7]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[7]++;
+              break;
+          }
         }else if (mm == '07' && yy == year){
-          state.listDataNumMonth[6]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[6]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[6]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[6]++;
+              break;
+          }
         }else if (mm == '06' && yy == year){
-          state.listDataNumMonth[5]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[5]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[5]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[5]++;
+              break;
+          }
         }else if (mm == '05' && yy == year){
-          state.listDataNumMonth[4]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[4]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[4]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[4]++;
+              break;
+          }
         }else if (mm == '04' && yy == year){
-          state.listDataNumMonth[3]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[3]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[3]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[3]++;
+              break;
+          }
         }else if (mm == '03' && yy == year){
-          state.listDataNumMonth[2]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[2]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[2]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[2]++;
+              break;
+          }
         }else if (mm == '02' && yy == year){
-          state.listDataNumMonth[1]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[1]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[1]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[1]++;
+              break;
+          }
         }else if (mm == '01' && yy == year){
-          state.listDataNumMonth[0]++;
+          switch (aux[i].idAccountType){
+            case (1):
+              state.listDataNumMonth1[0]++;
+              break;
+            case (2):
+              state.listDataNumMonth2[0]++;
+              break;
+            case (3):
+              state.listDataNumMonth3[0]++;
+              break;
+          }
         }
       }
     },    
