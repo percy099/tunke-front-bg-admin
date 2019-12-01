@@ -50,7 +50,9 @@ export default {
     data(){
         return {
             isLoading : false
-        }
+            lendingsArray: [],
+            campaignsArray:[],
+        };
     },
     methods:{
         ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar','fillParameterSettings']),
@@ -116,9 +118,17 @@ export default {
             userDA.getAllAccounts(this.token).then((res2) =>{
                 this.completeAccounts(res2.data);
                 userDA.getAllCampaigns(this.token).then((res3) =>{
-                    this.completeCampaigns(res3.data);
+                    for(let i=0;i<res3.data.length;i++){
+                        this.campaignsArray[i]=res3.data[i];
+                    }
+                    this.campaignsArray.sort(function(a, b){return b.idCampaign-a.idCampaign});
+                    this.completeCampaigns(this.campaignsArray);
                     userDA.getAllLendings(this.token).then((res4) =>{
-                        this.completeLendings(res4.data);
+                        for(let i=0;i<res4.data.length;i++){
+                                this.lendingsArray[i]=res4.data[i];
+                        }
+                        this.lendingsArray.sort(function(a, b){return b.idLoan-a.idLoan});
+                        this.completeLendings(this.lendingsArray);
                         userDA.getAllSalesRecord(this.token).then((res5) =>{
                             this.completeSalesRecords(res5.data);
                             userDA.getAllClientsBlackList(this.token).then((res6) =>{

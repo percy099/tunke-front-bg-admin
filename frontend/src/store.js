@@ -122,6 +122,7 @@ export default new Vuex.Store({
       //interestRate : -1,
       idCurrency : -1,
       active : '',
+      creationDate:'',
       //loanRange : '',
       //periodRange : '',
 
@@ -145,7 +146,8 @@ export default new Vuex.Store({
       fullName: '',
       documentNumber: '',
       documentType: '',
-      requestDate: '',      
+      requestDate: '', 
+      idRecordStatus:-1,     
     },
     salesRecordCreate :{
       activeAccount : false,
@@ -227,6 +229,7 @@ export default new Vuex.Store({
           //maximumPeriod: '',
           //minimumLoan: '',
           //minimumPeriod: '',
+          creationDate:'',
           month: '',
           name: '',
           startDate: ''
@@ -296,7 +299,7 @@ export default new Vuex.Store({
     fillLendings(state,lendings_data){
       state.lendings=[];
       for (let i=0; i< lendings_data.length;i++){
-        if(lendings_data[i].active){       
+        if(lendings_data[i].active && (lendings_data[i].idRecordStatus==1 || lendings_data[i].idRecordStatus==2)){       
           state.lendings.push({
             idLoan : lendings_data[i].idLoan,
             totalShares : lendings_data[i].totalShares,
@@ -317,6 +320,7 @@ export default new Vuex.Store({
             documentNumber : lendings_data[i].documentNumber,
             documentType : lendings_data[i].documentType,
             requestDate : lendings_data[i].requestDate,
+            idRecordStatus : lendings_data[i].idRecordStatus,
           });
           //console.log(lendings_data[i].currency);
         }
@@ -339,7 +343,8 @@ export default new Vuex.Store({
             //maximumPeriod : campaign.maximumPeriod,
             //interestRate : campaign.interestRate,
             idCurrency : campaign.idCurrency,
-            active : campaign.active
+            active : campaign.active,
+            creationDate : campaign.creationDate
           });
         }
       }
@@ -1095,6 +1100,7 @@ export default new Vuex.Store({
       //state.campaignCreate.interestRate = '';
       state.campaignCreate.idCurrency = -1;
       state.campaignCreate.active = '';
+      state.campaignCreate.creationDate='';
       //state.campaignCreate.loanRange = '';
       //state.campaignCreate.periodRange = '';
     },
@@ -1118,6 +1124,7 @@ export default new Vuex.Store({
       state.lendingCreate.documentNumber = '';
       state.lendingCreate.documentType = '';
       state.lendingCreate.requestDate = '';      
+      state.lendingCreate.idRecordStatus=-1;
     },
     fillAccByCli(state,accountsData){
       state.accountsByClient = [];
@@ -1177,7 +1184,8 @@ export default new Vuex.Store({
       state.campaignCreate.idCurrency = state.campaigns[index].idCurrency;
       if(state.campaigns[index].active == 1){
         state.campaignCreate.active = 'Activo'
-      }
+      };
+      state.campaignCreate.creationDate=state.campaigns[index].creationDate;
       /*Que percy me mande la moneda
       if(state.campaigns[index].idCurrency == 1){
         state.campaignCreate.loanRange = "De " + state.campaignCreate.minimumLoan + " a " + state.campaignCreate.maximumLoan + " soles";
@@ -1208,7 +1216,8 @@ export default new Vuex.Store({
       state.lendingCreate.fullName = state.lendings[index].fullName;
       state.lendingCreate.documentNumber = state.lendings[index].documentNumber;
       state.lendingCreate.documentType = state.lendings[index].documentType;
-      state.lendingCreate.requestDate = state.lendings[index].requestDate;      
+      state.lendingCreate.requestDate = state.lendings[index].requestDate;
+      state.lendingCreate.idRecordStatus  =  state.lendings[index].idRecordStatus;
     },
     setLeadInd(state, index){
       state.leadCreate.idLead = state.leadsByCampaign[index].idLead;
