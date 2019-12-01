@@ -344,3 +344,17 @@ export function createBlacklist(token,dni,reason){
         }
     });
 }
+
+export function generateCalendar(idLoan, token){
+    let url = process.env.VUE_APP_API_URL + 'api/loans/generateCalendar/';
+
+    var body = {
+        "idLoan" : idLoan
+    }
+    return axios.post(url, body,{
+        auth:{
+            username: token,
+            password: ''
+        }
+    });
+}

@@ -19,6 +19,7 @@
     "vue-google-api": "^0.2.0",
     "vue-google-login": "^2.0.2",
     "vue-google-signin-button-directive": "^1.0.3",
+    "vue-loading-overlay": "^3.2.0",
     "vue-month-picker": "^1.2.4",
     "vue-promise-btn": "^2.0.2",
     "vue-router": "^3.0.3",

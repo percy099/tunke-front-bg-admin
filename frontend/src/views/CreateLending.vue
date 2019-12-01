@@ -140,7 +140,7 @@
                     <div v-if="selectCampaign == 2" class="invalid-feedback">
                         <span v-if="selectAccountDolar == 0 || selectAccountDolar == undefined">Debe seleccionar una cuenta </span>
                     </div>
-                    <h6 class="mt-3">Número de cuotas</h6>
+                    <h6 class="mt-3">Número de cuotas (mensual)</h6>
                     <input type="text" id="right2" class="form-control"
                     v-model.trim="$v.totalShares.$model" :class="{
                     'is-invalid' : $v.totalShares.$error, 'is-valid':!$v.totalShares.$invalid }">
