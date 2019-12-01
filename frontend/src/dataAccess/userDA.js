@@ -13,6 +13,16 @@ export function doLogin(email,password){
     return axios.post(url,body);
 }
 
+export function doLogOff(token){
+    let url = process.env.VUE_APP_API_URL + 'api/logoff/';
+    
+    var body = {
+
+    }
+
+    return axios.post(url,body);
+}
+
 export function doLoginGoogle(email){
 
     let url = process.env.VUE_APP_API_URL + 'api/verifyEmail/';

@@ -19,6 +19,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import * as UserDA from '@/dataAccess/userDA.js'
+import axios from 'axios';
 export default {
     computed :{
         ...mapState(['user']),
@@ -26,6 +28,7 @@ export default {
     methods :{
         ...mapActions(['setLoginEntry']),
         logOff(){
+            UserDA.doLogOff(this.token);
             this.setLoginEntry(false);
             this.$router.push('/');
         }
