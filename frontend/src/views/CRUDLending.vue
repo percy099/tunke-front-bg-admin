@@ -16,14 +16,15 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nombre Cliente</th>
+                        <th>Cliente</th>
                         <th>Monto</th>
                         <th>Cuota</th>
-                        <th>Núm. cuotas</th>
-						<th>Tasa interés</th>
+                        <th style="width: 10%;">Núm. cuotas</th>
+						<th style="width: 10%;">Tasa interés</th>
                         <!--<th>Tipo cuota</th>-->
-                        <th>Fecha</th>
-                        <th>Acciones</th>
+                        <th>Estado</th>
+                        <th style="width: 12%;">Fecha</th>
+                        <th style="width: 5%;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,14 +32,16 @@
 						<td>{{index + 1}}</td>
                         <td>{{lending.fullName}}</td>
                         <td>{{lending.amount}}</td>
-                        <td>{{lending.share}}</td>
-                        <td>{{lending.totalShares}}</td>
+                        <td >{{lending.share}}</td>
+                        <td >{{lending.totalShares}}</td>
 						<!--<td v-if = "lending.idShareType==1">Ordinaria</td>
                         <td v-if = "lending.idShareType==2">Extraordinaria</td>-->
-                        <td>{{lending.interestRate}}%</td>
-                        <td>{{lending.requestDate}}</td>
-                        <td>
-                            <a @click="viewLending(index)" href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalle">&#xE254;</i></a>
+                        <td >{{lending.interestRate}}%</td>
+                        <td  v-if = "lending.idRecordStatus==1">Aprobado</td>
+                        <td v-if = "lending.idRecordStatus==2">Desaprobado</td>
+                        <td >{{lending.requestDate}}</td> 
+                        <td >
+                            <a @click="viewLending(index)" href="#editPrestamoModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Ver Detalle">&#xE880;</i></a>
                             <!--a @click="deleteClient(index)" href="#deletePrestamoModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>-->
                         </td>
                     </tr>
@@ -65,7 +68,7 @@ import { required, minLength, maxLength, numeric} from 'vuelidate/lib/validators
 export default {
     data(){
         return {
-            allLendings: []
+            lendingsArray: [],
         };
     },
     computed:{
@@ -77,7 +80,7 @@ export default {
                 "sProcessing":     "Procesando...",
                 "sLengthMenu":     "Mostrar _MENU_ registros",
                 "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
                 "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
                 "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
                 "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
@@ -107,12 +110,14 @@ export default {
         },
         fetchLendings: function(){
             userDA.getAllLendings(this.token).then((res) =>{
-                console.log("update");
-                console.log(res.data);
-                let response_create = res.data;
-                this.completeLendings(res.data);
-                this.allLendings=[];
-                //for (let i=0; i<response_create.accounts.length;i++){
+                console.log("update lendings");
+                for(let i=0;i<res.data.length;i++){
+                    this.lendingsArray[i]=res.data[i];
+                }
+                console.log("tamaño: ",this.lendingsArray.length);
+                this.lendingsArray.sort(function(a, b){return b.idLoan-a.idLoan});
+                this.completeLendings(this.lendingsArray);
+                //this.completeLendings(res.data);
             }).catch(error =>{
                 Swal.fire({
                     title: 'Error',

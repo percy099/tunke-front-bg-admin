@@ -44,12 +44,26 @@
 
 <script>
 import * as adminDA from '@/dataAccess/adminDA.js'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Swal from 'sweetalert2'
 
 export default {
     name : 'clientAccounts',
     methods:{
+        ...mapActions(['fillAccountsByClient']),
+        updatedClientsAccount: function() {
+            adminDA.getAccountsByClient(this.clientCreate.idClient,this.token).then((res)=>{
+                let accountsData = res.data;
+                accountsData = accountsData.accounts;
+                this.fillAccountsByClient(accountsData);
+            }).catch(error=>{
+                Swal.fire({
+                    title :'Error',
+                    type : 'error',
+                    text : 'Error obteniendo las cuentas del cliente'
+                })
+            });
+        },
         createAccount(){
             const { value: currency } = Swal.fire({
                 title: 'Seleccionar moneda',
@@ -65,6 +79,7 @@ export default {
                     return 'Debes seleccionar una moneda'
                     }
                     adminDA.doCreateAccount(this.clientCreate.idPerson,value).then((res)=>{
+                        this.updatedClientsAccount();
                         Swal.fire({
                             type: 'success',
                             title: 'Enhorabuena',
@@ -92,6 +107,8 @@ export default {
             }).then((result) =>{
                 if(result.value){
                     adminDA.deleteAccount(this.accountsByClient[index].idAccount,this.token).then((res)=>{
+                        console.log("update delete account");
+                        this.updatedClientsAccount();
                         Swal.fire({
                             text: 'Cuenta eliminada correctamente',
                             type: 'success'
@@ -116,7 +133,7 @@ export default {
                 "sProcessing":     "Procesando...",
                 "sLengthMenu":     "Mostrar _MENU_ registros",
                 "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
                 "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
                 "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
                 "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
@@ -133,6 +150,9 @@ export default {
                 }
             }
         });
+
+        console.log("id cliente: " + this.clientCreate.idClient);
+        this.updatedClientsAccount();
 	},
 }
 </script>

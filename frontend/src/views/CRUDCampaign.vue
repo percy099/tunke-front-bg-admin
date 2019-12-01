@@ -21,6 +21,7 @@
                         <th>Fecha inicio</th>
 						<th>Fecha fin</th>
                         <th>Tipo de moneda</th>
+                        <th>Fecha de creación</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -33,6 +34,7 @@
                         <td class="space_2">{{campaign.endDate}}</td>
                         <td v-if = "campaign.idCurrency==1">Soles</td>
                         <td v-if = "campaign.idCurrency==2">Dólares</td>
+                        <td class="space_2">{{campaign.creationDate}}</td>
                         <td class="space_2">
                             <a @click="viewCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Visualizar">&#xE880;</i></a>
                             <a @click="editCampaign(index)" href="#editCampaignModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
@@ -55,9 +57,14 @@
 import {mapState, mapActions} from 'vuex'
 import Swal from 'sweetalert2'
 import * as adminDA from '@/dataAccess/adminDA.js'
-
+import * as userDA from '@/dataAccess/userDA.js'
 
 export default {
+    data(){
+        return{
+            campaignsArray:[],
+        };
+    },
     computed:{
         ...mapState(['campaigns','token'])
 	},
@@ -67,7 +74,7 @@ export default {
                 "sProcessing":     "Procesando...",
                 "sLengthMenu":     "Mostrar _MENU_ registros",
                 "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
                 "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
                 "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
                 "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
@@ -84,27 +91,47 @@ export default {
                 }
             }
         });
+        this.updatedCampaigns();
     },
 
     methods:{
-        ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate','fillLeadsByCampaing']),
+        ...mapActions(['setActionCampaign','setCampaignIndex','cleanCampaignCreate','fillLeadsByCampaing','completeCampaigns']),
+        updatedCampaigns: function() {
+            userDA.getAllCampaigns(this.token).then((res) =>{
+                console.log("update Campaigns");
+                for(let i=0;i<res.data.length;i++){
+                    this.campaignsArray[i]=res.data[i];
+                }
+                console.log("tamaño: ",this.campaignsArray.length);
+                this.campaignsArray.sort(function(a, b){return b.idCampaign-a.idCampaign});
+                this.completeCampaigns(this.campaignsArray);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las campañas'
+                })
+            });
+        },
         viewCampaign(index){
             this.$router.push('/campaignCreate');
             this.setActionCampaign(0);
             this.setCampaignIndex(index);
         },
         viewLeads(index){
-            this.$router.push('/viewLeads');
+            
             this.setCampaignIndex(index);
             adminDA.getLeadsByCampaign(this.campaigns[index].idCampaign,this.token).then((res)=>{
                 this.fillLeadsByCampaing(res.data.leads)
+                this.$router.push('/viewLeads');
             }).catch(error=>{
                 Swal.fire({
                     title: 'Error',
-                    text: 'Ocurrió un problema eliminando a la campaña',
+                    text: 'Error obteniendo los Leads',
                     type : 'error'
                 })
             });
+            
         },
 		createCampaign(){
             this.$router.push('/campaignOptions');
@@ -128,6 +155,7 @@ export default {
             }).then((result) =>{
                 if(result.value){
                     adminDA.deleteCampaign(this.campaigns[index].idCampaign,this.token).then((res)=>{
+                        this.updatedCampaigns();
                         Swal.fire({
                             text: 'Campaña eliminada correctamente',
                             type: 'success'

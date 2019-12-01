@@ -3,6 +3,7 @@
     <div class="container">
         <div class="table-wrapper">
             <h1>Leads </h1>
+            <h3>Campaña : {{campaignCreate.name}}</h3>
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
@@ -52,17 +53,28 @@ import Swal from 'sweetalert2'
 
 export default {
     computed:{
-        ...mapState(['leadsByCampaign','token','editLead'])
+        ...mapState(['leadsByCampaign','token','editLead','campaignCreate'])
     },
     methods :{
-        ...mapActions(['setSalesRecordIndex','setActionLead','setLeadIndex']),
+        ...mapActions(['setSalesRecordIndex','setActionLead','setLeadIndex','fillLeadsByCampaing']),
+        updatedLeads: function() {
+            adminDA.getLeadsByCampaign(this.campaignCreate.idCampaign,this.token).then((res)=>{
+                this.fillLeadsByCampaing(res.data.leads)
+            }).catch(error=>{
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error obteniendo los Leads',
+                    type : 'error'
+                })
+            });
+        },
         viewLead(index){
             this.$router.push('/leadCreate');
             this.setActionLead(0);
             this.setLeadIndex(index);
         },
         createLead(){
-            this.$router.push('/leadCreate');
+            this.$router.push('/leadOptions');
             this.setActionLead(1);
         },
     },
@@ -72,7 +84,7 @@ export default {
                 "sProcessing":     "Procesando...",
                 "sLengthMenu":     "Mostrar _MENU_ registros",
                 "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
                 "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
                 "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
                 "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
@@ -89,6 +101,8 @@ export default {
                 }
             }
         });
+        console.log("id campaña" + this.campaignCreate.idCampaign);
+        this.updatedLeads();
 	}
 }
 </script>

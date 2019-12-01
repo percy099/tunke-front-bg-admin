@@ -10,9 +10,10 @@
             <h6 id="img-down">Banca de Negocios</h6>
         </div>
         <div class="item3">
-            <h3 id="name">{{user.name}}</h3>
+            <h5>{{user.charge}}</h5>
+            <h3 class="p-0" id="name">{{user.name}}</h3>
             <h5>{{user.code}}</h5>
-            <button class="button" @click="logOff()">Salir</button>
+            <button class="button mb-2" @click="logOff()">Salir</button>
         </div>
     </div>
 </template>

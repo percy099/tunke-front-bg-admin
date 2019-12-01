@@ -18,8 +18,8 @@
                         <th>#</th>
                         <th>Nombre</th>
                         <th>Correo electrónico</th>
-						<th>Dirección</th>
-                        <th>Número de Documento</th>
+						<th style="width: 18%; text-align: center;">Tipo Documento</th>
+                        <th style="width: 18%; text-align: center;">Número de Documento</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -28,8 +28,8 @@
 						<td>{{index + 1}}</td>
                         <td>{{client.firstName + ' ' + client.fatherLastname}}</td>
                         <td>{{client.email1}}</td>
-						<td>{{client.address}}</td>
-                        <td>{{client.documentNumber}}</td>
+						<td style="text-align:center;">{{client.documentType}}</td>
+                        <td style="text-align:center;">{{client.documentNumber}}</td>
                         <td>
                             <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                             <a @click="deleteClient(index)" href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
@@ -49,8 +49,14 @@
 import {mapState, mapActions} from 'vuex'
 import Swal from 'sweetalert2'
 import * as adminDA from '@/dataAccess/adminDA.js'
+import * as userDA from '@/dataAccess/userDA.js'
 
 export default {
+    data(){
+        return {
+            clientsArray: [],
+        };
+    },
     computed:{
         ...mapState(['clients','token'])
 	},
@@ -77,9 +83,21 @@ export default {
                 }
             }
         });
+        this.updatedClients();
 	},
 	methods:{
-        ...mapActions(['setActionClient','setClientIndex']),
+        ...mapActions(['setActionClient','setClientIndex','completeClients']),
+        updatedClients: function() {
+            userDA.getAllClients(this.token).then((res) =>{
+                this.completeClients(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo los clientes'
+                })
+            });
+        },
 		createClient(){
             this.$router.push('/clientCreate');
             this.setActionClient(false);
@@ -101,6 +119,7 @@ export default {
             }).then((result) =>{
                 if(result.value){
                     adminDA.deleteClient(this.clients[index].idClient,this.token).then((res)=>{
+                        this.updatedClients();
                         Swal.fire({
                             text: 'Cliente eliminado correctamente',
                             type: 'success'

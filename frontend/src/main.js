@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
 import VueGoogleApi from 'vue-google-api'
+import vSelect from 'vue-select'
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
@@ -20,6 +21,9 @@ const config = {
   
 }
 Vue.use(VueGoogleApi, config)
+
+Vue.component('v-select', vSelect)
+
 
 
 new Vue({

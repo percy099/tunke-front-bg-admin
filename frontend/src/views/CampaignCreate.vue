@@ -16,11 +16,10 @@
                 <div v-if="editCampaign == 0" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
                     <input v-model="campaignCreate.name" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Fecha de inicio</h6>
-                    <input v-model="campaignCreate.startDate" type="date" class="form-control" disabled>
-                    <h6 class="mt-3 mb-3">Tipo de moneda</h6>
-                    <input v-if = "campaignCreate.idCurrency==1" placeholder="Soles" type="text" class="form-control mb-5" disabled>
-                     <input v-if = "campaignCreate.idCurrency==2"  placeholder="Dólares"  type="text" class="form-control mb-5" disabled>
+                    <h6 class="mt-3">Fecha de creación</h6>
+                    <input v-model="campaignCreate.creationDate" type="date" class="form-control" disabled>
+                    <h6 class="mt-3">Fecha de cierre</h6>
+                    <input v-model="campaignCreate.endDate" type="date" class="form-control mb-3" disabled>
                     <!--<h6 class="mt-3">Préstamo Rango</h6>
                     <input v-model="campaignCreate.loanRange" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Tasa de interés</h6>
@@ -29,8 +28,11 @@
                 <div v-if="editCampaign == 0" class="col-6 groupRightPersonal">
                     <h6>Mes activo</h6>
                     <input v-model="campaignCreate.month" type="text" class="form-control" disabled>
-                    <h6 class="mt-3">Fecha de cierre</h6>
-                    <input v-model="campaignCreate.endDate" type="date" class="form-control" disabled>
+                    <h6 class="mt-3">Fecha de inicio</h6>
+                    <input v-model="campaignCreate.startDate" type="date" class="form-control" disabled>
+                    <h6 class="mt-3">Tipo de moneda</h6>
+                    <input v-if = "campaignCreate.idCurrency==1" placeholder="Soles" type="text" class="form-control mb-5" disabled>
+                     <input v-if = "campaignCreate.idCurrency==2"  placeholder="Dólares"  type="text" class="form-control mb-5" disabled>
                     <!--<h6 class="mt-3">Rango de meses</h6>
                     <input v-model="campaignCreate.periodRange" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Campaña activa</h6>
@@ -67,7 +69,9 @@
                 </div>
                 <div v-if="editCampaign == 2" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
-                    <input v-model="campaignCreate.name" type="text" class="form-control mb-5">
+                    <input v-model="campaignCreate.name" type="text" class="form-control">
+                    <h6 class="mt-3">Fecha de creación</h6>
+                    <input v-model="campaignCreate.creationDate" type="date" class="form-control mb-5" disabled>
                     <!--<h6 class="mt-3">Moneda</h6>
                     <select v-model="selectCurrency" style="height:2.3em; width:21em;" class="mb-4">
                         <option v-for="optionCurrency in optionsCurrency" v-bind:value="optionCurrency.value">

@@ -72,7 +72,7 @@ select{
 }
 
 #btnEditAccounts{
-  width : 20%;
+  width : 40%;
 }
 
 .groupLeftPersonal{
@@ -97,5 +97,5 @@ select{
 
 .custom-cont{
   display: grid;
-    grid-template: 85px / 25% 75%;
+    grid-template: 85px / 25% 25% 50%;
 }
