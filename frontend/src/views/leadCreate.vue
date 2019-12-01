@@ -105,8 +105,8 @@
                         </div>
                     </div>
                     <div>
-                        <h6 class="mt-3">Periodo Mínimo</h6> 
-                        <input type="text" class="form-control mb-3"
+                        <h6 class="mt-3">Periodo Mínimo (mensual)</h6> 
+                        <input type="text" class="form-control"
                         v-model.trim="$v.minPeriod.$model" :class="{
                         'is-invalid' : $v.minPeriod.$error, 'is-valid':!$v.minPeriod.$invalid }">
                         <div class="valid-feedback">Monto Válido!</div>
@@ -120,18 +120,18 @@
                         </div>
                     </div>
                     <div>
-                        <h6 class="mt-3">Tasa de interés</h6> 
+                        <h6 class="mt-3">Tasa de interés (%)</h6> 
                         <input type="text" class="form-control mb-3"
-                        v-model.trim="$v.rate.$model" :class="{
+                        v-model.trim="$v.rate.$model" :class="{ 
                         'is-invalid' : $v.rate.$error, 'is-valid':!$v.rate.$invalid }">
-                        <div class="valid-feedback">Monto Válido!</div>
+                        <div class="valid-feedback">Tasa de interés válida!</div>
                         <div class="invalid-feedback">
                             <span v-if="!$v.rate.minValue">Debe ser de al menos {{
                             $v.rate.$params.minValue.min}} </span>
                             <span v-if="!$v.rate.maxValue">Debe ser a lo mucho de {{
                             $v.rate.$params.maxValue.max}} </span>
                             <span v-if="!$v.rate.numeric">Debe contener solo números. </span>
-                            <span v-if="!$v.rate.required">Monto Requerido. </span>
+                            <span v-if="!$v.rate.required">Tasa de interés Requerido. </span>
                         </div>
                     </div>
                 </div>
@@ -155,8 +155,8 @@
                         </div>
                     </div>
                     <div>
-                        <h6 class="mt-3">Periodo Máximo</h6>
-                        <input type="text" class="form-control mb-3"
+                        <h6 class="mt-3">Periodo Máximo (mensual)</h6>
+                        <input type="text" class="form-control"
                         v-model.trim="$v.maxPeriod.$model" :class="{
                         'is-invalid' : $v.maxPeriod.$error, 'is-valid':!$v.maxPeriod.$invalid }">
                         <div class="valid-feedback">Monto Válido!</div>
@@ -176,9 +176,9 @@
                     <input v-model="campaignCreate.name" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Mínimo</h6> 
                     <input v-model="leadCreate.minimumLoan" type="text" class="form-control mb-3" disabled>
-                    <h6 class="mt-3">Periodo Mínimo</h6> 
+                    <h6 class="mt-3">Periodo Mínimo (mensual)</h6> 
                     <input v-model="leadCreate.minimumPeriod" type="text" class="form-control mb-3" disabled>
-                    <h6 class="mt-3">Tasa de interés</h6> 
+                    <h6 class="mt-3">Tasa de interés (%)</h6> 
                     <input v-model="leadCreate.interestRate" type="text" class="form-control mb-3" disabled>
                 </div>
                 <div v-if="editLead == 0" class="col-6 groupRightPersonal">
@@ -187,7 +187,7 @@
                     <input v-if="campaignCreate.idCurrency == 2" placeholder="Dólares" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Monto Máximo</h6>
                     <input v-model="leadCreate.maximumLoan" type="text" class="form-control mb-3" disabled>
-                    <h6 class="mt-3">Periodo Máximo</h6>
+                    <h6 class="mt-3">Periodo Máximo (mensual)</h6>
                     <input v-model="leadCreate.maximumPeriod" type="text" class="form-control mb-3" disabled>
                 </div>
             </div>

@@ -42,6 +42,12 @@
     import Swal from 'sweetalert2'
 
 export default {
+    data(){
+        return {
+            lendingsArray: [],
+            campaignsArray:[],
+        };
+    },
     methods:{
         ...mapActions(['completeClients','completeLendings','setLoginEntry','completeAccounts','completeSalesRecords','completeCampaigns','completeClientsBlackList','completeBankAccount','completeTransactions','completeTransactionsSoles','completeTransactionsDollar','fillParameterSettings']),
         openWindow(window){
@@ -103,7 +109,13 @@ export default {
             })
         });
         userDA.getAllCampaigns(this.token).then((res) =>{
-            this.completeCampaigns(res.data);
+            for(let i=0;i<res.data.length;i++){
+                this.campaignsArray[i]=res.data[i];
+            }
+            console.log("tamaño: ",this.campaignsArray.length);
+            this.campaignsArray.sort(function(a, b){return b.idCampaign-a.idCampaign});
+            this.completeCampaigns(this.campaignsArray);
+            //this.completeCampaigns(res.data);
         }).catch(error =>{
             Swal.fire({
                 title: 'Error',
@@ -112,7 +124,13 @@ export default {
             })
         });
         userDA.getAllLendings(this.token).then((res) =>{
-            this.completeLendings(res.data);
+            for(let i=0;i<res.data.length;i++){
+                    this.lendingsArray[i]=res.data[i];
+            }
+            console.log("tamaño: ",this.lendingsArray.length);
+            this.lendingsArray.sort(function(a, b){return b.idLoan-a.idLoan});
+            this.completeLendings(this.lendingsArray);
+            
         }).catch(error =>{
             Swal.fire({
                 title: 'Error',

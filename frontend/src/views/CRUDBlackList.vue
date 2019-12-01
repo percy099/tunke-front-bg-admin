@@ -47,6 +47,7 @@
 import {mapState, mapActions} from 'vuex'
 import Swal from 'sweetalert2'
 import * as adminDA from '@/dataAccess/adminDA.js'
+import * as userDA from '@/dataAccess/userDA.js'
 
 export default {
     computed:{
@@ -75,9 +76,22 @@ export default {
                 }
             }
         });
+        this.updatedClientsBlackList();
 	},
 	methods:{
-        ...mapActions(['setActionClient','setClientIndex']),
+        ...mapActions(['setActionClient','setClientIndex','completeClientsBlackList']),
+        updatedClientsBlackList: function() {
+            userDA.getAllClientsBlackList(this.token).then((res) =>{
+                console.log("update Clients BlackList");
+                this.completeClientsBlackList(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo los clientes especiales'
+                })
+            });
+        },
         createAccount(){
             const { value: currency } = Swal.fire({
                 title: 'Seleccionar moneda',
