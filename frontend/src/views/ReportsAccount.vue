@@ -39,17 +39,17 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
+    
+      
         <label class="mr-1 ml-5">Seleccione año: </label>
         <date-picker class="mt-5" v-model="value3" value-type="format" type="year" format="YYYY" placeholder="Seleccione año"></date-picker>
         <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataBalanceMonth()">Aceptar</button>
         <div class="Chart">
           <h3 class="text-center" >{{ chart3 }}</h3>
-          <line-chart :chart-data="dataBalanceMonth"></line-chart>
+          <line-chart :chart-data="dataBalanceMonth" :options="opt"></line-chart>
         </div>
-      </div>       
-    </div>
+             
+    
     <div class="row">
       <button class="btn" @click="back()">Volver</button>
       <button class="btn" @click="exportPDF">Generar Reporte</button>
@@ -92,7 +92,13 @@
       ...mapState(['listDataNumMonth1','listDataNumMonth2','listDataNumMonth3',
                    'listCntDollar1','listCntDollar2','listCntDollar3',
                    'listCntSoles1','listCntSoles2','listCntSoles3',
-                   'listBalanceAccountSoles','listBalanceAccountDollar'])
+                   'listBalanceAccountSoles','listBalanceAccountDollar']),
+      opt(){
+        return{
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      }
     },      
     mounted(){      
       // Chart 1

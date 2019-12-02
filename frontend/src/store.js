@@ -1194,73 +1194,73 @@ export default new Vuex.Store({
         let mm = str.substring(3,5);
         let yy = parseInt(str.substring(6,10));
         let yearInt = parseInt(year);
-        if (mm == '12' && yy <= yearInt){
+        if (mm == '12' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[11] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[11] += aux[i].balance;
           }         
-        }else if (mm == '11' && yy <= yearInt){
+        }else if (mm == '11' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[10] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[10] += aux[i].balance;
           }         
-        }else if (mm == '10' && yy <= yearInt){
+        }else if (mm == '10' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[9] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[9] += aux[i].balance;
           } 
-        }else if (mm == '09' && yy <= yearInt){
+        }else if (mm == '09' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[8] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[8] += aux[i].balance;
           } 
-        }else if (mm == '08' && yy <= yearInt){
+        }else if (mm == '08' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[7] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[7] += aux[i].balance;
           } 
-        }else if (mm == '07' && yy <= yearInt){
+        }else if (mm == '07' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[6] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[6] += aux[i].balance;
           } 
-        }else if (mm == '06' && yy <= yearInt){
+        }else if (mm == '06' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[5] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[5] += aux[i].balance;
           } 
-        }else if (mm == '05' && yy <= yearInt){
+        }else if (mm == '05' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[4] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[4] += aux[i].balance;
           } 
-        }else if (mm == '04' && yy <= yearInt){
+        }else if (mm == '04' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[3] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[3] += aux[i].balance;
           } 
-        }else if (mm == '03' && yy <= yearInt){
+        }else if (mm == '03' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[2] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[2] += aux[i].balance;
           } 
-        }else if (mm == '02' && yy <= yearInt){
+        }else if (mm == '02' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[1] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[1] += aux[i].balance;
           } 
-        }else if (mm == '01' && yy <= yearInt){
+        }else if (mm == '01' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[0] += aux[i].balance;
           } else if (idCurrency == 2){
