@@ -251,7 +251,7 @@ export default {
             let numberExtra = 0;
             let tem =Math.pow(1+(tea/100),1/12)-1;
             console.log("tem: " +tem);
-            let commission = 0.25;
+            let commission = this.parameterSetting.commissionPercentage;
             
             //Cuota extraordinaria
             let moment = require('moment');

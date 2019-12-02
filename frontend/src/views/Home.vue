@@ -49,7 +49,7 @@
 export default {
     data(){
         return {
-            isLoading : false
+            isLoading : false,
             lendingsArray: [],
             campaignsArray:[],
         };

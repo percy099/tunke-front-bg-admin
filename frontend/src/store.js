@@ -68,7 +68,7 @@ export default new Vuex.Store({
     amountBankAccountDollar: 0,
     token : '',
     clients : [],
-    lendings: [],
+    lendings: [], 
     campaigns:[],
     accounts: [],
     transactions: [],
@@ -201,6 +201,21 @@ export default new Vuex.Store({
       fatherLastname: '',
       motherLastname: '',
       birthdate: ''
+    },
+    blackListCreate :{
+      idPerson : -1,
+      documentNumber : '',
+      documentType: '',
+      firstName : '',
+      middleName : '',
+      fatherLastname : '',
+      motherLastname : '',
+      birthdate : '',
+      nationality : '',
+      address : '',
+      vehicle1Plate : '',
+      vehicle2Plate : '',
+      reason: ''
     },
     person:{
       idProspectiveClient: -1,
@@ -1332,9 +1347,17 @@ export default new Vuex.Store({
       for(let i=0; i<clientsBlackList_data.length;i++){
           state.clientsBlackList.push({
             idPerson : clientsBlackList_data[i].idPerson,
+            documentType : clientsBlackList_data[i].documentType,
             documentNumber : clientsBlackList_data[i].documentNumber,
             firstName : clientsBlackList_data[i].firstName,
+            middleName : clientsBlackList_data[i].middleName,
             fatherLastname : clientsBlackList_data[i].fatherLastname,
+            motherLastname : clientsBlackList_data[i].motherLastname,
+            birthdate : clientsBlackList_data[i].birthdate,
+            address : clientsBlackList_data[i].address,
+            nationality : clientsBlackList_data[i].nationality,
+            vehicle1Plate : clientsBlackList_data[i].vehicle1Plate,
+            vehicle2Plate : clientsBlackList_data[i].vehicle2Plate,
             reason : clientsBlackList_data[i].reason
           });
       }
@@ -1427,6 +1450,22 @@ export default new Vuex.Store({
       state.clientCreate.cellphone2 = state.clients[index].cellphone2;
       state.clientCreate.vehicle1Plate = state.clients[index].vehicle1Plate;
       state.clientCreate.vehicle2Plate = state.clients[index].vehicle2Plate;
+    },
+    setBlackLInd(state,index){
+      state.selectedBlackListIndex = index;
+      state.blackListCreate.idPerson = state.clientsBlackList[index].idPerson;
+      state.blackListCreate.firstName = state.clientsBlackList[index].firstName;
+      state.blackListCreate.documentType = state.clientsBlackList[index].documentType;
+      state.blackListCreate.documentNumber = state.clientsBlackList[index].documentNumber;
+      state.blackListCreate.middleName = state.clientsBlackList[index].middleName;
+      state.blackListCreate.fatherLastname = state.clientsBlackList[index].fatherLastname;
+      state.blackListCreate.motherLastname = state.clientsBlackList[index].motherLastname;
+      state.blackListCreate.birthdate = state.clientsBlackList[index].birthdate;
+      state.blackListCreate.nationality = state.clientsBlackList[index].nationality;
+      state.blackListCreate.address = state.clientsBlackList[index].address;
+      state.blackListCreate.vehicle1Plate = state.clientsBlackList[index].vehicle1Plate;
+      state.blackListCreate.vehicle2Plate = state.clientsBlackList[index].vehicle2Plate;
+      state.blackListCreate.reason = state.clientsBlackList[index].reason;
     },
     cleanCliCre(state){
       state.clientCreate.idPerson = -1;
@@ -1815,6 +1854,9 @@ export default new Vuex.Store({
       },
       setClientIndex(context,index){
         context.commit('setCliInd',index);
+      },
+      setBlackListIndex(context,index){
+        context.commit('setBlackLInd',index);
       },
       completePersonCreate(context,person_data){
         context.commit('fillPersonCreate',person_data);

@@ -17,6 +17,7 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
+                        <th>Tipo de Documento</th>
                         <th>Número de Documento</th>
                         <th>Razón</th>
                         <th>Acciones</th>
@@ -26,11 +27,12 @@
                     <tr v-for="(client,index) in clientsBlackList" v-bind:key="index">
 						<td>{{index + 1}}</td>
                         <td>{{client.firstName + ' ' + client.fatherLastname}}</td>
+                        <td>{{client.documentType}}</td>
                         <td>{{client.documentNumber}}</td>
                         <td>{{client.reason}}</td>
                         <td>
-                            <a @click="editClient(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
-                            <a @click="deleteClient(index)" href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                            <a @click="viewBlackList(index)" href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Visualizar">&#xE880;</i></a>
+                            <!--<a @click="deleteClient(index)" href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>-->
                         </td>
                     </tr>
                 </tbody>
@@ -51,7 +53,7 @@ import * as userDA from '@/dataAccess/userDA.js'
 
 export default {
     computed:{
-        ...mapState(['clients','token','clientsBlackList'])
+        ...mapState(['clients','token','clientsBlackList','blackListCreate'])
 	},
 	mounted(){
 		$('#mydatatable').DataTable({
@@ -79,7 +81,7 @@ export default {
         this.updatedClientsBlackList();
 	},
 	methods:{
-        ...mapActions(['setActionClient','setClientIndex','completeClientsBlackList']),
+        ...mapActions(['setActionClient','setClientIndex','completeClientsBlackList','setBlackListIndex']),
         updatedClientsBlackList: function() {
             userDA.getAllClientsBlackList(this.token).then((res) =>{
                 console.log("update Clients BlackList");
@@ -92,36 +94,37 @@ export default {
                 })
             });
         },
-        createAccount(){
-            const { value: currency } = Swal.fire({
-                title: 'Seleccionar moneda',
-                input: 'radio',
-                inputOptions: {
-                    1 : 'Soles',
-                    2 : 'Dólares'
-                },
+        viewBlackList(index){
+            this.$router.push('/viewDetailBlackList');
+            this.setBlackListIndex(index);
+        },
+        /*deleteClientBlackList(index){
+            Swal.fire({
+                title: '¿Está seguro que desea eliminar al cliente especial' + this.clientsBlackList[index].firstName + ' ' + this.clientsBlackList[index].fatherLastname + '?',
+                type: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Crear Cuenta',
-                inputValidator: (value) => {
-                    if (!value) {
-                    return 'Debes seleccionar una moneda'
-                    }
-                    adminDA.doCreateAccount(this.clientCreate.idPerson,value).then((res)=>{
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText : 'Cancelar'
+            }).then((result) =>{
+                if(result.value){
+                    adminDA.deleteClientBlackList(this.clientsBlackList[index].idPerson,this.token).then((res)=>{
+                        this.updatedClientsBlackList();
                         Swal.fire({
-                            type: 'success',
-                            title: 'Enhorabuena',
-                            text: 'Cuenta creada satisfactoriamente'
+                            text: 'Cliente especial eliminado correctamente',
+                            type: 'success'
                         })
                     }).catch(error=>{
                         Swal.fire({
                             title: 'Error',
-                            type: 'error',
-                            text: 'Error al intentar crear la cuenta'
+                            text: 'Ocurrió un problema eliminando al cliente especial',
+                            type : 'error'
                         })
-                    })
+                    });
                 }
             })
-        }
+        }*/
 	}
 }
 </script>
