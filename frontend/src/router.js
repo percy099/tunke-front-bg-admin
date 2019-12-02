@@ -30,6 +30,7 @@ import leadCreate from './views/leadCreate.vue'
 import viewLeads from './views/viewLeads.vue'
 import MassiveChargeLeads from './views/MassiveChargeLeads.vue'
 import leadOptions from './views/leadOptions.vue'
+import viewDetailBlackList from './views/viewDetailBlackList.vue'
 
 Vue.use(Router)
 
@@ -186,6 +187,11 @@ export default new Router({
       path : '/leadOptions',
       name : 'leadOptions',
       component : leadOptions
+    },
+    {
+      path : '/viewDetailBlackList',
+      name : 'viewDetailBlackList',
+      component : viewDetailBlackList
     }
   ]
 })

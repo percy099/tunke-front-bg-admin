@@ -68,7 +68,7 @@ export default new Vuex.Store({
     amountBankAccountDollar: 0,
     token : '',
     clients : [],
-    lendings: [],
+    lendings: [], 
     campaigns:[],
     accounts: [],
     transactions: [],
@@ -185,6 +185,7 @@ export default new Vuex.Store({
       interestRate: -1,
       shareType: '',
       idLoan: -1,
+      amount: -1
     },
     leadCreate :{
       idLead: -1,
@@ -201,6 +202,21 @@ export default new Vuex.Store({
       fatherLastname: '',
       motherLastname: '',
       birthdate: ''
+    },
+    blackListCreate :{
+      idPerson : -1,
+      documentNumber : '',
+      documentType: '',
+      firstName : '',
+      middleName : '',
+      fatherLastname : '',
+      motherLastname : '',
+      birthdate : '',
+      nationality : '',
+      address : '',
+      vehicle1Plate : '',
+      vehicle2Plate : '',
+      reason: ''
     },
     person:{
       idProspectiveClient: -1,
@@ -1178,73 +1194,73 @@ export default new Vuex.Store({
         let mm = str.substring(3,5);
         let yy = parseInt(str.substring(6,10));
         let yearInt = parseInt(year);
-        if (mm == '12' && yy <= yearInt){
+        if (mm == '12' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[11] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[11] += aux[i].balance;
           }         
-        }else if (mm == '11' && yy <= yearInt){
+        }else if (mm == '11' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[10] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[10] += aux[i].balance;
           }         
-        }else if (mm == '10' && yy <= yearInt){
+        }else if (mm == '10' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[9] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[9] += aux[i].balance;
           } 
-        }else if (mm == '09' && yy <= yearInt){
+        }else if (mm == '09' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[8] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[8] += aux[i].balance;
           } 
-        }else if (mm == '08' && yy <= yearInt){
+        }else if (mm == '08' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[7] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[7] += aux[i].balance;
           } 
-        }else if (mm == '07' && yy <= yearInt){
+        }else if (mm == '07' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[6] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[6] += aux[i].balance;
           } 
-        }else if (mm == '06' && yy <= yearInt){
+        }else if (mm == '06' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[5] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[5] += aux[i].balance;
           } 
-        }else if (mm == '05' && yy <= yearInt){
+        }else if (mm == '05' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[4] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[4] += aux[i].balance;
           } 
-        }else if (mm == '04' && yy <= yearInt){
+        }else if (mm == '04' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[3] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[3] += aux[i].balance;
           } 
-        }else if (mm == '03' && yy <= yearInt){
+        }else if (mm == '03' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[2] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[2] += aux[i].balance;
           } 
-        }else if (mm == '02' && yy <= yearInt){
+        }else if (mm == '02' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[1] += aux[i].balance;
           } else if (idCurrency == 2){
             state.listBalanceAccountDollar[1] += aux[i].balance;
           } 
-        }else if (mm == '01' && yy <= yearInt){
+        }else if (mm == '01' && yy == yearInt){
           if(idCurrency == 1){
             state.listBalanceAccountSoles[0] += aux[i].balance;
           } else if (idCurrency == 2){
@@ -1332,9 +1348,17 @@ export default new Vuex.Store({
       for(let i=0; i<clientsBlackList_data.length;i++){
           state.clientsBlackList.push({
             idPerson : clientsBlackList_data[i].idPerson,
+            documentType : clientsBlackList_data[i].documentType,
             documentNumber : clientsBlackList_data[i].documentNumber,
             firstName : clientsBlackList_data[i].firstName,
+            middleName : clientsBlackList_data[i].middleName,
             fatherLastname : clientsBlackList_data[i].fatherLastname,
+            motherLastname : clientsBlackList_data[i].motherLastname,
+            birthdate : clientsBlackList_data[i].birthdate,
+            address : clientsBlackList_data[i].address,
+            nationality : clientsBlackList_data[i].nationality,
+            vehicle1Plate : clientsBlackList_data[i].vehicle1Plate,
+            vehicle2Plate : clientsBlackList_data[i].vehicle2Plate,
             reason : clientsBlackList_data[i].reason
           });
       }
@@ -1427,6 +1451,22 @@ export default new Vuex.Store({
       state.clientCreate.cellphone2 = state.clients[index].cellphone2;
       state.clientCreate.vehicle1Plate = state.clients[index].vehicle1Plate;
       state.clientCreate.vehicle2Plate = state.clients[index].vehicle2Plate;
+    },
+    setBlackLInd(state,index){
+      state.selectedBlackListIndex = index;
+      state.blackListCreate.idPerson = state.clientsBlackList[index].idPerson;
+      state.blackListCreate.firstName = state.clientsBlackList[index].firstName;
+      state.blackListCreate.documentType = state.clientsBlackList[index].documentType;
+      state.blackListCreate.documentNumber = state.clientsBlackList[index].documentNumber;
+      state.blackListCreate.middleName = state.clientsBlackList[index].middleName;
+      state.blackListCreate.fatherLastname = state.clientsBlackList[index].fatherLastname;
+      state.blackListCreate.motherLastname = state.clientsBlackList[index].motherLastname;
+      state.blackListCreate.birthdate = state.clientsBlackList[index].birthdate;
+      state.blackListCreate.nationality = state.clientsBlackList[index].nationality;
+      state.blackListCreate.address = state.clientsBlackList[index].address;
+      state.blackListCreate.vehicle1Plate = state.clientsBlackList[index].vehicle1Plate;
+      state.blackListCreate.vehicle2Plate = state.clientsBlackList[index].vehicle2Plate;
+      state.blackListCreate.reason = state.clientsBlackList[index].reason;
     },
     cleanCliCre(state){
       state.clientCreate.idPerson = -1;
@@ -1645,10 +1685,12 @@ export default new Vuex.Store({
               interestRate: -1,
               shareType: '',
               idLoan: -1,
+              amount: -1
             });
           } else {
             state.salesRecords.push({
               activeLoan: aux[i].activeLoan,
+              amount: aux[i].amount,
               totalShares: aux[i].totalShares,
               idLoan: aux[i].idLoan,
               interestRate: aux[i].interestRate,
@@ -1724,6 +1766,7 @@ export default new Vuex.Store({
       state.salesRecordCreate.idSalesRecord = state.salesRecords[index].idSalesRecord;
       state.salesRecordCreate.origin = state.salesRecords[index].origin;
       state.salesRecordCreate.requestDate = state.salesRecords[index].requestDate;
+      state.salesRecordCreate.amount = state.salesRecords[index].amount;
       if(state.salesRecords[index].activeSalesRecord){
         state.salesRecordCreate.activeSalesRecord = "Activo"
       } else {
@@ -1815,6 +1858,9 @@ export default new Vuex.Store({
       },
       setClientIndex(context,index){
         context.commit('setCliInd',index);
+      },
+      setBlackListIndex(context,index){
+        context.commit('setBlackLInd',index);
       },
       completePersonCreate(context,person_data){
         context.commit('fillPersonCreate',person_data);

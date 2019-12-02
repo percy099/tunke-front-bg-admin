@@ -4,7 +4,7 @@
     <div class="row">      
       <div class="col-md-6">        
         <label class="mr-1 ml-4">Seleccione año: </label>
-        <date-picker class="mt-5" style= "width: 11vh;" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Año"></date-picker>
+        <date-picker class="mt-5" v-model="value1" value-type="format" type="year" format="YYYY" placeholder="Año"></date-picker>
         <!-- <label class="mr-1 ml-3">Seleccione mes: </label> -->
         <!-- <date-picker class="mt-5" style= "width: 11vh;" v-model="value1_1" value-type="format" type="month" format="MM" placeholder="Mes"></date-picker> -->
         <button class="ml-3 mt-3 btn" v-promise-btn @click="getDataLendMonth()">Aceptar</button>           
