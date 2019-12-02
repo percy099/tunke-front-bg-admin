@@ -9,7 +9,8 @@
                     <div class="col-sm-6">
                     </div>
 					<div class="col-sm-6">
-                        <a id="createBtn" href="#addPrestamoModal" class="btn btn-info" data-toggle="modal"  @click=createLead()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Lead</span></a>
+                        <a id="createBtn"  href="#addEmployeeModal" class="btn btn-info" data-toggle="modal"  @click=massiveChargeLeads()><i id="createI" class="material-icons">&#xE147;</i> <span id="createMassive">Carga masiva de leads</span></a>
+                        <a id="createBtn" href="#addEmployeeModal" class="btn btn-info" data-toggle="modal"  @click=createLead()><i id="createI" class="material-icons">&#xE147;</i> <span id="createSpan">Crear Lead</span></a>
 					</div>
                 </div>
             </div>
@@ -74,7 +75,11 @@ export default {
             this.setLeadIndex(index);
         },
         createLead(){
-            this.$router.push('/leadOptions');
+            this.$router.push('/leadCreate');
+            this.setActionLead(1);
+        },
+        massiveChargeLeads(){
+            this.$router.push('/massiveChargeLeads');
             this.setActionLead(1);
         },
     },
@@ -107,6 +112,6 @@ export default {
 }
 </script>
 
-<style src="@/styles/CRUDClient.css" scoped>
+<style src="@/styles/CRUDBlackList.css" scoped>
 
 </style>

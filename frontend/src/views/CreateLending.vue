@@ -462,6 +462,15 @@ export default {
                     text : 'Debe seleccionar una cuenta'
                 });
             } else {
+                console.log("1: ",this.lendingCreate.idClient);
+                console.log("2: ",this.totalShares);
+                console.log("3: ",this.amount);
+                console.log("4: ",this.lendingCreate.interestRate);
+                console.log("5: ",this.selectShare);
+                console.log("6: ",this.selectAccount);
+                console.log("7: ",this.lendingCreate.share);
+                console.log("8: ",this.lendingCreate.commission);
+                console.log("9: ",this.selectCampaign);
                 adminDA.createLending(this.lendingCreate.idClient,this.totalShares,this.amount,this.lendingCreate.interestRate,this.selectShare,this.selectAccount,this.lendingCreate.share,this.lendingCreate.commission,this.selectCampaign,this.token).then((res) =>{
                     Swal.fire({
                         type: 'success',
