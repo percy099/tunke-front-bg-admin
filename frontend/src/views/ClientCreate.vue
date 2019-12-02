@@ -32,9 +32,6 @@
                 <div>
                 <input v-model="clientCreate.documentNumber" id="dniCreate" type="text" class="form-control d-inline" disabled>
                 </div>
-                <div>
-                <button id="btnEditAccounts" @click="editClientAccounts()" class="btn ml-3">Editar Cuentas</button>
-                </div>
             </div>
         </div>
         <!-- Tab links -->
@@ -290,11 +287,20 @@ export default {
                 }).catch(error =>{
                     this.enableButton = false;
                     this.cleanClientCreate();
-                    Swal.fire({
-                        title: 'Error',
-                        type: 'error',
-                        text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
-                    })
+                    if(this.selectedTypeDoc.value == 1){
+                        Swal.fire({
+                            title: 'Error',
+                            type: 'error',
+                            text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
+                        })
+                    }
+                    if(this.selectedTypeDoc.value == 2){
+                        Swal.fire({
+                            title: 'Error',
+                            type: 'error',
+                            text: 'No se encontraron registros de la persona con el carnet ' + this.dniPerson
+                        })
+                    }
                 })
             }
         },

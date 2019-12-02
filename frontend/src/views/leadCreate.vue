@@ -3,23 +3,28 @@
         <h2 v-if="editLead == 1" class = "mb-4 mt-4">Creación de Lead</h2>
         <div v-if="editLead == 1" class="custom-cont">
             <div>
-                <input placeholder="DNI" id="dniCreate" 
-                type="text" class="form-control d-inline" maxlength="8"
-                v-model.trim="$v.dniClient.$model" :class="{
-                'is-invalid' : $v.dniClient.$error, 'is-valid' : !$v.dniClient.$invalid }">
-                <div class="valid-feedback">Dni Válido</div>
-                <div class="invalid-feedback">
-                    <span v-if="!$v.dniClient.required">Dni Requerido. </span>
-                    <span v-if="!$v.dniClient.minLength">Debe ser de al menos de {{
-                        $v.dniClient.$params.minLength.min}} dígitos.</span>
-                    <span v-if="!$v.dniClient.maxLength">Debe ser de al menos de {{
-                        $v.dniPerso.$params.maxLength.max}} dígitos.</span>
-                    <span v-if="!$v.dniClient.numeric">Debe contener solo números. </span>
+                    <input  :placeholder='name' id="dniCreate" 
+                    type="text" class="form-control d-inline" :disabled='isDisabled2' :maxlength="maxLNumber" :minlength="minLNumber"
+                    v-model.trim="$v.dniClient.$model" :class="{
+                    'is-invalid' : $v.dniClient.$error, 'is-valid' : !$v.dniClient.$invalid }">
+                    <div v-if="selectedTypeDoc.value == 1" class="valid-feedback">Dni Válido</div>
+                    <div v-if="selectedTypeDoc.value == 2" class="valid-feedback">Carnet de Extranjería Válido</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.dniClient.required && selectedTypeDoc.value == 1">Dni Requerido. </span>
+                        <span v-if="!$v.dniClient.required && selectedTypeDoc.value == 2">Carnet de Extranjería Requerido. </span>
+                        <span v-if="!$v.dniClient.minLength">Debe ser de al menos de {{
+                            $v.dniClient.$params.minLength.min}} dígitos </span>
+                        <span v-if="!$v.dniClient.maxLength">Debe ser de al menos de {{
+                            $v.dniClient.$params.maxLength.max}} dígitos </span>
+                        <span v-if="!$v.dniClient.numeric">Debe contener solo números. </span>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <button @click="getClient()" class="btn ml-3" id="btnEditAccounts">Buscar Cliente</button>
-            </div>
+                <div>  
+                    <v-select class="ml-3" placeholder=" Tipo de documento" v-model="selectedTypeDoc" :required="!selectedTypeDoc" :options="optionsDoc"  label="text"/>
+                </div>
+                <div>
+                    <button @click="getClient()" class="btn ml-3" id="btnEditAccounts">Buscar Persona</button>
+                </div>
         </div>
         <div v-else class="mt-5">
             <h2 class = "mb-4 mt-4">Ver Lead</h2>
@@ -221,33 +226,42 @@ export default {
     data(){
         return {dniClient : '',
                 enableButton : false,
-                maximum : '',
-                minimum : '',
+                maximum : 0,
+                minimum : 0,
                 maxCamp : '',
                 minCamp : '',
                 maxPeriod : '',
                 minPeriod : '',
-                rate : ''
+                rate : '',
+                selectedTypeDoc: false,
+                minLNumber: 0,
+                maxLNumber: 0,
+                maxAmount: 0,
+                name: "",
+                optionsDoc: [
+                    { text: 'DNI', value: 1 },
+                    { text: 'Carnet de Extranjería', value: 2 }
+                ]
                 };
     },
     validations() {
         return {
             dniClient: {
                 required,
-                minLength: minLength(8),
-                maxLength: maxLength(8),
+                minLength: minLength(this.minLNumber),
+                maxLength: maxLength(this.maxLNumber),
                 numeric
             },
             maximum: {
                 required,
                 minValue: minValue(parseInt(this.minimum) + 1),
-                maxValue: maxValue(10000000),
+                maxValue: maxValue(this.maxAmount),
                 numeric
             },
             minimum: {
                 required,
                 minValue: minValue(1),
-                maxValue: maxValue(1000000),
+                maxValue: maxValue(parseInt(this.maximum) - 1),
                 numeric
             },
             maxPeriod: {
@@ -265,20 +279,26 @@ export default {
             rate: {
                 required,
                 minValue: minValue(1),
-                maxValue: maxValue(10000),
+                maxValue: maxValue(100),
                 numeric
             }
         }
     },
     computed :{
-        ...mapState (['token','clientCreate','campaignCreate','editLead','leadCreate']),
+        ...mapState (['token','clientCreate','campaignCreate','editLead','leadCreate','bankAccounts']),
         cambio(){
             this.auxMinCap = this.minimum;
             console.log(this.auxMinCap);
+        },
+        isDisabled2: function(){
+            if(this.selectedTypeDoc){
+                this.enableButton2 = true;
+            }
+    	      return !this.enableButton2;
         }
     },
     methods:{
-        ...mapActions (['completePersonCreate','completeLendingCreateCampaign','cleanClientCreate']),
+        ...mapActions (['completePersonCreate','completeLendingCreateCampaign','cleanClientCreate','completeBankAccount']),
          openData :function(dataType) {
             // Declare all variables
             var i, tabcontent, tablinks, btn,buttons;
@@ -346,11 +366,20 @@ export default {
                 }).catch(error =>{
                     this.enableButton = false;
                     this.cleanClientCreate();
-                    Swal.fire({
-                        title: 'Error',
-                        type: 'error',
-                        text: 'No se encontraron registros del cliente con DNI ' + this.dniClient
-                    })
+                    if(this.selectedTypeDoc.value == 1){
+                        Swal.fire({
+                            title: 'Error',
+                            type: 'error',
+                            text: 'No se encontraron registros de la persona con DNI ' + this.dniPerson
+                        })
+                    }
+                    if(this.selectedTypeDoc.value == 2){
+                        Swal.fire({
+                            title: 'Error',
+                            type: 'error',
+                            text: 'No se encontraron registros de la persona con el carnet ' + this.dniPerson
+                        })
+                    }
                 })
             }
         },
@@ -390,6 +419,35 @@ export default {
         this.minimum = this.campaignCreate.minimumLoan;
         this.maxCamp = this.campaignCreate.maximumLoan;
         this.minCamp = this.campaignCreate.minimumLoan;
+        userDA.getAllBankAccount(this.token).then((res) =>{
+            this.completeBankAccount(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las cuentas del banco'
+                })
+            });
+        console.log(this.bankAccounts[0].balance);
+        console.log(this.bankAccounts[1].balance);
+        if(this.campaignCreate.idCurrency == 1){
+            this.maxAmount = 0.8*this.bankAccounts[0].balance;
+        }
+        if(this.campaignCreate.idCurrency == 2){
+            this.maxAmount = 0.8*this.bankAccounts[1].balance;
+        }
+        console.log(this.maxAmount);
+    },
+    updated(){
+        if(this.selectedTypeDoc && this.selectedTypeDoc.value==1){
+            this.name = "DNI"
+            this.minLNumber=8;
+            this.maxLNumber=8;
+        } if(this.selectedTypeDoc && this.selectedTypeDoc.value==2) {
+            this.name = "Carnet de extranjería"
+            this.minLNumber=12;
+            this.maxLNumber=12;
+        }
     }
 }
 </script>

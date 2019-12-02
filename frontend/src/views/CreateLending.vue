@@ -86,8 +86,10 @@
                         <div class="invalid-feedback">
                             <span v-if="!$v.amount.minValue">Debe ser de al menos {{
                             $v.amount.$params.minValue.min}} </span>
+                            <span v-if="!$v.amount.maxValue">Debe ser de al menos {{
+                            $v.amount.$params.maxValue.max}} </span>
                             <span v-if="!$v.amount.numeric">Debe contener solo números. </span>
-                            <span v-if="!$v.amount.required">Cuotas Requerido. </span>
+                            <span v-if="!$v.amount.required">Monto Requerido. </span>
                         </div>
                     </div>
                     <h6 class="mt-3">Tipo de Cuota</h6>
@@ -124,21 +126,25 @@
                         </option>
                     </select>
                     <h6 class="mt-3">Número de cuenta</h6>
-                    <select v-if="selectCampaign == 1" v-model="selectAccountSoles" id="right2" style="height:2.3em;">
-                        <option v-for="accountsByClients in solesAccounts" v-bind:value="accountsByClients.idAccount">
-                            {{accountsByClients.accountNumber}}
-                        </option>
-                    </select>  
-                    <div v-if="selectCampaign == 1" class="invalid-feedback">
-                        <span v-if="selectAccountSoles == 0 || selectAccountSoles == undefined">Debe seleccionar una cuenta </span>
+                    <div>
+                        <select v-if="selectCampaign == 1" v-model="selectAccountSoles" id="right2" style="height:2.3em;">
+                            <option v-for="accountsByClients in solesAccounts" v-bind:value="accountsByClients.idAccount">
+                                {{accountsByClients.accountNumber}}
+                            </option>
+                        </select>  
+                        <div v-if="selectCampaign == 1" class="invalid-feedback">
+                            <span v-if="selectAccountSoles == 0 || selectAccountSoles == undefined">Debe seleccionar una cuenta </span>
+                        </div>
                     </div>
-                    <select v-if="selectCampaign == 2" v-model="selectAccountDolar" id="right2" style="height:2.3em;">
-                        <option v-for="accountsByClients in dolarAccounts" v-bind:value="accountsByClients.idAccount">
-                            {{accountsByClients.accountNumber}}
-                        </option>
-                    </select>  
-                    <div v-if="selectCampaign == 2" class="invalid-feedback">
-                        <span v-if="selectAccountDolar == 0 || selectAccountDolar == undefined">Debe seleccionar una cuenta </span>
+                    <div>
+                        <select v-if="selectCampaign == 2" v-model="selectAccountDolar" id="right2" style="height:2.3em;">
+                            <option v-for="accountsByClients in dolarAccounts" v-bind:value="accountsByClients.idAccount">
+                                {{accountsByClients.accountNumber}}
+                            </option>
+                        </select>  
+                        <div v-if="selectCampaign == 2" class="invalid-feedback">
+                            <span v-if="selectAccountDolar == 0 || selectAccountDolar == undefined">Debe seleccionar una cuenta </span>
+                        </div>
                     </div>
                     <h6 class="mt-3">Número de cuotas (mensual)</h6>
                     <input type="text" id="right2" class="form-control"
@@ -212,7 +218,8 @@ export default {
                 optionsDoc: [
                     { text: 'DNI', value: 1 },
                     { text: 'Carnet de Extranjería', value: 2 }
-                ]
+                ],
+                maxAmount: 0
                 };
     },
     validations() {
@@ -231,7 +238,8 @@ export default {
             amount: {
                 required,
                 numeric,
-                minValue: minValue(1)
+                minValue: minValue(1),
+                maxValue: maxValue(this.maxAmount)
             },
             interestRateLending: {
                 required,
@@ -241,7 +249,7 @@ export default {
         }
     },
     computed :{
-        ...mapState (['lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate','parameterSetting']),
+        ...mapState (['bankAccounts','lendingCreate','token','editClient','selectedClientIndex','accountsByClient','clientCreate','parameterSetting']),
         calculateShare : function (){
             //let amount = this.lendingCreate.amount;
             let amount = this.amount;
@@ -251,7 +259,7 @@ export default {
             let numberExtra = 0;
             let tem =Math.pow(1+(tea/100),1/12)-1;
             console.log("tem: " +tem);
-            let commission = this.parameterSetting.commissionPercentage;
+            let commission = parseFloat(this.parameterSetting.commissionPercentage);
             
             //Cuota extraordinaria
             let moment = require('moment');
@@ -302,7 +310,7 @@ export default {
         
     },
     methods:{
-        ...mapActions (['completeLendingCreate','cleanLendingCreate','completePersonCreate','completeLendingCreateCampaign','cleanClientCreate']),
+        ...mapActions (['completeBankAccount','completeTransactionsDollar','completeTransactions','completeLendingCreate','cleanLendingCreate','completePersonCreate','completeLendingCreateCampaign','cleanClientCreate','transactions']),
         fillAccountsPerType(accounts){
             let aux=accounts;
             for(let i = 0; i < aux.length; i++){
@@ -447,6 +455,12 @@ export default {
             this.lendingCreate.interestRate =this.interestRateLending;
             console.log(this.lendingCreate.interestRate);
             if (this.$v.totalShares.$invalid || this.$v.amount.$invalid || this.selectAccount == 0 || this.selectAccount == undefined || this.$v.interestRateLending.$invalid) {
+                if(this.selectAccount == 0 || this.selectAccount == undefined)
+                Swal.fire({
+                    title : 'Error',
+                    type : 'error',
+                    text : 'Debe seleccionar una cuenta'
+                });
             } else {
                 console.log("1: ",this.lendingCreate.idClient);
                 console.log("2: ",this.totalShares);
@@ -479,6 +493,20 @@ export default {
         document.getElementById('btnClient').classList.add('active');
         this.cleanLendingCreate();
         this.cleanClientCreate();
+        userDA.getAllBankAccount(this.token).then((res) =>{
+            this.completeBankAccount(res.data);
+            }).catch(error =>{
+                Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Error obteniendo las cuentas del banco'
+                })
+            });
+        console.log(this.bankAccounts[0].balance);
+        this.maxAmount = 0.8*this.bankAccounts[0].balance;
+        console.log(this.maxAmount);
+        
+
     },
     updated(){
          if(this.selectedTypeDoc && this.selectedTypeDoc.value==1){
@@ -489,6 +517,14 @@ export default {
             this.name = "Carnet de extranjería"
             this.minLNumber=12;
             this.maxLNumber=12;
+        } 
+        if(this.selectCampaign == 1){
+            this.maxAmount = 0.8*this.bankAccounts[0].balance;
+            console.log(this.maxAmount);
+        }
+        if(this.selectCampaign == 2){
+            this.maxAmount = 0.8*this.bankAccounts[1].balance;
+            console.log(this.maxAmount);
         }
     }
 }

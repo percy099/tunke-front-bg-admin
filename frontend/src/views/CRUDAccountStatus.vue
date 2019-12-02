@@ -112,7 +112,7 @@ export default {
         },
         updatedBankAccount: function() {
             userDA.getAllBankAccount(this.token).then((res) =>{
-             this.completeBankAccount(res.data);
+            this.completeBankAccount(res.data);
             }).catch(error =>{
                 Swal.fire({
                     title: 'Error',

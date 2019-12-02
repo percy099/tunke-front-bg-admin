@@ -40,9 +40,13 @@
                 </div>
                 <div v-if="editCampaign == 1" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
-                    <input v-model="campaignCreate.name" type="text" class="form-control">
-                    <!--<h6 class="mt-3">Fecha Inicio</h6>
-                    <input v-model="dateAux" type="month" class="form-control">-->
+                    <input type="text" class="form-control"
+                    v-model.trim="$v.name.$model" :class="{
+                    'is-invalid' : $v.name.$error, 'is-valid':!$v.name.$invalid }">
+                    <div class="valid-feedback">Nombre Válido!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.name.required">Nombre Requerido. </span>
+                    </div>
                     <h6 class="mt-3">Moneda</h6>
                     <select v-model="selectCurrency" style="height:2.3em; width:21em;" class="mb-4">
                         <option v-for="optionCurrency in optionsCurrency" v-bind:value="optionCurrency.value">
@@ -69,7 +73,13 @@
                 </div>
                 <div v-if="editCampaign == 2" class="col-6 groupLeftPersonal">
                     <h6>Nombre Campaña</h6>
-                    <input v-model="campaignCreate.name" type="text" class="form-control">
+                    <input type="text" class="form-control"
+                    v-model.trim="$v.name.$model" :class="{
+                    'is-invalid' : $v.name.$error, 'is-valid':!$v.name.$invalid }">
+                    <div class="valid-feedback">Nombre Válido!</div>
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.name.required">Nombre Requerido. </span>
+                    </div>
                     <h6 class="mt-3">Fecha de creación</h6>
                     <input v-model="campaignCreate.creationDate" type="date" class="form-control mb-5" disabled>
                     <!--<h6 class="mt-3">Moneda</h6>
@@ -129,22 +139,12 @@ export default {
                 { text: 'Soles', value: 1 },
                 { text: 'Dólares', value: 2 }
             ],
+            name : ''
         };
     },
     validations: {
         name: {
             required
-        },
-        minimumLoan: {
-            required,
-            numeric
-        },
-        maximumLoan: {
-            required,
-            numeric
-        },
-        minimumPeriod: {
-            
         }
     },
     computed :{
@@ -179,104 +179,112 @@ export default {
         },
 
         saveCampaign(){
-            
-            this.campaignCreate.startDate = this.dateAux.substring(0,4) + '-' + this.dateAux.substring(5,7) + '-01';
-            console.log(this.campaignCreate.startDate);
-            var flag;
-            if(this.dateAux.substring(5,6) == '0'){
-                var monthAux = this.dateAux.substring(6,7);
-                flag = true;
+            this.$v.name.$touch();
+            if (this.$v.name.$invalid) {
             } else {
-                var monthAux = this.dateAux.substring(5,7);
-                flag = false;
-            }
-            var month = new Array();
-            month[0] = "Enero";
-            month[1] = "Febrero";
-            month[2] = "Marzo";
-            month[3] = "Abril";
-            month[4] = "Mayo";
-            month[5] = "Junio";
-            month[6] = "Julio";
-            month[7] = "Agosto";
-            month[8] = "Setiembre";
-            month[9] = "Octubre";
-            month[10] = "Noviembre";
-            month[11] = "Diciembre";
-            this.campaignCreate.month = month[monthAux - 1];
-            console.log(this.campaignCreate.month);
-            var maxDay = new Array();
-            maxDay[0] = "31";
-            maxDay[1] = "28";
-            maxDay[2] = "31";
-            maxDay[3] = "30";
-            maxDay[4] = "31";
-            maxDay[5] = "30";
-            maxDay[6] = "31";
-            maxDay[7] = "31";
-            maxDay[8] = "30";
-            maxDay[9] = "31";
-            maxDay[10] = "30";
-            maxDay[11] = "31";
-            maxDay[12] = "29"; 
-            
-            if(parseInt(this.dateAux.substring(0,4)) % 4 == 0 && parseInt(monthAux) == 2){
-                if(flag){
-                    this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-0' + monthAux + '-' + maxDay[12];
+                this.campaignCreate.startDate = this.dateAux.substring(0,4) + '-' + this.dateAux.substring(5,7) + '-01';
+                console.log(this.campaignCreate.startDate);
+                var flag;
+                if(this.dateAux.substring(5,6) == '0'){
+                    var monthAux = this.dateAux.substring(6,7);
+                    flag = true;
                 } else {
-                    this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-' + monthAux + '-' + maxDay[12];
+                    var monthAux = this.dateAux.substring(5,7);
+                    flag = false;
                 }
-            } else {
-                if(flag){
-                    this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-0' + monthAux + '-' + maxDay[monthAux - 1];
+                var month = new Array();
+                month[0] = "Enero";
+                month[1] = "Febrero";
+                month[2] = "Marzo";
+                month[3] = "Abril";
+                month[4] = "Mayo";
+                month[5] = "Junio";
+                month[6] = "Julio";
+                month[7] = "Agosto";
+                month[8] = "Setiembre";
+                month[9] = "Octubre";
+                month[10] = "Noviembre";
+                month[11] = "Diciembre";
+                this.campaignCreate.month = month[monthAux - 1];
+                console.log(this.campaignCreate.month);
+                var maxDay = new Array();
+                maxDay[0] = "31";
+                maxDay[1] = "28";
+                maxDay[2] = "31";
+                maxDay[3] = "30";
+                maxDay[4] = "31";
+                maxDay[5] = "30";
+                maxDay[6] = "31";
+                maxDay[7] = "31";
+                maxDay[8] = "30";
+                maxDay[9] = "31";
+                maxDay[10] = "30";
+                maxDay[11] = "31";
+                maxDay[12] = "29"; 
+                
+                if(parseInt(this.dateAux.substring(0,4)) % 4 == 0 && parseInt(monthAux) == 2){
+                    if(flag){
+                        this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-0' + monthAux + '-' + maxDay[12];
+                    } else {
+                        this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-' + monthAux + '-' + maxDay[12];
+                    }
                 } else {
-                    this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-' + monthAux + '-' + maxDay[monthAux - 1];
+                    if(flag){
+                        this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-0' + monthAux + '-' + maxDay[monthAux - 1];
+                    } else {
+                        this.campaignCreate.endDate = this.dateAux.substring(0,4) + '-' + monthAux + '-' + maxDay[monthAux - 1];
+                    }
                 }
+                console.log(this.campaignCreate.endDate);
+                
+                adminDA.createCampaign(this.name,this.campaignCreate.month,
+                this.campaignCreate.startDate,this.campaignCreate.endDate,/*this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan,
+                this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate,*/ this.selectCurrency, this.token).then((res) =>{
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Enhorabuena',
+                        text: 'Campaña creada satisfactoriamente'
+                    })
+                }).catch(error =>{
+                    Swal.fire({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al crear la campaña'
+                    })
+                })
             }
-            console.log(this.campaignCreate.endDate);
-            
-            adminDA.createCampaign(this.campaignCreate.name,this.campaignCreate.month,
-            this.campaignCreate.startDate,this.campaignCreate.endDate,/*this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan,
-            this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate,*/ this.selectCurrency, this.token).then((res) =>{
-                Swal.fire({
-                    type: 'success',
-                    title: 'Enhorabuena',
-                    text: 'Campaña creada satisfactoriamente'
-                })
-            }).catch(error =>{
-                Swal.fire({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al crear la campaña'
-                })
-            })
             
             
         },
         
         editCampaigns(){
-            //console.log(this.selectCurrency);
-            adminDA.editCampaign(this.campaignCreate.idCampaign,this.campaignCreate.name,this.campaignCreate.month,
-            this.campaignCreate.startDate,this.campaignCreate.endDate,/*this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan,
-            this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate,*/ this.selectCurrency, this.token).then((res) =>{
-                Swal.fire({
-                    type: 'success',
-                    title: 'Enhorabuena',
-                    text: 'Campaña editada satisfactoriamente'
+            this.$v.name.$touch();
+            if (this.$v.name.$invalid) {
+            } else {
+                adminDA.editCampaign(this.campaignCreate.idCampaign,this.name,this.campaignCreate.month,
+                this.campaignCreate.startDate,this.campaignCreate.endDate,/*this.campaignCreate.minimumLoan, this.campaignCreate.maximumLoan,
+                this.campaignCreate.minimumPeriod, this.campaignCreate.maximumPeriod, this.campaignCreate.interestRate,*/ this.selectCurrency, this.token).then((res) =>{
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Enhorabuena',
+                        text: 'Campaña editada satisfactoriamente'
+                    })
+                }).catch(error =>{
+                    Swal.fire({
+                        title : 'Error',
+                        type : 'error',
+                        text : 'Error al editar la campaña'
+                    })
                 })
-            }).catch(error =>{
-                Swal.fire({
-                    title : 'Error',
-                    type : 'error',
-                    text : 'Error al editar la campaña'
-                })
-            })
+            }
         }
     },
     mounted(){
         document.getElementById('Campaign').style.display = "block";
         document.getElementById('btnCampaign').classList.add('active');
-        console.log()
+        if(this.editCampaign == 2){
+            this.name = this.campaignCreate.name;
+        }
     },
     updated(){
         if(this.campaignCreate.name == "" || this.campaignCreate.maximumLoan == "" || this.campaignCreate.minimumLoan == ""){
