@@ -264,11 +264,12 @@ export function chargeBlackList(token,file){
         );
 }
 
-export function chargeLeads(token, file){
+export function chargeLeads(token, file,idCampaign){
     let url = process.env.VUE_APP_API_URL + 'api/leads/'
     let formData = new FormData();
     formData.append('file', file);
-    return axios.post(url,formData,
+    formData.append('idCampaign', JSON.stringify(idCampaign));
+    return axios.put(url,formData,
         {
             headers: {
                 'Content-Type' : 'multipart/form-data'

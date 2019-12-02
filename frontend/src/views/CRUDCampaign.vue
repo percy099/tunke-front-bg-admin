@@ -134,7 +134,7 @@ export default {
             
         },
 		createCampaign(){
-            this.$router.push('/campaignOptions');
+            this.$router.push('/campaignCreate');
             this.setActionCampaign(1);
             this.cleanCampaignCreate();
         },
