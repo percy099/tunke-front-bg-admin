@@ -77,7 +77,9 @@
                     <h6>{{this.salesRecordCreate.productName}} activa</h6>
                     <input v-model="salesRecordCreate.activeLoan" type="text" class="form-control" disabled>
                     <h6 class="mt-3">Cantidad de cuotas</h6>
-                    <input v-model="salesRecordCreate.totalShares" type="text" class="form-control mb-5" disabled>
+                    <input v-model="salesRecordCreate.totalShares" type="text" class="form-control" disabled>
+                    <h6 class="mt-3">Monto</h6>
+                    <input v-model="salesRecordCreate.amount" type="text" class="form-control mb-5" disabled>
                 </div>
                 <div v-if="salesRecordCreate.productName == 'Prestamo'" class="col-6 groupRigthPersonal">
                     <h6>Porcentaje de interés</h6>

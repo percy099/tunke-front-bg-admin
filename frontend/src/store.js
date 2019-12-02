@@ -185,6 +185,7 @@ export default new Vuex.Store({
       interestRate: -1,
       shareType: '',
       idLoan: -1,
+      amount: -1
     },
     leadCreate :{
       idLead: -1,
@@ -1645,10 +1646,12 @@ export default new Vuex.Store({
               interestRate: -1,
               shareType: '',
               idLoan: -1,
+              amount: -1
             });
           } else {
             state.salesRecords.push({
               activeLoan: aux[i].activeLoan,
+              amount: aux[i].amount,
               totalShares: aux[i].totalShares,
               idLoan: aux[i].idLoan,
               interestRate: aux[i].interestRate,
@@ -1724,6 +1727,7 @@ export default new Vuex.Store({
       state.salesRecordCreate.idSalesRecord = state.salesRecords[index].idSalesRecord;
       state.salesRecordCreate.origin = state.salesRecords[index].origin;
       state.salesRecordCreate.requestDate = state.salesRecords[index].requestDate;
+      state.salesRecordCreate.amount = state.salesRecords[index].amount;
       if(state.salesRecords[index].activeSalesRecord){
         state.salesRecordCreate.activeSalesRecord = "Activo"
       } else {
