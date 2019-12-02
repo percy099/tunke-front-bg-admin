@@ -4,7 +4,7 @@
         <div class="row" id="row1">
             <div class="col-4"></div>
             <div class="col-2">
-                <h3>DNI</h3>
+                <h3>DNI/Carnet de Extranjeria</h3>
             </div>
             <div class="col-6">
                 <input type="text" class="form-control" v-model="dni">
