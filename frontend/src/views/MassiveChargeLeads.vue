@@ -34,7 +34,7 @@ export default {
         };
     },
     computed:{
-        ...mapState(['token']),
+        ...mapState(['token','campaignCreate']),
         isDisabled: function(){
     	    return !this.enableButton;
         }
@@ -60,7 +60,7 @@ export default {
             this.enableButton = true;*/
       },
       chargeFile(){
-          adminDA.chargeLeads(this.token,this.f).then((res)=>{
+          adminDA.chargeLeads(this.token,this.f,this.campaignCreate.idCampaign).then((res)=>{
               console.log(res);
               Swal.fire({
                   type : 'success',
